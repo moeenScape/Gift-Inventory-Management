@@ -1,6 +1,6 @@
 package com.square.Inventory.Management.System.ExcelHepler;
 
-import com.example.inventory_project.entity.SBU;
+import com.square.Inventory.Management.System.Entity.SBU;
 import com.poiji.annotation.ExcelCell;
 import com.poiji.annotation.ExcelRow;
 

@@ -28,6 +28,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	runtimeOnly 'com.h2database:h2'
+	implementation group: 'com.github.ozlerhakan', name: 'poiji', version: '3.1.9'
 
 }
 
