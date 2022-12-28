@@ -34,9 +34,7 @@ public class Budget {
     private int quantity;
     @Column
     private String depotName;
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "depot_id")
-//    private Depot depot;
+
     @Column
     private String DepotID;
 
@@ -47,10 +45,6 @@ public class Budget {
     private String month;
     @Column
     private int year;
-
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ssu_id")
-//    private SSU ssu_id;
 
     @Column
     private String ssu_id;

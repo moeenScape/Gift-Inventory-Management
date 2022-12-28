@@ -1,10 +1,16 @@
 package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
+import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.DEPOT;
+import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -53,5 +59,39 @@ public class BudgetServiceImpl implements BudgetService {
             allBudget.add(_budget);
         }
         return allBudget;
+    }
+
+    @Override
+    public ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName) {
+
+        List<SSU> ssuList=budgetRepository.getBudgetForSSUByName(ssuName);
+
+        return new ResponseEntity<>(ssuList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String id) {
+
+        List<DEPOT> depotList=budgetRepository.getBudgetForDepotByID(id);
+
+        return new ResponseEntity<>(depotList,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Budget> viewAllBudgetByMonth(String month) {
+
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<Budget>> getAllBudget() {
+        List<Budget> budgetList=budgetRepository.findAll();
+        return new ResponseEntity<>(budgetList,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<BudgetSummary>> getSummary() {
+        List<BudgetSummary> budgetSummaryList=budgetRepository.getSummary();
+        return new ResponseEntity<>(budgetSummaryList,HttpStatus.OK);
     }
 }

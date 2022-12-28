@@ -1,9 +1,30 @@
 package com.square.Inventory.Management.System.Repository;
 
+import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.DEPOT;
+import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
+    @Query("select new com.square.Inventory.Management.System.DTO.SSU(b.budgetID,b.sapCode," +
+            "b.productName,b.productionUnit,b.packageSize,b.category,b.fieldColleagueID,b.fieldColleagueName," +
+            "b.quantity,b.DepotID,b.depotName,b.month,b.year) from Budget " +
+            "b where b.ssu_id=:ssuName")
+    List<SSU> getBudgetForSSUByName(@Param("ssuName") String ssuName);
+
+    @Query("select new com.square.Inventory.Management.System.DTO.DEPOT(b.budgetID,b.sapCode," +
+            "b.productName,b.productionUnit,b.packageSize,b.category,b.fieldColleagueID,b.fieldColleagueName," +
+            "b.quantity,b.month,b.year) from Budget b where b.DepotID =: id")
+    List<DEPOT> getBudgetForDepotByID(@Param("id") String id);
+
+    @Query(value = "SELECT budgetid,sap_code,product_name,deport_name,deportid,category," +
+            "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid",nativeQuery = true)
+    List<BudgetSummary> getSummary();
 }
