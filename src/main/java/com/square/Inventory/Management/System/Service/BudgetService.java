@@ -1,14 +1,12 @@
-package com.example.inventory_project.service;
+package com.square.Inventory.Management.System.Service;
 
-import com.example.inventory_project.DTO.BudgetDTO;
-import com.example.inventory_project.entity.Budget;
-import com.example.inventory_project.projection.BudgetProjectionInterface;
-import com.example.inventory_project.repository.BudgetRepository;
+import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
+import com.square.Inventory.Management.System.Entity.Budget;
+import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.poiji.bind.Poiji;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +51,4 @@ public class BudgetService {
         }
         return allBudget;
     }
-
-    public List<BudgetProjectionInterface> showDepotWiseProductSum() {
-        return budgetRepository.getDepotWiseProductSum();
-    }
-
-
 }
