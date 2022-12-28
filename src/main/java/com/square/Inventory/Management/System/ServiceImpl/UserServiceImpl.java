@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> signup(Map<String, String> requestMap) {
         if (validateSignUpMap(requestMap)) {
             User user = userRepository.findByEmail(requestMap.get("email"));
-            Optional<User> optional=userRepository.findById(Integer.parseInt(requestMap.get("userID")));
+            Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
             if (Objects.isNull(user) && optional.isEmpty()) {
                 userRepository.save(getUserFromMap(requestMap));
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
@@ -91,10 +91,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<User> update(User user, Integer userId) {
-        Optional<User> user1=userRepository.findById(userId);
-        if(user1.isPresent())
-        {
-            User user2=user1.get();
+        Optional<User> user1 = userRepository.findById(userId);
+        if (user1.isPresent()) {
+            User user2 = user1.get();
             user2.setEmail(user.getEmail());
             user2.setPassword(user.getPassword());
             user2.setFirstName(user.getFirstName());
@@ -108,19 +107,18 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user2);
 
         }
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<String> deleteUser(Integer userId) {
-        Optional<User> optional=userRepository.findById(userId);
+        Optional<User> optional = userRepository.findById(userId);
 
-        if(optional.isPresent())
-        {
+        if (optional.isPresent()) {
             userRepository.deleteById(userId);
-            return new ResponseEntity<>("User Deleted ",HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("User Not Find ",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -131,24 +129,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUserByPagination(int page, int size) {
-        Pageable paging = PageRequest.of(page,size);
-        Page<User> pageResult= userRepository.findAll(paging);
-        if (pageResult.hasContent())
-        {
+        Pageable paging = PageRequest.of(page, size);
+        Page<User> pageResult = userRepository.findAll(paging);
+        if (pageResult.hasContent()) {
             return pageResult.getContent();
-        }else {
+        } else {
             return new ArrayList<User>();
         }
     }
 
     @Override
     public List<User> getAllUserByPaginationBySort(int page, int size, String sortBy) {
-        Pageable paging = PageRequest.of(page,size, Sort.by(sortBy));
-        Page<User> pageResult= userRepository.findAll(paging);
-        if (pageResult.hasContent())
-        {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<User> pageResult = userRepository.findAll(paging);
+        if (pageResult.hasContent()) {
             return pageResult.getContent();
-        }else {
+        } else {
             return new ArrayList<User>();
         }
     }

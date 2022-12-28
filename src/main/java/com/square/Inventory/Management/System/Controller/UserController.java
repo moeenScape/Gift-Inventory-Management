@@ -20,7 +20,7 @@ public interface UserController {
     ResponseEntity<Resource> getFile();
 
     @PutMapping(path = "/update/{userId}")
-    ResponseEntity<User> updateUser(@RequestBody User user,@PathVariable("userId") Integer userId);
+    ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("userId") Integer userId);
 
     @DeleteMapping(path = "/delete/{userId}")
     ResponseEntity<String> deleteUser(@PathVariable("userId") Integer userId);
@@ -35,7 +35,7 @@ public interface UserController {
     @GetMapping(path = "/get/all/pageSort")
     ResponseEntity<?> getAllByPaginationBySorting(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "3") int size,
-                                                  @RequestParam(defaultValue = "id") String  sortBy);
+                                                  @RequestParam(defaultValue = "id") String sortBy);
 }
 
 

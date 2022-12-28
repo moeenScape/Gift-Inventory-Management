@@ -26,19 +26,20 @@ public class UserControllerImpl implements UserController {
 
     @Autowired
     JWTFilter jwtFilter;
+
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
-        try{
+        try {
 //            if(jwtFilter.isAdmin())
 //            {
-                return userService.signup(requestMap);
+            return userService.signup(requestMap);
 //            }else {
 //               return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
 //            }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
+        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -60,24 +61,23 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<User> updateUser(User user, Integer userId) {
-        return userService.update(user,userId);
+        return userService.update(user, userId);
     }
 
     @Override
-    public ResponseEntity<String> deleteUser(Integer userId)
-    {
-        if(jwtFilter.isAdmin()){
+    public ResponseEntity<String> deleteUser(Integer userId) {
+        if (jwtFilter.isAdmin()) {
             return userService.deleteUser(userId);
-        }else {
-            return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
+        } else {
+            return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Override
     public ResponseEntity<List<User>> getAllUser() {
-        if(jwtFilter.isAdmin()){
+        if (jwtFilter.isAdmin()) {
             return new ResponseEntity<List<User>>(userService.getAllUser(), HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -85,11 +85,10 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<List<User>> getAllByPagination(int page, int size) {
-        if(jwtFilter.isAdmin())
-        {
-            List<User> userList=userService.getAllUserByPagination(page,size);
-            return new ResponseEntity<List<User>>(userList,HttpStatus.OK);
-        }else {
+        if (jwtFilter.isAdmin()) {
+            List<User> userList = userService.getAllUserByPagination(page, size);
+            return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         }
@@ -97,11 +96,10 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<List<User>> getAllByPaginationBySorting(int page, int size, String sortBy) {
-        if(jwtFilter.isAdmin())
-        {
-            List<User> userList=userService.getAllUserByPaginationBySort(page,size,sortBy);
-            return new ResponseEntity<List<User>>(userList,HttpStatus.OK);
-        }else {
+        if (jwtFilter.isAdmin()) {
+            List<User> userList = userService.getAllUserByPaginationBySort(page, size, sortBy);
+            return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         }
