@@ -5,11 +5,13 @@ import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class BudgetServiceImpl implements BudgetService {
     private final BudgetRepository budgetRepository;
 
