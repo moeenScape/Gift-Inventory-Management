@@ -10,6 +10,10 @@ import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -43,7 +45,8 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> signup(Map<String, String> requestMap) {
         if (validateSignUpMap(requestMap)) {
             User user = userRepository.findByEmail(requestMap.get("email"));
-            if (Objects.isNull(user)) {
+            Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
+            if (Objects.isNull(user) && optional.isEmpty()) {
                 userRepository.save(getUserFromMap(requestMap));
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
@@ -84,6 +87,66 @@ public class UserServiceImpl implements UserService {
 
         ByteArrayInputStream in = ExcelHelper.UserToExcel(users);
         return in;
+    }
+
+    @Override
+    public ResponseEntity<User> update(User user, Integer userId) {
+        Optional<User> user1 = userRepository.findById(userId);
+        if (user1.isPresent()) {
+            User user2 = user1.get();
+            user2.setEmail(user.getEmail());
+            user2.setPassword(user.getPassword());
+            user2.setFirstName(user.getFirstName());
+            user2.setLastName(user.getLastName());
+            user2.setContactNumber(user.getContactNumber());
+
+            user2.setWorkPlace(user.getWorkPlace());
+            user2.setRole(user.getRole());
+            user2.setStatus(user.getStatus());
+
+            userRepository.save(user2);
+
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteUser(Integer userId) {
+        Optional<User> optional = userRepository.findById(userId);
+
+        if (optional.isPresent()) {
+            userRepository.deleteById(userId);
+            return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> getAllUserByPagination(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<User> pageResult = userRepository.findAll(paging);
+        if (pageResult.hasContent()) {
+            return pageResult.getContent();
+        } else {
+            return new ArrayList<User>();
+        }
+    }
+
+    @Override
+    public List<User> getAllUserByPaginationBySort(int page, int size, String sortBy) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<User> pageResult = userRepository.findAll(paging);
+        if (pageResult.hasContent()) {
+            return pageResult.getContent();
+        } else {
+            return new ArrayList<User>();
+        }
     }
 
     private User getUserFromMap(Map<String, String> requestMap) {
