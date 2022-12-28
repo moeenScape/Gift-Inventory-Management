@@ -21,5 +21,4 @@ public interface UserController {
     ResponseEntity<Resource> getFile();
 
 
-
 }
