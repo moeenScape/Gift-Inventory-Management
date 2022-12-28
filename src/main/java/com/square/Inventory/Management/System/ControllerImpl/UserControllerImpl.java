@@ -49,14 +49,16 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<Resource> getFile() {
-        String filename = "user.xlsx";
-        InputStreamResource file = new InputStreamResource(userService.load());
+        if (jwtFilter.isAdmin()) {
+            String filename = "user.xlsx";
+            InputStreamResource file = new InputStreamResource(userService.load());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                .body(file);
-
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                    .body(file);
+        }
+        return null;
     }
 
     @Override

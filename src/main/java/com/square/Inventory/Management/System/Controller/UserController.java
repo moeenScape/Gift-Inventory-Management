@@ -1,7 +1,6 @@
 package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.Entity.User;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ public interface UserController {
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping(path = "/download/userAsExcel/")
-    ResponseEntity<Resource> getFile();
+    Object getFile();
 
     @PutMapping(path = "/update/{userId}")
     ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("userId") Integer userId);
