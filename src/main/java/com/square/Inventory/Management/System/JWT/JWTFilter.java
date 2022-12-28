@@ -32,7 +32,7 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (httpServletRequest.getServletPath().matches("/inventory")) {
+        if (httpServletRequest.getServletPath().matches("/inventory/user/signup|/inventory/user/login")) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             String authorizationHeader = httpServletRequest.getHeader("Authorization");
