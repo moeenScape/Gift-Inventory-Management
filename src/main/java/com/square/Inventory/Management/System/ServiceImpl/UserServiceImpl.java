@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Entity.User;
+import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
@@ -16,6 +17,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -72,6 +76,14 @@ public class UserServiceImpl implements UserService {
             log.error("{}", ex);
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ByteArrayInputStream load() {
+        List<User> users = userRepository.findAll();
+
+        ByteArrayInputStream in = ExcelHelper.UserToExcel(users);
+        return in;
     }
 
     private User getUserFromMap(Map<String, String> requestMap) {
