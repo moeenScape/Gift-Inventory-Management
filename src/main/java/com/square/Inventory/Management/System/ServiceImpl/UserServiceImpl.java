@@ -22,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.*;
 
 @Slf4j
@@ -99,11 +98,9 @@ public class UserServiceImpl implements UserService {
             user2.setFirstName(user.getFirstName());
             user2.setLastName(user.getLastName());
             user2.setContactNumber(user.getContactNumber());
-
             user2.setWorkPlace(user.getWorkPlace());
             user2.setRole(user.getRole());
             user2.setStatus(user.getStatus());
-
             userRepository.save(user2);
 
         }

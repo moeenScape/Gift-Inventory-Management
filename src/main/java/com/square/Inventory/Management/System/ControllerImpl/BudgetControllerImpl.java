@@ -49,19 +49,21 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<SSU>> getBudgetBySSU(String ssuName) {
 
-        if (jwtFilter.isAdmin() || jwtFilter.isSSU()) {
-            return budgetService.getBudgetForSSUByName(ssuName);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+//        if (jwtFilter.isAdmin() || jwtFilter.isSSU()) {
+//            return budgetService.getBudgetForSSUByName(ssuName);
+//        }
+//        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return budgetService.getBudgetForSSUByName(ssuName);
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String id) {
+    public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String depotID) {
 
-        if (jwtFilter.isAdmin() || jwtFilter.isDepot() || jwtFilter.getRole() == id) {
-            return budgetService.getBudgetForDepotByID(id);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+//        if (jwtFilter.isAdmin() || jwtFilter.isDepot() || jwtFilter.getRole() == id) {
+//            return budgetService.getBudgetForDepotByID(id);
+//        }
+//        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return budgetService.getBudgetForDepotByID(depotID);
     }
 
     @Override
