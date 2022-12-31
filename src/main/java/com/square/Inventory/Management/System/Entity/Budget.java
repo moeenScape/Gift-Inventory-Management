@@ -49,9 +49,9 @@ public class Budget {
     @Column
     private String ssu_id;
     @Column(columnDefinition = "boolean default false")
-    private boolean isDepotReceived;
+    private boolean isDepotReceived=false;
     @Column(columnDefinition = "boolean default true")
-    private boolean isInSSU;
+    private boolean isInSSU=true;
 
     public long getBudgetID() {
         return budgetID;
