@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.Service;
 
 
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
@@ -29,4 +30,6 @@ public interface BudgetService {
     ResponseEntity<List<BudgetSummary>> getSummary();
 
     void saveFromUpload(MultipartFile file);
+
+    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
 }
