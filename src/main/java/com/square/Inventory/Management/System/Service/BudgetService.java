@@ -7,6 +7,7 @@ import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,4 +27,5 @@ public interface BudgetService {
 
     ResponseEntity<List<BudgetSummary>> getSummary();
 
+    void saveFromUpload(MultipartFile file);
 }

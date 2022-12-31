@@ -6,12 +6,15 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
+import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
+import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +78,20 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<BudgetSummary>> getSummary() {
         return budgetService.getSummary();
+    }
+
+    @Override
+    public ResponseEntity<?> uploadFile(MultipartFile file) {
+        if (ExcelHelper.hasExcelFormat(file)) {
+            try {
+                budgetService.saveFromUpload(file);
+                return ResponseEntity.status(HttpStatus.OK).body("Uploaded the file successfully: " + file.getOriginalFilename());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not upload the file: " + file.getOriginalFilename() + "!");
+            }
+        }
+
+        return new ResponseEntity<>("Please upload an excel file", HttpStatus.BAD_REQUEST);
     }
 
 
