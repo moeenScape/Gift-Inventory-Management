@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.ControllerImpl;
 
 import com.square.Inventory.Management.System.Controller.BudgetController;
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
@@ -99,6 +100,11 @@ public class BudgetControllerImpl implements BudgetController {
         }
 
         return new ResponseEntity<>("Please upload an excel file", HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
+        return budgetService.getCategoryWiseSummary();
     }
 
 

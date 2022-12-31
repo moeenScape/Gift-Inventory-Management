@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
@@ -36,6 +37,9 @@ public interface BudgetController {
 
     @PostMapping("/upload")
     ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file);
+
+    @GetMapping(path = "/categoryWiseSummary")
+    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
 
 
 }

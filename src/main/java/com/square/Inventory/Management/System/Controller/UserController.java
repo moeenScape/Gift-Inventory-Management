@@ -35,6 +35,8 @@ public interface UserController {
     ResponseEntity<?> getAllByPaginationBySorting(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "3") int size,
                                                   @RequestParam(defaultValue = "id") String sortBy);
+
+
 }
 
 
