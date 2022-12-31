@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
@@ -32,7 +33,6 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public List<BudgetDTO> getAllBudgetFromExcel() {
         List<BudgetDTO> budgets = Poiji.fromExcel(new File("sample_budget.xlsx"), BudgetDTO.class);
-//        int length = budgets.size();
         return new ArrayList<BudgetDTO>(budgets);
     }
 
@@ -112,5 +112,17 @@ public class BudgetServiceImpl implements BudgetService {
         } catch (IOException e) {
             throw new RuntimeException("fail to store excel data: " + e.getMessage());
         }
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
+        List<CategoryWiseSummary> categoryWiseSummaryList=budgetRepository.getCategoryWiseSummary();
+        return new ResponseEntity<>(categoryWiseSummaryList,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot() {
+        List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseDepotSummary();
+        return new ResponseEntity<>(categoryWiseSummaryList,HttpStatus.OK);
     }
 }

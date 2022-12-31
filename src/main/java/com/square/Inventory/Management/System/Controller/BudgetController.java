@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
@@ -14,10 +15,10 @@ import java.util.List;
 @RequestMapping("/budget")
 public interface BudgetController {
     @GetMapping("/showAll")
-    public ResponseEntity<List<BudgetDTO>> getAllEmployeesFromExcel();
+    ResponseEntity<List<BudgetDTO>> getAllEmployeesFromExcel();
 
     @PostMapping("/addBudgetFromExcel")
-    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(@RequestParam("file") MultipartFile file);
+    ResponseEntity<List<Budget>> addBudgetDTOFromExcel(@RequestParam("file") MultipartFile file);
 
     @GetMapping(path = "/budget/for/ssu/{ssuName}")
     ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);
@@ -37,5 +38,10 @@ public interface BudgetController {
     @PostMapping("/upload")
     ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file);
 
+    @GetMapping(path = "/categoryWiseSummary")
+    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
+
+    @GetMapping(path = "/categoryWiseSummaryDepot")
+    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 
 }

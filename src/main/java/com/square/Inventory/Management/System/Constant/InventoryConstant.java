@@ -9,4 +9,6 @@ public class InventoryConstant {
     public static final String UNAUTHORIZED_ACCESS = "Unauthorized access";
 
     public static final String UPLOAD_FAIL = "Upload Fail";
+
+    public static final String STORE_LOCATION="C:\\Users\\Admin\\Documents";
 }
