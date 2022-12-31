@@ -24,6 +24,7 @@ public class BudgetControllerImpl implements BudgetController {
 
     @Autowired
     JWTFilter jwtFilter;
+
     private final BudgetService budgetService;
 
     public BudgetControllerImpl(BudgetService budgetService) {
@@ -57,7 +58,7 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String id) {
 
-        if (jwtFilter.isAdmin() | jwtFilter.isDepot()) {
+        if (jwtFilter.isAdmin() || jwtFilter.isDepot()||jwtFilter.getRole()==id) {
             return budgetService.getBudgetForDepotByID(id);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
