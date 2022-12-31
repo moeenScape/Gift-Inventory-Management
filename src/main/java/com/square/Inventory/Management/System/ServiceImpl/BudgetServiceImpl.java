@@ -9,10 +9,9 @@ import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class BudgetServiceImpl implements BudgetService {
     private final BudgetRepository budgetRepository;
@@ -32,13 +32,15 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public List<BudgetDTO> getAllBudgetFromExcel() {
         List<BudgetDTO> budgets = Poiji.fromExcel(new File("sample_budget.xlsx"), BudgetDTO.class);
-//        int length = budgets.size();
         return new ArrayList<BudgetDTO>(budgets);
     }
 
     @Override
-    public List<Budget> addBudgetFromExcel() {
-        List<BudgetDTO> budgetDTO = Poiji.fromExcel(new File("sample_budget.xlsx"), BudgetDTO.class);
+    public List<Budget> addBudgetFromExcel(MultipartFile file) {
+        String filename = file.getOriginalFilename();
+//        log.info(filename);
+        assert filename != null;
+        List<BudgetDTO> budgetDTO = Poiji.fromExcel(new File(filename), BudgetDTO.class);
         List<Budget> allBudget = new ArrayList<>();
         int len = budgetDTO.size();
         for (int i = 0; i < len; i++) {

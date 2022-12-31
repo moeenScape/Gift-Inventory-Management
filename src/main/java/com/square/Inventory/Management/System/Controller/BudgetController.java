@@ -17,7 +17,7 @@ public interface BudgetController {
     public ResponseEntity<List<BudgetDTO>> getAllEmployeesFromExcel();
 
     @PostMapping("/addBudgetFromExcel")
-    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel();
+    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(@RequestParam("file") MultipartFile file);
 
     @GetMapping(path = "/budget/for/ssu/{ssuName}")
     ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);
