@@ -68,6 +68,12 @@ public class JWTFilter extends OncePerRequestFilter {
         return "depot".equalsIgnoreCase((String) claims.get("role"));
     }
 
+    public String getRole()
+    {
+        return customUserServiceDetails.getRole();
+
+    }
+
     public boolean isSSU() {
         return "SSU".equalsIgnoreCase((String) claims.get("role"));
     }

@@ -22,8 +22,8 @@ public interface BudgetController {
     @GetMapping(path = "/budget/for/ssu/{ssuName}")
     ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);
 
-    @GetMapping(path = "/budget/for/depot/{id}")
-    ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String id);
+    @GetMapping(path = "/budget/for/depot/{depotID}")
+    ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String depotID);
 
     @GetMapping(path = "/budget/by/{month}")
     ResponseEntity<Budget> viewAllBudgetByMonth(@PathVariable("month") String month);
@@ -34,7 +34,7 @@ public interface BudgetController {
     @GetMapping(path = "/summary")
     ResponseEntity<List<BudgetSummary>> getSummary();
 
-    @PostMapping("/budget/upload")
+    @PostMapping("/upload")
     ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file);
 
 

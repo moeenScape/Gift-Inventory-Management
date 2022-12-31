@@ -24,6 +24,7 @@ public class BudgetControllerImpl implements BudgetController {
 
     @Autowired
     JWTFilter jwtFilter;
+
     private final BudgetService budgetService;
 
     public BudgetControllerImpl(BudgetService budgetService) {
@@ -48,19 +49,21 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<SSU>> getBudgetBySSU(String ssuName) {
 
-        if (jwtFilter.isAdmin() || jwtFilter.isSSU()) {
-            return budgetService.getBudgetForSSUByName(ssuName);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+//        if (jwtFilter.isAdmin() || jwtFilter.isSSU()) {
+//            return budgetService.getBudgetForSSUByName(ssuName);
+//        }
+//        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return budgetService.getBudgetForSSUByName(ssuName);
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String id) {
+    public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String depotID) {
 
-        if (jwtFilter.isAdmin() | jwtFilter.isDepot()) {
-            return budgetService.getBudgetForDepotByID(id);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+//        if (jwtFilter.isAdmin() || jwtFilter.isDepot() || jwtFilter.getRole() == id) {
+//            return budgetService.getBudgetForDepotByID(id);
+//        }
+//        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return budgetService.getBudgetForDepotByID(depotID);
     }
 
     @Override
@@ -84,8 +87,12 @@ public class BudgetControllerImpl implements BudgetController {
     public ResponseEntity<?> uploadFile(MultipartFile file) {
         if (ExcelHelper.hasExcelFormat(file)) {
             try {
-                budgetService.saveFromUpload(file);
-                return ResponseEntity.status(HttpStatus.OK).body("Uploaded the file successfully: " + file.getOriginalFilename());
+                if (jwtFilter.isAdmin()) {
+                    budgetService.saveFromUpload(file);
+                    return ResponseEntity.status(HttpStatus.OK).body("Uploaded the file successfully: " + file.getOriginalFilename());
+                } else {
+                    return ResponseEntity.status(HttpStatus.OK).body("You Do not have access to upload : " + file.getOriginalFilename());
+                }
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not upload the file: " + file.getOriginalFilename() + "!");
             }

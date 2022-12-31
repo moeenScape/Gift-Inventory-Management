@@ -77,9 +77,9 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String id) {
+    public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID) {
 
-        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(id);
+        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID);
 
         return new ResponseEntity<>(depotList, HttpStatus.OK);
     }

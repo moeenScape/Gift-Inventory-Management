@@ -22,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.*;
 
 @Slf4j
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
-                return InventoryUtils.getResponse("Email Already Exist", HttpStatus.BAD_REQUEST);
+                return InventoryUtils.getResponse("Email or UserID Already Exist", HttpStatus.BAD_REQUEST);
             }
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -99,11 +98,9 @@ public class UserServiceImpl implements UserService {
             user2.setFirstName(user.getFirstName());
             user2.setLastName(user.getLastName());
             user2.setContactNumber(user.getContactNumber());
-
             user2.setWorkPlace(user.getWorkPlace());
             user2.setRole(user.getRole());
             user2.setStatus(user.getStatus());
-
             userRepository.save(user2);
 
         }
