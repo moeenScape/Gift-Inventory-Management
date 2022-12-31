@@ -32,7 +32,6 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public List<BudgetDTO> getAllBudgetFromExcel() {
         List<BudgetDTO> budgets = Poiji.fromExcel(new File("sample_budget.xlsx"), BudgetDTO.class);
-//        int length = budgets.size();
         return new ArrayList<BudgetDTO>(budgets);
     }
 
