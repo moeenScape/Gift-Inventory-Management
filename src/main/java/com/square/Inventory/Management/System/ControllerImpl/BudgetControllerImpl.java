@@ -59,7 +59,7 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String depotID) {
 
-//        if (jwtFilter.isAdmin() || jwtFilter.isDepot() || jwtFilter.getRole() == id) {
+//        if (jwtFilter.isAdmin() || (jwtFilter.isDepot() && jwtFilter.getRole() == id)) {
 //            return budgetService.getBudgetForDepotByID(id);
 //        }
 //        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
