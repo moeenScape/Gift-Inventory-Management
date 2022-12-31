@@ -6,17 +6,21 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
+import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class BudgetServiceImpl implements BudgetService {
     private final BudgetRepository budgetRepository;
@@ -33,8 +37,11 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<Budget> addBudgetFromExcel() {
-        List<BudgetDTO> budgetDTO = Poiji.fromExcel(new File("sample_budget.xlsx"), BudgetDTO.class);
+    public List<Budget> addBudgetFromExcel(MultipartFile file) {
+        String filename = file.getOriginalFilename();
+//        log.info(filename);
+        assert filename != null;
+        List<BudgetDTO> budgetDTO = Poiji.fromExcel(new File(filename), BudgetDTO.class);
         List<Budget> allBudget = new ArrayList<>();
         int len = budgetDTO.size();
         for (int i = 0; i < len; i++) {
@@ -64,17 +71,17 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName) {
 
-        List<SSU> ssuList=budgetRepository.getBudgetForSSUByName(ssuName);
+        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName);
 
         return new ResponseEntity<>(ssuList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String id) {
+    public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID) {
 
-        List<DEPOT> depotList=budgetRepository.getBudgetForDepotByID(id);
+        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID);
 
-        return new ResponseEntity<>(depotList,HttpStatus.OK);
+        return new ResponseEntity<>(depotList, HttpStatus.OK);
     }
 
     @Override
@@ -85,13 +92,25 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<List<Budget>> getAllBudget() {
-        List<Budget> budgetList=budgetRepository.findAll();
-        return new ResponseEntity<>(budgetList,HttpStatus.OK);
+        List<Budget> budgetList = budgetRepository.findAll();
+        return new ResponseEntity<>(budgetList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<BudgetSummary>> getSummary() {
-        List<BudgetSummary> budgetSummaryList=budgetRepository.getSummary();
-        return new ResponseEntity<>(budgetSummaryList,HttpStatus.OK);
+        List<BudgetSummary> budgetSummaryList = budgetRepository.getSummary();
+        return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
+    }
+
+    @Override
+    public void saveFromUpload(MultipartFile file) {
+        try {
+            List<Budget> budgetList = ExcelHelper.excelToBudget(file.getInputStream());
+            budgetList.removeIf(budget -> (budget.getBudgetID() == -1
+                    || budget.getDepotID() == null));
+            budgetRepository.saveAll(budgetList);
+        } catch (IOException e) {
+            throw new RuntimeException("fail to store excel data: " + e.getMessage());
+        }
     }
 }

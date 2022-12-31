@@ -35,4 +35,10 @@ public class CustomUserServiceDetails implements UserDetailsService {
     public com.square.Inventory.Management.System.Entity.User getUserDetails() {
         return userDetails;
     }
+
+    public String getRole()
+    {
+        String role =getUserDetails().getRole();
+        return role;
+    }
 }

@@ -1,6 +1,5 @@
 package com.square.Inventory.Management.System.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,16 +34,6 @@ public class SSU {
     private String month;
 
     private int year;
-
-//    long, java.lang.String, java.lang.String, int, int, java.lang.String,
-//    java.lang.String, java.lang.String, int, java.lang.String,
-//    java.lang.String, java.lang.String, int
-//    s,s,i,i,s,s,s,i,s,s,s,i
-//    b.budgetID,b.sapCode," +
-//            "b.productName,b.productionUnit,b.packageSize,b.category,
-//            b.fieldColleagueID,b.fieldColleagueName," +
-//            "b.quantity,b.DepotID,b.depotName,b.month,b.year
-
 
     public SSU(long budgetId, String sapCode, String productName, int productionUnit,
                int packageSize, String category, String fieldColleagueID,
