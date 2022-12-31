@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/budget")
 public interface BudgetController {
     @GetMapping("/showAll")
-    public ResponseEntity<List<BudgetDTO>> getAllEmployeesFromExcel();
+    ResponseEntity<List<BudgetDTO>> getAllEmployeesFromExcel();
 
     @PostMapping("/addBudgetFromExcel")
-    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(@RequestParam("file") MultipartFile file);
+    ResponseEntity<List<Budget>> addBudgetDTOFromExcel(@RequestParam("file") MultipartFile file);
 
     @GetMapping(path = "/budget/for/ssu/{ssuName}")
     ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);
@@ -41,5 +41,7 @@ public interface BudgetController {
     @GetMapping(path = "/categoryWiseSummary")
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
 
+    @GetMapping(path = "/categoryWiseSummaryDepot")
+    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 
 }

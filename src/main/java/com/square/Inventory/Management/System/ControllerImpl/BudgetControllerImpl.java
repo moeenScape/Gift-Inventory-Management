@@ -107,5 +107,10 @@ public class BudgetControllerImpl implements BudgetController {
         return budgetService.getCategoryWiseSummary();
     }
 
+    @Override
+    public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot() {
+        return budgetService.getCategoryWiseSummaryDepot();
+    }
+
 
 }

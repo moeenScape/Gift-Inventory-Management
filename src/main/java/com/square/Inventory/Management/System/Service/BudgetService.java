@@ -32,4 +32,6 @@ public interface BudgetService {
     void saveFromUpload(MultipartFile file);
 
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
+
+    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 }
