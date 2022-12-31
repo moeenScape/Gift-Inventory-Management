@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
-                return InventoryUtils.getResponse("Email Already Exist", HttpStatus.BAD_REQUEST);
+                return InventoryUtils.getResponse("Email or UserID Already Exist", HttpStatus.BAD_REQUEST);
             }
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);

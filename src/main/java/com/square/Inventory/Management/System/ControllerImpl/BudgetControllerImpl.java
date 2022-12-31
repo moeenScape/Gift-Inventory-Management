@@ -58,7 +58,7 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String id) {
 
-        if (jwtFilter.isAdmin() || jwtFilter.isDepot()||jwtFilter.getRole()==id) {
+        if (jwtFilter.isAdmin() || jwtFilter.isDepot() || jwtFilter.getRole() == id) {
             return budgetService.getBudgetForDepotByID(id);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
@@ -85,8 +85,12 @@ public class BudgetControllerImpl implements BudgetController {
     public ResponseEntity<?> uploadFile(MultipartFile file) {
         if (ExcelHelper.hasExcelFormat(file)) {
             try {
-                budgetService.saveFromUpload(file);
-                return ResponseEntity.status(HttpStatus.OK).body("Uploaded the file successfully: " + file.getOriginalFilename());
+                if (jwtFilter.isAdmin()) {
+                    budgetService.saveFromUpload(file);
+                    return ResponseEntity.status(HttpStatus.OK).body("Uploaded the file successfully: " + file.getOriginalFilename());
+                } else {
+                    return ResponseEntity.status(HttpStatus.OK).body("You Do not have access to upload : " + file.getOriginalFilename());
+                }
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not upload the file: " + file.getOriginalFilename() + "!");
             }
