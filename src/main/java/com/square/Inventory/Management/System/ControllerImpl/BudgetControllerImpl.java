@@ -41,8 +41,8 @@ public class BudgetControllerImpl implements BudgetController {
      * @return a list which contains all the rows of the excel
      */
     @Override
-    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel() {
-        return new ResponseEntity<>(budgetService.addBudgetFromExcel(), HttpStatus.CREATED);
+    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file) {
+        return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
     }
 
     @Override
