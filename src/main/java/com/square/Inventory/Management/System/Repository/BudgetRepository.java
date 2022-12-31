@@ -29,7 +29,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
             "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid",nativeQuery = true)
     List<BudgetSummary> getSummary();
 
-    @Query(value = "select category as Category,sum(quantity) as sumForGift from budget group by category;",nativeQuery = true)
+    @Query(value = "select category as Category,sum(quantity) as SUM from budget group by category;",nativeQuery = true)
     List<CategoryWiseSummary> getCategoryWiseSummary();
 
     @Query(value = "select depot_name as Category, sum(quantity) as Sum from budget group by depot_name", nativeQuery = true)
