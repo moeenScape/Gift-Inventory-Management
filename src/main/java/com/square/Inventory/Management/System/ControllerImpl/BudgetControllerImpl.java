@@ -7,8 +7,6 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
-import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
-import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +44,17 @@ public class BudgetControllerImpl implements BudgetController {
      */
     @Override
     public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file) {
-        return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
+        try{
+            if(jwtFilter.isAdmin())
+            {
+                return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
+            }else {
+                return new ResponseEntity<>(new ArrayList<>(),HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -70,9 +78,9 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<Budget> viewAllBudgetByMonth(String month) {
+    public ResponseEntity<List<Budget>> viewAllBudgetByMonth() {
 
-        return budgetService.viewAllBudgetByMonth(month);
+        return budgetService.viewAllBudgetByMonth();
     }
 
     @Override

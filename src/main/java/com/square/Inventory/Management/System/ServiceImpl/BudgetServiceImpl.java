@@ -7,7 +7,6 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
-import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,14 +69,21 @@ public class BudgetServiceImpl implements BudgetService {
 
     private String getCurrentMonth() {
         LocalDate currentDate = LocalDate.now();
-        String currentMonth = currentDate.getMonth().name();
+        String currentMonth = currentDate.getMonth().name().toLowerCase();
         return currentMonth;
+    }
+
+    private int getCurrentYear()
+    {
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+        return currentYear;
     }
 
     @Override
     public ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName) {
 
-        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName);
+        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName,getCurrentMonth(),getCurrentYear());
 
         return new ResponseEntity<>(ssuList, HttpStatus.OK);
     }
@@ -86,16 +91,15 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID) {
 
-        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID);
+        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID,getCurrentMonth(),getCurrentYear());
 
         return new ResponseEntity<>(depotList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Budget> viewAllBudgetByMonth(String month) {
-        month = getCurrentMonth();
-
-        return null;
+    public ResponseEntity<List<Budget>> viewAllBudgetByMonth() {
+                List<Budget> budgetList=budgetRepository.getBudgetByMonth(getCurrentMonth());
+        return new ResponseEntity<>(budgetList,HttpStatus.OK);
     }
 
     @Override
