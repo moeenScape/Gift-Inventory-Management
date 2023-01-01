@@ -6,7 +6,7 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
-import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
+import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
@@ -33,8 +33,8 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<BudgetDTO>> getAllEmployeesFromExcel() {
-        return new ResponseEntity<List<BudgetDTO>>(budgetService.getAllBudgetFromExcel(), HttpStatus.OK);
+    public ResponseEntity<List<BudgetExcelDTO>> getAllEmployeesFromExcel() {
+        return new ResponseEntity<List<BudgetExcelDTO>>(budgetService.getAllBudgetFromExcel(), HttpStatus.OK);
     }
 
     /**
@@ -43,7 +43,7 @@ public class BudgetControllerImpl implements BudgetController {
      * @return a list which contains all the rows of the excel
      */
     @Override
-    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file) {
+    public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) {
         return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
     }
 
