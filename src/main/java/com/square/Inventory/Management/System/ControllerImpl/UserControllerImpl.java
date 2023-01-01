@@ -30,12 +30,12 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
         try {
-//            if(jwtFilter.isAdmin())
-//            {
-            return userService.signup(requestMap);
-//            }else {
-//               return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-//            }
+            if(jwtFilter.isAdmin())
+            {
+                return userService.signup(requestMap);
+            }else {
+               return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -10,17 +10,17 @@ public class Budget {
     @Column(name = "id")
     private long id;
 
-    private long budgetID;
+    private String budgetID;
     @Column
     private String sapCode;
 
     @Column
     private String productName;
     @Column
-    private int productionUnit;
+    private String productionUnit;
 
     @Column
-    private int packageSize;
+    private String packageSize;
 
     @Enumerated(EnumType.STRING)
     @Column
@@ -49,15 +49,15 @@ public class Budget {
     @Column
     private String ssu_id;
     @Column(columnDefinition = "boolean default false")
-    private boolean isDepotReceived=false;
+    private boolean isDepotReceived = false;
     @Column(columnDefinition = "boolean default true")
-    private boolean isInSSU=true;
+    private boolean isInSSU = true;
 
-    public long getBudgetID() {
+    public String getBudgetID() {
         return budgetID;
     }
 
-    public void setBudgetID(long budgetID) {
+    public void setBudgetID(String budgetID) {
         this.budgetID = budgetID;
     }
 
@@ -77,19 +77,19 @@ public class Budget {
         this.productName = productName;
     }
 
-    public int getProductionUnit() {
+    public String getProductionUnit() {
         return productionUnit;
     }
 
-    public void setProductionUnit(int productionUnit) {
+    public void setProductionUnit(String productionUnit) {
         this.productionUnit = productionUnit;
     }
 
-    public int getPackageSize() {
+    public String getPackageSize() {
         return packageSize;
     }
 
-    public void setPackageSize(int packageSize) {
+    public void setPackageSize(String packageSize) {
         this.packageSize = packageSize;
     }
 

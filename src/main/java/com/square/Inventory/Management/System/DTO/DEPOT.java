@@ -9,18 +9,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DEPOT {
 
-    private long budgetId;
+    private String budgetId;
 
     private String sapCode;
 
     private String productName;
 
-    private int productionUnit;
+    private String productionUnit;
 
-    private int packageSize;
+    private String packageSize;
 
     private String category;
-
 
     private String fieldColleagueID;
 

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,12 @@ public class BudgetServiceImpl implements BudgetService {
         return allBudget;
     }
 
+    private String getCurrentMonth() {
+        LocalDate currentDate = LocalDate.now();
+        String currentMonth = currentDate.getMonth().name();
+        return currentMonth;
+    }
+
     @Override
     public ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName) {
 
@@ -86,6 +93,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<Budget> viewAllBudgetByMonth(String month) {
+        month = getCurrentMonth();
 
         return null;
     }
@@ -103,26 +111,14 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public void saveFromUpload(MultipartFile file) {
-        try {
-            List<Budget> budgetList = ExcelHelper.excelToBudget(file.getInputStream());
-            budgetList.removeIf(budget -> (budget.getBudgetID() == -1
-                    || budget.getDepotID() == null));
-            budgetRepository.saveAll(budgetList);
-        } catch (IOException e) {
-            throw new RuntimeException("fail to store excel data: " + e.getMessage());
-        }
-    }
-
-    @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
-        List<CategoryWiseSummary> categoryWiseSummaryList=budgetRepository.getCategoryWiseSummary();
-        return new ResponseEntity<>(categoryWiseSummaryList,HttpStatus.OK);
+        List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
+        return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot() {
         List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseDepotSummary();
-        return new ResponseEntity<>(categoryWiseSummaryList,HttpStatus.OK);
+        return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
     }
 }
