@@ -11,18 +11,17 @@ public class BudgetDTO {
     @ExcelRow
     private int rowIndex;
     @ExcelCell(0)
-    private long budgetID;
+    private String budgetID;
     @ExcelCell(1)
     private String sapCode;
 
     @ExcelCell(2)
     private String productName;
     @ExcelCell(3)
-    private int productionUnit;
+    private String productionUnit;
 
-    @Enumerated(EnumType.STRING)
     @ExcelCell(4)
-    private int packageSize;
+    private String packageSize;
 
     @ExcelCell(5)
     private SBU sbu;
@@ -54,7 +53,7 @@ public class BudgetDTO {
     @ExcelCell(14)
     private String ssu_id;
 
-    public long getBudgetID() {
+    public String getBudgetID() {
         return budgetID;
     }
 
@@ -66,11 +65,11 @@ public class BudgetDTO {
         return productName;
     }
 
-    public int getProductionUnit() {
+    public String getProductionUnit() {
         return productionUnit;
     }
 
-    public int getPackageSize() {
+    public String getPackageSize() {
         return packageSize;
     }
 
