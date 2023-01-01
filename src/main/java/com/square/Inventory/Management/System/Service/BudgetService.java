@@ -6,7 +6,7 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
-import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
+import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface BudgetService {
 
-    List<BudgetDTO> getAllBudgetFromExcel();
+    List<BudgetExcelDTO> getAllBudgetFromExcel();
 
     List<Budget> addBudgetFromExcel(MultipartFile file);
 
