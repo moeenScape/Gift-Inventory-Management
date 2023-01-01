@@ -8,6 +8,7 @@ import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
+import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ import java.util.*;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private BudgetRepository budgetRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -55,9 +58,9 @@ public class UserServiceImpl implements UserService {
             Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
             if (Objects.isNull(user) && optional.isEmpty()) {
                 userRepository.save(getUserFromMap(requestMap));
-                String subject = "Account Approved By" + " " + jwtFilter.getCurrentUser();
+                String subject = "Account Approved By" + " " + getCurrentUserName();
                 String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
-                        + "Please Change Your Password As Soon As possible :localhost:8080/inventory/user/changePassword"
+                        + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
                         + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send by IMS by Square";
                 emailUtils.sendMail(requestMap.get("email"), subject, text);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
@@ -68,6 +71,12 @@ public class UserServiceImpl implements UserService {
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
+    }
+
+    private String getCurrentUserName() {
+        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
+        String name=user.getFirstName()+" "+user.getLastName();
+        return name;
     }
 
     @Override

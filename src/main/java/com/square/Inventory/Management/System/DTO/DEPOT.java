@@ -15,12 +15,11 @@ public class DEPOT {
 
     private String productName;
 
-    private String  productionUnit;
+    private String productionUnit;
 
-    private String  packageSize;
+    private String packageSize;
 
     private String category;
-
 
     private String fieldColleagueID;
 

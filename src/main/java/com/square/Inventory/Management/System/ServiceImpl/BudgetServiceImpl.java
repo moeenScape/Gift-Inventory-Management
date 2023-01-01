@@ -93,7 +93,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<Budget> viewAllBudgetByMonth(String month) {
-        month=getCurrentMonth();
+        month = getCurrentMonth();
 
         return null;
     }
@@ -108,18 +108,6 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseEntity<List<BudgetSummary>> getSummary() {
         List<BudgetSummary> budgetSummaryList = budgetRepository.getSummary();
         return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
-    }
-
-    @Override
-    public void saveFromUpload(MultipartFile file) {
-        try {
-            List<Budget> budgetList = ExcelHelper.excelToBudget(file.getInputStream());
-            budgetList.removeIf(budget -> (budget.getBudgetID() == null
-                    || budget.getDepotID() == null));
-            budgetRepository.saveAll(budgetList);
-        } catch (IOException e) {
-            throw new RuntimeException("fail to store excel data: " + e.getMessage());
-        }
     }
 
     @Override
