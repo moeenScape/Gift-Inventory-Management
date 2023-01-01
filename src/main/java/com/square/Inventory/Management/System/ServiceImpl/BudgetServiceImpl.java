@@ -111,18 +111,6 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public void saveFromUpload(MultipartFile file) {
-        try {
-            List<Budget> budgetList = ExcelHelper.excelToBudget(file.getInputStream());
-            budgetList.removeIf(budget -> (budget.getBudgetID() == null
-                    || budget.getDepotID() == null));
-            budgetRepository.saveAll(budgetList);
-        } catch (IOException e) {
-            throw new RuntimeException("fail to store excel data: " + e.getMessage());
-        }
-    }
-
-    @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
         List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
         return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);

@@ -35,9 +35,6 @@ public interface BudgetController {
     @GetMapping(path = "/summary")
     ResponseEntity<List<BudgetSummary>> getSummary();
 
-    @PostMapping("/upload")
-    ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file);
-
     @GetMapping(path = "/categoryWiseSummary")
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
 

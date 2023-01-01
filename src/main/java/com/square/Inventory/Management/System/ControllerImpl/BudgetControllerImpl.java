@@ -11,6 +11,7 @@ import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Service.BudgetService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class BudgetControllerImpl implements BudgetController {
 
     @Autowired
@@ -82,24 +84,6 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<BudgetSummary>> getSummary() {
         return budgetService.getSummary();
-    }
-
-    @Override
-    public ResponseEntity<?> uploadFile(MultipartFile file) {
-        if (ExcelHelper.hasExcelFormat(file)) {
-            try {
-                if (jwtFilter.isAdmin()) {
-                    budgetService.saveFromUpload(file);
-                    return ResponseEntity.status(HttpStatus.OK).body("Uploaded the file successfully: " + file.getOriginalFilename());
-                } else {
-                    return ResponseEntity.status(HttpStatus.OK).body("You Do not have access to upload : " + file.getOriginalFilename());
-                }
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not upload the file: " + file.getOriginalFilename() + "!");
-            }
-        }
-
-        return new ResponseEntity<>("Please upload an excel file", HttpStatus.BAD_REQUEST);
     }
 
     @Override
