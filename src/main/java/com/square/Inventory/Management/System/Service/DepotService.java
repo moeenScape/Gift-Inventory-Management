@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Service;
 
 import com.square.Inventory.Management.System.Entity.Depot;
+import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,6 +65,10 @@ public class DepotService {
 
         // to show all the values in list format
         return depots;
+    }
+
+    public List<DepotProjectionInterface> showAllDepotName(){
+        return depotRepository.getAllDepotName();
     }
 
 }

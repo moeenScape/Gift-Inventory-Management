@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.Entity.Depot;
+import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,9 @@ public interface DepotController {
 
     @GetMapping("/viewAllDepots")
     ResponseEntity<List<Depot>> viewAllDepots();
+
+    @GetMapping("/viewAllDepotsName")
+    ResponseEntity<List<DepotProjectionInterface>> showAllDepotName();
 
     @GetMapping("/viewAllDepotsPaginated")
     ResponseEntity<?> viewAllDepotsPaginated(
