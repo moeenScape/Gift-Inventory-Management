@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.ControllerImpl;
 
 import com.square.Inventory.Management.System.Controller.DepotController;
 import com.square.Inventory.Management.System.Entity.Depot;
+import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
 import com.square.Inventory.Management.System.Service.DepotService;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,11 @@ public class DepotControllerImpl implements DepotController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue="10") int size) {
         return new ResponseEntity<>(depotService.viewDepotsPaginated(page,size),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<DepotProjectionInterface>> showAllDepotName(){
+        return new ResponseEntity<>(depotService.showAllDepotName(), HttpStatus.OK);
     }
 
     @Override
