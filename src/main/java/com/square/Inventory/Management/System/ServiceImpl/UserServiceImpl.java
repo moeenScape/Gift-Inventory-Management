@@ -3,8 +3,10 @@ package com.square.Inventory.Management.System.ServiceImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
+import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
+import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
@@ -40,6 +42,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     JWTUtils jwtUtils;
 
+    @Autowired
+    JWTFilter jwtFilter;
+
+    @Autowired
+    EmailUtils emailUtils;
+
     @Override
     public ResponseEntity<String> signup(Map<String, String> requestMap) {
         if (validateSignUpMap(requestMap)) {
@@ -47,6 +55,10 @@ public class UserServiceImpl implements UserService {
             Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
             if (Objects.isNull(user) && optional.isEmpty()) {
                 userRepository.save(getUserFromMap(requestMap));
+                String subject="Account Approved By"+" "+jwtFilter.getCurrentUser();
+                String text="Email: "+requestMap.get("email")+"\n"+"Password "+requestMap.get("password")+"\n"
+                        +"Please Change Your Password"+"\n"+"Thank You";
+                emailUtils.sendMail(requestMap.get("email"),subject,text);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
