@@ -55,11 +55,11 @@ public class UserServiceImpl implements UserService {
             Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
             if (Objects.isNull(user) && optional.isEmpty()) {
                 userRepository.save(getUserFromMap(requestMap));
-                String subject="Account Approved By"+" "+jwtFilter.getCurrentUser();
-                String text="Email: "+requestMap.get("email")+"\n"+"Password "+requestMap.get("password")+"\n"
-                        +"Please Change Your Password As Soon As possible :localhost:8080/inventory/user/changePassword"
-                        +"\n"+"Thank You!!!"+"\n"+"\n"+"This mail Send by IMS by Square";
-                emailUtils.sendMail(requestMap.get("email"),subject,text);
+                String subject = "Account Approved By" + " " + jwtFilter.getCurrentUser();
+                String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
+                        + "Please Change Your Password As Soon As possible :localhost:8080/inventory/user/changePassword"
+                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send by IMS by Square";
+                emailUtils.sendMail(requestMap.get("email"), subject, text);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
