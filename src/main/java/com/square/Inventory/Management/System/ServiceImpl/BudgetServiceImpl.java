@@ -114,7 +114,7 @@ public class BudgetServiceImpl implements BudgetService {
     public void saveFromUpload(MultipartFile file) {
         try {
             List<Budget> budgetList = ExcelHelper.excelToBudget(file.getInputStream());
-            budgetList.removeIf(budget -> (budget.getBudgetID() == -1
+            budgetList.removeIf(budget -> (budget.getBudgetID() == null
                     || budget.getDepotID() == null));
             budgetRepository.saveAll(budgetList);
         } catch (IOException e) {

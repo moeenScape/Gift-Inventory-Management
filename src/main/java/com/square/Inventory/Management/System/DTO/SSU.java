@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 
 public class SSU {
 
-    private long budgetId;
+    private String  budgetId;
 
     private String sapCode;
 
     private String productName;
 
-    private int productionUnit;
+    private String  productionUnit;
 
-    private int packageSize;
+    private String  packageSize;
 
     private String category;
 
@@ -35,8 +35,8 @@ public class SSU {
 
     private int year;
 
-    public SSU(long budgetId, String sapCode, String productName, int productionUnit,
-               int packageSize, String category, String fieldColleagueID,
+    public SSU(String  budgetId, String sapCode, String productName, String  productionUnit,
+               String  packageSize, String category, String fieldColleagueID,
                String fieldColleagues, int quantity, String depotID,
                String depotName, String month, int year) {
         this.budgetId = budgetId;

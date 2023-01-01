@@ -62,7 +62,7 @@ public class ExcelHelper {
                     String text = null;
                     switch (cellIdx) {
                         case 0:
-                            budget.setBudgetID(Integer.parseInt(currentCell.getStringCellValue()));
+                            budget.setBudgetID(currentCell.getStringCellValue());
                             break;
 
                         case 1:
@@ -74,10 +74,10 @@ public class ExcelHelper {
                             break;
 
                         case 3:
-                            budget.setProductionUnit(Integer.parseInt(currentCell.getStringCellValue()));
+                            budget.setProductionUnit(currentCell.getStringCellValue());
                             break;
                         case 4:
-                            budget.setPackageSize(Integer.parseInt(currentCell.getStringCellValue()));
+                            budget.setPackageSize(currentCell.getStringCellValue());
                             break;
                         case 5:
                             budget.setSbu(SBU.valueOf(currentCell.getStringCellValue()));
