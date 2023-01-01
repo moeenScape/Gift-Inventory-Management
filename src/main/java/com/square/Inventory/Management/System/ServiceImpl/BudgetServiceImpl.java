@@ -93,7 +93,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<Budget> viewAllBudgetByMonth(String month) {
-        month=getCurrentMonth();
+        month = getCurrentMonth();
 
         return null;
     }
