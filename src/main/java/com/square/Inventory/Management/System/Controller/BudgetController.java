@@ -17,6 +17,8 @@ public interface BudgetController {
     @GetMapping("/showAll")
     ResponseEntity<List<BudgetExcelDTO>> getAllEmployeesFromExcel();
 
+    ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file);
+
     @PostMapping("/addBudgetFromExcel")
     ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file);
 
@@ -40,5 +42,8 @@ public interface BudgetController {
 
     @GetMapping(path = "/categoryWiseSummaryDepot")
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
+
+
+
 
 }
