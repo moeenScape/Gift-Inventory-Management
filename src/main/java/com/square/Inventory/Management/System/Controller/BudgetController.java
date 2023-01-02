@@ -18,19 +18,21 @@ public interface BudgetController {
     @GetMapping("/showAll")
     ResponseEntity<List<BudgetExcelDTO>> getAllEmployeesFromExcel();
 
+    ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file);
+
     @PostMapping("/addBudgetFromExcel")
     ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file);
 
-    @GetMapping(path = "/budget/for/ssu/{ssuName}")
+    @GetMapping(path = "/for/ssu/{ssuName}")
     ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);
 
-    @GetMapping(path = "/budget/for/depot/{depotID}")
+    @GetMapping(path = "/for/depot/{depotID}")
     ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String depotID);
 
-    @GetMapping(path = "/budget/by/month")
+    @GetMapping(path = "/by/month")
     ResponseEntity<List<Budget>> viewAllBudgetByMonth();
 
-    @GetMapping(path = "/budget/all")
+    @GetMapping(path = "/all")
     ResponseEntity<List<Budget>> getAllBudget();
 
     @GetMapping(path = "/summary")
@@ -44,5 +46,15 @@ public interface BudgetController {
 
     @GetMapping("/dashboard/getSSUSummary")
     ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary();
+
+    @GetMapping(path = "/previous/ssu/{ssu_id}/{month}/{year}")
+    ResponseEntity<List<SSU>> getPreviousSSUBudgetByMonthAndYear(@PathVariable String ssu_id,
+                                                                 @PathVariable String month,
+                                                                 @PathVariable int year);
+
+    @GetMapping(path = "/previous/depot/{depotID}/{month}/{year}")
+    ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(@PathVariable String depotID,
+                                                                     @PathVariable String month,
+                                                                     @PathVariable int year);
 
 }
