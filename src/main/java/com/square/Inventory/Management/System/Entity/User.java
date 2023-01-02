@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Entity
 @Data
@@ -27,6 +25,7 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
 
+    @Pattern(regexp = "^(?:\\+?88)?01[15-9]\\d{8}$")
     @Column(name = "contractNumber")
     private String contactNumber;
 
@@ -34,7 +33,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @NotBlank(message = "password is mandatory")
+    @NotBlank(message = "mandatory")
     @Column(name = "password")
     private String password;
 
