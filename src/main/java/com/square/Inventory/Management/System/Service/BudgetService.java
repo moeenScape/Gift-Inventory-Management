@@ -23,7 +23,7 @@ public interface BudgetService {
 
     ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID);
 
-    ResponseEntity<Budget> viewAllBudgetByMonth(String month);
+    ResponseEntity<List<Budget>> viewAllBudgetByMonth();
 
     ResponseEntity<List<Budget>> getAllBudget();
 

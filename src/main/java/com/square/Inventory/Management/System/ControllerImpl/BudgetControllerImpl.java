@@ -6,9 +6,13 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
+<<<<<<< HEAD
+import com.square.Inventory.Management.System.ExcelHepler.BudgetDTO;
+=======
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
+>>>>>>> f2f852e109e8cf739f638c78dabe5235b20fbb1d
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Service.BudgetService;
@@ -46,8 +50,23 @@ public class BudgetControllerImpl implements BudgetController {
      * @return a list which contains all the rows of the excel
      */
     @Override
+<<<<<<< HEAD
+    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file) {
+        try{
+            if(jwtFilter.isAdmin())
+            {
+                return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
+            }else {
+                return new ResponseEntity<>(new ArrayList<>(),HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+=======
     public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) {
         return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
+>>>>>>> f2f852e109e8cf739f638c78dabe5235b20fbb1d
     }
 
     @Override
@@ -71,9 +90,9 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<Budget> viewAllBudgetByMonth(String month) {
+    public ResponseEntity<List<Budget>> viewAllBudgetByMonth() {
 
-        return budgetService.viewAllBudgetByMonth(month);
+        return budgetService.viewAllBudgetByMonth();
     }
 
     @Override
