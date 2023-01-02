@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
             Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
             if (Objects.isNull(user) && optional.isEmpty()) {
                 userRepository.save(getUserFromMap(requestMap));
-                String subject = "Account Approved By" + " " + getCurrentUserName();
+                String subject = "Account Approved By" + " " + "getCurrentUserName()";
                 String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
                         + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
                         + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
@@ -132,9 +132,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> deleteUser(Integer userId) {
         Optional<User> optional = userRepository.findById(userId);
-        if (optional.isPresent()) {
+        User user=optional.get();
+        log.info("Role {}",user.getRole());
+        if (optional.isPresent() &&!"admin".equals(user.getRole())) {
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
+        }else if (user.getRole().matches("admin")) {
+            return new ResponseEntity<>("Can not  Delete Admin ", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
         }
