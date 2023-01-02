@@ -8,6 +8,7 @@ import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
+import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,11 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot() {
         return budgetService.getCategoryWiseSummaryDepot();
+    }
+
+    @Override
+    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary(){
+        return budgetService.getSSUSummary();
     }
 
 
