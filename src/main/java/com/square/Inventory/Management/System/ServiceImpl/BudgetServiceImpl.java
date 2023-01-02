@@ -7,7 +7,7 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
-import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
+import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public List<BudgetExcelDTO> getAllBudgetFromExcel() {
-        List<BudgetExcelDTO> budgets = Poiji.fromExcel(new File("sample_budget.xlsx"), BudgetExcelDTO.class);
+        List<BudgetExcelDTO> budgets = Poiji.fromExcel(new File("sample_budgets.xlsx"), BudgetExcelDTO.class);
         return new ArrayList<BudgetExcelDTO>(budgets);
     }
 
@@ -120,5 +119,10 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot() {
         List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseDepotSummary();
         return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary(){
+        return new ResponseEntity<>(budgetRepository.getSSUSummary(),HttpStatus.OK);
     }
 }

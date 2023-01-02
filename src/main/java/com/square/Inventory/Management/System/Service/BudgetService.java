@@ -7,6 +7,7 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
+import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,4 +32,6 @@ public interface BudgetService {
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
 
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
+
+    ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary();
 }
