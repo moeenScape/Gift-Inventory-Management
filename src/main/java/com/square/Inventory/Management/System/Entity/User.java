@@ -15,36 +15,35 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class User {
     @Id
     @Column(name = "userID")
     private Integer userID;
 
-    @Column(name="firstName")
+    @Column(name = "firstName")
     @NotNull
     private String firstName;
 
-    @Column(name="lastName")
+    @Column(name = "lastName")
     private String lastName;
-    @Column(name="contractNumber")
+    @Column(name = "contractNumber")
     private String contactNumber;
 
     @Email
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
     @NotBlank(message = "password is mandatory")
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
     @NotBlank(message = "role mandatory")
-    @Column(name="role")
+    @Column(name = "role")
     private String role;
 
-    @Column(name="status")
+    @Column(name = "status")
     private String status;
 
-    @Column(name="workPlace")
+    @Column(name = "workPlace")
     private String workPlace;
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 @RequestMapping("/budget")
 public interface BudgetController {
+
     @GetMapping("/showAll")
     ResponseEntity<List<BudgetExcelDTO>> getAllEmployeesFromExcel();
 

@@ -30,11 +30,10 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
         try {
-            if(jwtFilter.isAdmin())
-            {
+            if (jwtFilter.isAdmin()) {
                 return userService.signup(requestMap);
-            }else {
-               return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            } else {
+                return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -92,7 +91,6 @@ public class UserControllerImpl implements UserController {
             return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
         }
     }
 
@@ -103,7 +101,6 @@ public class UserControllerImpl implements UserController {
             return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
         }
 
     }

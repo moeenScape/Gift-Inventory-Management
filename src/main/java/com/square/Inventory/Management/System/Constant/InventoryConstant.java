@@ -1,7 +1,6 @@
 package com.square.Inventory.Management.System.Constant;
 
 public class InventoryConstant {
-
     public static final String SOMETHING_WENT_WRONG = "something went wrong";
 
     public static final String INVALID_DATA = "invalid data";
@@ -10,5 +9,5 @@ public class InventoryConstant {
 
     public static final String UPLOAD_FAIL = "Upload Fail";
 
-    public static final String STORE_LOCATION="C:\\Users\\Admin\\Documents";
+    public static final String STORE_LOCATION = "C:\\Users\\Admin\\Documents";
 }

@@ -65,6 +65,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     }
 
+
     public boolean isAdmin() {
         return "admin".equalsIgnoreCase((String) newClaim.get("role"));
     }

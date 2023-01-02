@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
                 String subject = "Account Approved By" + " " + getCurrentUserName();
                 String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
                         + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
-                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send by IMS by Square";
+                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
                 emailUtils.sendMail(requestMap.get("email"), subject, text);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getCurrentUserName() {
-        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
-        String name=user.getFirstName()+" "+user.getLastName();
+        User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
+        String name = user.getFirstName() + " " + user.getLastName();
         return name;
     }
 
@@ -105,7 +105,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ByteArrayInputStream load() {
         List<User> users = userRepository.findAll();
-
         ByteArrayInputStream in = ExcelHelper.UserToExcel(users);
         return in;
     }
@@ -115,7 +114,6 @@ public class UserServiceImpl implements UserService {
         Optional<User> user1 = userRepository.findById(userId);
         if (user1.isPresent()) {
             User user2 = user1.get();
-            user2.setEmail(user.getEmail());
             user2.setPassword(user.getPassword());
             user2.setFirstName(user.getFirstName());
             user2.setLastName(user.getLastName());
@@ -124,7 +122,6 @@ public class UserServiceImpl implements UserService {
             user2.setRole(user.getRole());
             user2.setStatus(user.getStatus());
             userRepository.save(user2);
-
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -132,7 +129,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> deleteUser(Integer userId) {
         Optional<User> optional = userRepository.findById(userId);
-
         if (optional.isPresent()) {
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
@@ -140,6 +136,7 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @Override
     public List<User> getAllUser() {

@@ -74,8 +74,7 @@ public class BudgetServiceImpl implements BudgetService {
         return currentMonth;
     }
 
-    private int getCurrentYear()
-    {
+    private int getCurrentYear() {
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
         return currentYear;
@@ -84,7 +83,7 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName) {
 
-        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName,getCurrentMonth(),getCurrentYear());
+        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName, getCurrentMonth(), getCurrentYear());
 
         return new ResponseEntity<>(ssuList, HttpStatus.OK);
     }
@@ -92,15 +91,15 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID) {
 
-        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID,getCurrentMonth(),getCurrentYear());
+        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID, getCurrentMonth(), getCurrentYear());
 
         return new ResponseEntity<>(depotList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<Budget>> viewAllBudgetByMonth() {
-                List<Budget> budgetList=budgetRepository.getBudgetByMonth(getCurrentMonth());
-        return new ResponseEntity<>(budgetList,HttpStatus.OK);
+        List<Budget> budgetList = budgetRepository.getBudgetByMonth(getCurrentMonth());
+        return new ResponseEntity<>(budgetList, HttpStatus.OK);
     }
 
     @Override
@@ -128,19 +127,19 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary(){
-        return new ResponseEntity<>(budgetRepository.getSSUSummary(),HttpStatus.OK);
+    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary() {
+        return new ResponseEntity<>(budgetRepository.getSSUSummary(), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year) {
-        List<SSU> getPreviousMonthBudgetByMonthAndYearList=budgetRepository.getBudgetForSSUByName(ssu_id,month,year);
-        return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList,HttpStatus.OK);
+        List<SSU> getPreviousMonthBudgetByMonthAndYearList = budgetRepository.getBudgetForSSUByName(ssu_id, month, year);
+        return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
-        List<DEPOT> getPreviousDepotBudgetByMonthAndYearList=budgetRepository.getBudgetForDepotByID(depotID,month,year);
-        return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList,HttpStatus.OK);
+        List<DEPOT> getPreviousDepotBudgetByMonthAndYearList = budgetRepository.getBudgetForDepotByID(depotID, month, year);
+        return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList, HttpStatus.OK);
     }
 }
