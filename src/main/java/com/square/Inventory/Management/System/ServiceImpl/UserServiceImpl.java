@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -51,8 +52,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailUtils emailUtils;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
-    public ResponseEntity<String> signup(Map<String, String> requestMap) {
+    public ResponseEntity<String> createUser(Map<String, String> requestMap) {
         if (validateSignUpMap(requestMap)) {
             User user = userRepository.findByEmail(requestMap.get("email"));
             Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
@@ -165,7 +169,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(requestMap.get("lastName"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
-        user.setPassword(requestMap.get("password"));
+        user.setPassword(bCryptPasswordEncoder.encode(requestMap.get("password")));
         user.setRole(requestMap.get("role"));
         user.setStatus(requestMap.get("status"));
         return user;

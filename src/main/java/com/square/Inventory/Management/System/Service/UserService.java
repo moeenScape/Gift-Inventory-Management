@@ -4,12 +4,11 @@ import com.square.Inventory.Management.System.Entity.User;
 import org.springframework.http.ResponseEntity;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 public interface UserService {
-    ResponseEntity<String> signup(Map<String, String> requestMap);
+    ResponseEntity<String> createUser(Map<String, String> requestMap);
 
     ResponseEntity<String> login(Map<String, String> requestMap);
 

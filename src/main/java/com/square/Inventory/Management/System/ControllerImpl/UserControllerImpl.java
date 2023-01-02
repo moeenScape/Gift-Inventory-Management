@@ -31,7 +31,7 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<String> createUser(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()) {
-                return userService.signup(requestMap);
+                return userService.createUser(requestMap);
             } else {
                 return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
