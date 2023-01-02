@@ -35,12 +35,10 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
     @Query(value = "select depot_name as Category, sum(quantity) as Sum from budget group by depot_name", nativeQuery = true)
     List<CategoryWiseSummary> getCategoryWiseDepotSummary();
-<<<<<<< HEAD
 
     @Query(value = "select distinct(ssu_id), sum(quantity) as Total, sum(is_inssu) as TotalInSSU, sum(is_depot_received) as TotalInDepot from budget group by ssu_id", nativeQuery = true)
     List<BudgetSSUSummaryProjection> getSSUSummary();
-=======
+
     @Query("select b from Budget b where b.month=:month ")
     List<Budget> getBudgetByMonth(@Param("month") String month);
->>>>>>> b9cf6e2b05a88c3a37102dd44f70a22324049445
 }

@@ -9,6 +9,7 @@ import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
+import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import java.util.List;
 @RestController
 @Slf4j
 public class BudgetControllerImpl implements BudgetController {
+    @Autowired
+    private BudgetRepository budgetRepository;
 
     @Autowired
     JWTFilter jwtFilter;
@@ -111,6 +114,16 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary(){
         return budgetService.getSSUSummary();
+    }
+
+    @Override
+    public ResponseEntity<List<SSU>> getPreviousSSUBudgetByMonthAndYear(String ssu_id, String month, int year) {
+        return budgetService.getPreviousMonthBudgetByMonthAndYear(ssu_id,month,year);
+    }
+
+    @Override
+    public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
+        return budgetService.getPreviousDepotBudgetByMonthAndYear(depotID,month,year);
     }
 
 

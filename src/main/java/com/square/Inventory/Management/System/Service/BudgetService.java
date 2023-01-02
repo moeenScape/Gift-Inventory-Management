@@ -34,4 +34,8 @@ public interface BudgetService {
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 
     ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary();
+
+    ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year);
+
+    ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year);
 }

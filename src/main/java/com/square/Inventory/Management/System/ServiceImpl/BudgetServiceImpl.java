@@ -7,15 +7,7 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
-=======
-import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
->>>>>>> f2f852e109e8cf739f638c78dabe5235b20fbb1d
->>>>>>> b9cf6e2b05a88c3a37102dd44f70a22324049445
->>>>>>> 0a9ffe063bf4dcbbce6562058acb6910a134b1a4
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
@@ -138,5 +130,17 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary(){
         return new ResponseEntity<>(budgetRepository.getSSUSummary(),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year) {
+        List<SSU> getPreviousMonthBudgetByMonthAndYearList=budgetRepository.getBudgetForSSUByName(ssu_id,month,year);
+        return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
+        List<DEPOT> getPreviousDepotBudgetByMonthAndYearList=budgetRepository.getBudgetForDepotByID(depotID,month,year);
+        return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList,HttpStatus.OK);
     }
 }
