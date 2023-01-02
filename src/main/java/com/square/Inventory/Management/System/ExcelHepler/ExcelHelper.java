@@ -42,7 +42,6 @@ public class ExcelHelper {
                 row.createCell(4).setCellValue(user.getContactNumber());
                 row.createCell(5).setCellValue(user.getRole());
                 row.createCell(6).setCellValue(user.getStatus());
-                row.createCell(8).setCellValue(user.getWorkPlace());
             }
 
             workbook.write(out);

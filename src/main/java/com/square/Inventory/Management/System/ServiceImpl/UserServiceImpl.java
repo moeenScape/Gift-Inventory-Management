@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -51,17 +52,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailUtils emailUtils;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
-    public ResponseEntity<String> signup(Map<String, String> requestMap) {
+    public ResponseEntity<String> createUser(Map<String, String> requestMap) {
         if (validateSignUpMap(requestMap)) {
             User user = userRepository.findByEmail(requestMap.get("email"));
             Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
             if (Objects.isNull(user) && optional.isEmpty()) {
                 userRepository.save(getUserFromMap(requestMap));
-                String subject = "Account Approved By" + " " + getCurrentUserName();
+                String subject = "Account Approved By" + " " + "getCurrentUserName()";
                 String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
                         + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
-                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send by IMS by Square";
+                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
                 emailUtils.sendMail(requestMap.get("email"), subject, text);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
@@ -74,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getCurrentUserName() {
-        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
-        String name=user.getFirstName()+" "+user.getLastName();
+        User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
+        String name = user.getFirstName() + " " + user.getLastName();
         return name;
     }
 
@@ -105,7 +109,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ByteArrayInputStream load() {
         List<User> users = userRepository.findAll();
-
         ByteArrayInputStream in = ExcelHelper.UserToExcel(users);
         return in;
     }
@@ -115,16 +118,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> user1 = userRepository.findById(userId);
         if (user1.isPresent()) {
             User user2 = user1.get();
-            user2.setEmail(user.getEmail());
             user2.setPassword(user.getPassword());
             user2.setFirstName(user.getFirstName());
             user2.setLastName(user.getLastName());
             user2.setContactNumber(user.getContactNumber());
-            user2.setWorkPlace(user.getWorkPlace());
             user2.setRole(user.getRole());
             user2.setStatus(user.getStatus());
             userRepository.save(user2);
-
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -132,18 +132,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> deleteUser(Integer userId) {
         Optional<User> optional = userRepository.findById(userId);
-
-        if (optional.isPresent()) {
+        User user=optional.get();
+        log.info("Role {}",user.getRole());
+        if (optional.isPresent() &&!"admin".equals(user.getRole())) {
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
+        }else if (user.getRole().matches("admin")) {
+            return new ResponseEntity<>("Can not  Delete Admin ", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
     }
 
     @Override
@@ -175,16 +173,15 @@ public class UserServiceImpl implements UserService {
         user.setLastName(requestMap.get("lastName"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
-        user.setPassword(requestMap.get("password"));
+        user.setPassword(bCryptPasswordEncoder.encode(requestMap.get("password")));
         user.setRole(requestMap.get("role"));
         user.setStatus(requestMap.get("status"));
-        user.setWorkPlace(requestMap.get("workPlace"));
         return user;
     }
 
     private boolean validateSignUpMap(Map<String, String> requestMap) {
         if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("contactNumber")
-                && requestMap.containsKey("email") && requestMap.containsKey("password") && requestMap.containsKey("workPlace")) {
+                && requestMap.containsKey("email") && requestMap.containsKey("password")) {
             return true;
         }
         return false;

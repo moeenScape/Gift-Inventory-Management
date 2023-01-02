@@ -7,7 +7,7 @@ import com.poiji.annotation.ExcelRow;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-    public class BudgetExcelDTO {
+public class BudgetExcelDTO {
     @ExcelRow
     private int rowIndex;
     @ExcelCell(0)
@@ -108,6 +108,7 @@ import javax.persistence.Enumerated;
     public String getSsu_id() {
         return ssu_id;
     }
+
     public String getFieldColleagueName() {
         return fieldColleagueName;
     }

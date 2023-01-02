@@ -7,35 +7,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(path = "/inventory/user")
+@RequestMapping(path = "/user")
 public interface UserController {
-    @PostMapping(path = "/signup")
-    public ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap);
 
     @PostMapping(path = "/login")
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
-    @GetMapping(path = "/download/userAsExcel/")
-    Object getFile();
+    @PostMapping(path = "/create")
+    public ResponseEntity<String> createUser(@RequestBody(required = true) Map<String, String> requestMap);
 
     @PutMapping(path = "/update/{userId}")
-    ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("userId") Integer userId);
+    ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Integer userId);
 
     @DeleteMapping(path = "/delete/{userId}")
-    ResponseEntity<String> deleteUser(@PathVariable("userId") Integer userId);
+    ResponseEntity<String> deleteUser(@PathVariable Integer userId);
 
-    @GetMapping(path = "/get/all")
-    ResponseEntity<List<User>> getAllUser();
+    @GetMapping(path = "/all")
+    ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size);
 
-    @GetMapping(path = "/get/all/page")
-    ResponseEntity<?> getAllByPagination(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "3") int size);
-
-    @GetMapping(path = "/get/all/pageSort")
+    @GetMapping(path = "/page")
     ResponseEntity<?> getAllByPaginationBySorting(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "3") int size,
+                                                  @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "id") String sortBy);
 
+    @GetMapping(path = "/dump")
+    Object getFile();
 
 }
 
