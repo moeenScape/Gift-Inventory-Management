@@ -118,7 +118,6 @@ public class UserServiceImpl implements UserService {
             user2.setFirstName(user.getFirstName());
             user2.setLastName(user.getLastName());
             user2.setContactNumber(user.getContactNumber());
-            user2.setWorkPlace(user.getWorkPlace());
             user2.setRole(user.getRole());
             user2.setStatus(user.getStatus());
             userRepository.save(user2);
@@ -135,12 +134,6 @@ public class UserServiceImpl implements UserService {
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
         }
-    }
-
-
-    @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
     }
 
     @Override
@@ -175,13 +168,12 @@ public class UserServiceImpl implements UserService {
         user.setPassword(requestMap.get("password"));
         user.setRole(requestMap.get("role"));
         user.setStatus(requestMap.get("status"));
-        user.setWorkPlace(requestMap.get("workPlace"));
         return user;
     }
 
     private boolean validateSignUpMap(Map<String, String> requestMap) {
         if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("contactNumber")
-                && requestMap.containsKey("email") && requestMap.containsKey("password") && requestMap.containsKey("workPlace")) {
+                && requestMap.containsKey("email") && requestMap.containsKey("password")) {
             return true;
         }
         return false;

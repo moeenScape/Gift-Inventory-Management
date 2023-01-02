@@ -28,7 +28,7 @@ public class UserControllerImpl implements UserController {
     JWTFilter jwtFilter;
 
     @Override
-    public ResponseEntity<String> signUp(Map<String, String> requestMap) {
+    public ResponseEntity<String> createUser(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()) {
                 return userService.signup(requestMap);
@@ -75,17 +75,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllUser() {
-        if (jwtFilter.isAdmin()) {
-            return new ResponseEntity<List<User>>(userService.getAllUser(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-    }
-
-    @Override
-    public ResponseEntity<List<User>> getAllByPagination(int page, int size) {
+    public ResponseEntity<List<User>> getAllUsers(int page, int size) {
         if (jwtFilter.isAdmin()) {
             List<User> userList = userService.getAllUserByPagination(page, size);
             return new ResponseEntity<List<User>>(userList, HttpStatus.OK);

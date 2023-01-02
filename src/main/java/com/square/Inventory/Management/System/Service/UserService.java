@@ -21,7 +21,5 @@ public interface UserService {
 
     List<User> getAllUserByPaginationBySort(int page, int size, String sortBy);
 
-    List<User> getAllUser();
-
     ResponseEntity<User> update(User user, Integer userId);
 }
