@@ -2,6 +2,8 @@ package com.square.Inventory.Management.System.ControllerImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
+import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
@@ -28,13 +30,12 @@ public class UserControllerImpl implements UserController {
     JWTFilter jwtFilter;
 
     @Override
-    public ResponseEntity<String> signUp(Map<String, String> requestMap) {
+    public ResponseEntity<String> createUser(UserDTO user) {
         try {
-            if(jwtFilter.isAdmin())
-            {
-                return userService.signup(requestMap);
-            }else {
-               return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            if (jwtFilter.isAdmin()) {
+                return userService.createUser(user);
+            } else {
+                return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -62,8 +63,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<User> updateUser(User user, Integer userId) {
-        return userService.update(user, userId);
+    public ResponseEntity<String> updateUser(UserUpdateDTO userUpdateDTO, Integer userId) {
+        return userService.update(userUpdateDTO, userId);
     }
 
     @Override
@@ -76,9 +77,20 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllUser() {
+    public ResponseEntity<List<UserDTO>> getAllUsers(int page, int size) {
         if (jwtFilter.isAdmin()) {
-            return new ResponseEntity<List<User>>(userService.getAllUser(), HttpStatus.OK);
+            List<UserDTO> userList = userService.getAllUserByPagination(page, size);
+            return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<UserDTO>> getAllByPaginationBySorting(int page, int size, String sortBy) {
+        if (jwtFilter.isAdmin()) {
+            List<UserDTO> userList = userService.getAllUserByPaginationBySort(page, size, sortBy);
+            return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -86,24 +98,20 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllByPagination(int page, int size) {
+    public ResponseEntity<?> updateUserRole(String role, Integer userID) {
         if (jwtFilter.isAdmin()) {
-            List<User> userList = userService.getAllUserByPagination(page, size);
-            return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+            return userService.updateUserRole(role, userID);
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
+            return new ResponseEntity<>("You do not have access", HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllByPaginationBySorting(int page, int size, String sortBy) {
+    public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
         if (jwtFilter.isAdmin()) {
-            List<User> userList = userService.getAllUserByPaginationBySort(page, size, sortBy);
-            return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+            return userService.updateUserStatus(status, userID);
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
+            return new ResponseEntity<>("You do not have access to update User Status", HttpStatus.UNAUTHORIZED);
         }
 
     }

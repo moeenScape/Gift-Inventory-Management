@@ -19,12 +19,16 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
             "b.productName,b.productionUnit,b.packageSize,b.category,b.fieldColleagueID,b.fieldColleagueName," +
             "b.quantity,b.DepotID,b.depotName,b.month,b.year) from Budget " +
             "b where b.ssu_id=:ssuName AND b.month=:month AND b.year=:year")
-    List<SSU> getBudgetForSSUByName(@Param("ssuName") String ssuName,@Param("month") String month,@Param("year") Integer year);
+    List<SSU> getBudgetForSSUByName(@Param("ssuName") String ssuName,
+                                    @Param("month") String month,
+                                    @Param("year") Integer year);
 
     @Query("select new com.square.Inventory.Management.System.DTO.DEPOT(b.budgetID,b.sapCode," +
             "b.productName,b.productionUnit,b.packageSize,b.category,b.fieldColleagueID,b.fieldColleagueName," +
             "b.quantity,b.month,b.year) from Budget b where b.DepotID =:depotID AND b.month=:month AND b.year=:year")
-    List<DEPOT> getBudgetForDepotByID(@Param("depotID") String depotID,String month,Integer year);
+    List<DEPOT> getBudgetForDepotByID(@Param("depotID") String depotID,
+                                      @Param("month") String month,
+                                      @Param("year") Integer year);
 
     @Query(value = "SELECT budgetid,sap_code,product_name,deport_name,deportid,category," +
             "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid", nativeQuery = true)

@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-
-
 public class SSU {
 
     private String budgetId;

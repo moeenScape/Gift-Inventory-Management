@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.ControllerImpl;
 
 import com.square.Inventory.Management.System.Controller.DepotController;
+import com.square.Inventory.Management.System.DTO.DepotDTO;
 import com.square.Inventory.Management.System.Entity.Depot;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
@@ -28,13 +29,8 @@ public class DepotControllerImpl implements DepotController {
      * @return something
      */
     @Override
-    public ResponseEntity<Depot> addDepot(@RequestBody Depot depot){
-        return new ResponseEntity<Depot>(depotService.addDepot(depot), HttpStatus.CREATED);
-    }
-
-    @Override
-    public ResponseEntity<Depot> addDepotMain(@RequestBody Depot depot){
-        return new ResponseEntity<Depot>(depotService. addDepotMain(depot), HttpStatus.CREATED);
+    public ResponseEntity<Depot> addDepot(@RequestBody DepotDTO depotDTO) {
+        return new ResponseEntity<Depot>(depotService.addDepot(depotDTO), HttpStatus.CREATED);
     }
 
     @Override

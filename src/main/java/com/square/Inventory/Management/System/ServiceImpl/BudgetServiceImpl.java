@@ -7,23 +7,25 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
+import com.square.Inventory.Management.System.IMSUtils.TimeUtils;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 public class BudgetServiceImpl implements BudgetService {
+
     private final BudgetRepository budgetRepository;
 
     public BudgetServiceImpl(BudgetRepository budgetRepository) {
@@ -68,57 +70,70 @@ public class BudgetServiceImpl implements BudgetService {
         return allBudget;
     }
 
-    private String getCurrentMonth() {
-        LocalDate currentDate = LocalDate.now();
-        String currentMonth = currentDate.getMonth().name().toLowerCase();
-        return currentMonth;
-    }
-
-    private int getCurrentYear()
-    {
-        LocalDate currentDate = LocalDate.now();
-        int currentYear = currentDate.getYear();
-        return currentYear;
-    }
-
     @Override
     public ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName) {
 
-        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName,getCurrentMonth(),getCurrentYear());
+        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
-        return new ResponseEntity<>(ssuList, HttpStatus.OK);
+        if (ssuList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(ssuList, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID) {
 
-        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID,getCurrentMonth(),getCurrentYear());
+        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
-        return new ResponseEntity<>(depotList, HttpStatus.OK);
+        if (depotList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(depotList, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<List<Budget>> viewAllBudgetByMonth() {
-                List<Budget> budgetList=budgetRepository.getBudgetByMonth(getCurrentMonth());
-        return new ResponseEntity<>(budgetList,HttpStatus.OK);
+        List<Budget> budgetList = budgetRepository.getBudgetByMonth(TimeUtils.getCurrentMonth());
+
+        if (budgetList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(budgetList, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<List<Budget>> getAllBudget() {
         List<Budget> budgetList = budgetRepository.findAll();
-        return new ResponseEntity<>(budgetList, HttpStatus.OK);
+
+        if (budgetList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(budgetList, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<List<BudgetSummary>> getSummary() {
         List<BudgetSummary> budgetSummaryList = budgetRepository.getSummary();
-        return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
+        if (budgetSummaryList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
         List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
-        return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
+        if (categoryWiseSummaryList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
+        }
     }
 
     @Override
@@ -128,19 +143,29 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary(){
-        return new ResponseEntity<>(budgetRepository.getSSUSummary(),HttpStatus.OK);
+    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary() {
+        return new ResponseEntity<>(budgetRepository.getSSUSummary(), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year) {
-        List<SSU> getPreviousMonthBudgetByMonthAndYearList=budgetRepository.getBudgetForSSUByName(ssu_id,month,year);
-        return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList,HttpStatus.OK);
+        List<SSU> getPreviousMonthBudgetByMonthAndYearList = budgetRepository.getBudgetForSSUByName(ssu_id, month, year);
+
+        if (getPreviousMonthBudgetByMonthAndYearList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
-        List<DEPOT> getPreviousDepotBudgetByMonthAndYearList=budgetRepository.getBudgetForDepotByID(depotID,month,year);
-        return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList,HttpStatus.OK);
+        List<DEPOT> getPreviousDepotBudgetByMonthAndYearList = budgetRepository.getBudgetForDepotByID(depotID, month, year);
+
+        if (getPreviousDepotBudgetByMonthAndYearList.isEmpty()) {
+            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList, HttpStatus.OK);
+        }
     }
 }

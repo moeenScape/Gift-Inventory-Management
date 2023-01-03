@@ -35,14 +35,13 @@ public class ExcelHelper {
             for (User user : userList) {
                 Row row = sheet.createRow(rowIdx++);
 
-                row.createCell(0).setCellValue(user.getUserID());
+                row.createCell(0).setCellValue(user.getId());
                 row.createCell(1).setCellValue(user.getFirstName());
                 row.createCell(2).setCellValue(user.getLastName());
                 row.createCell(3).setCellValue(user.getEmail());
                 row.createCell(4).setCellValue(user.getContactNumber());
                 row.createCell(5).setCellValue(user.getRole());
                 row.createCell(6).setCellValue(user.getStatus());
-                row.createCell(8).setCellValue(user.getWorkPlace());
             }
 
             workbook.write(out);

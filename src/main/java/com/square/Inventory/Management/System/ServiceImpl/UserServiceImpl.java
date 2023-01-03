@@ -1,6 +1,8 @@
 package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
+import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
@@ -22,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -51,31 +54,36 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailUtils emailUtils;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
-    public ResponseEntity<String> signup(Map<String, String> requestMap) {
-        if (validateSignUpMap(requestMap)) {
-            User user = userRepository.findByEmail(requestMap.get("email"));
-            Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
-            if (Objects.isNull(user) && optional.isEmpty()) {
-                userRepository.save(getUserFromMap(requestMap));
+    public ResponseEntity<String> createUser(UserDTO user) {
+        try {
+            User newUser = userRepository.findByEmail(user.getEmail());
+            if (Objects.isNull(user)) {
+
+                userRepository.save(getUserFromMap(user));
                 String subject = "Account Approved By" + " " + getCurrentUserName();
-                String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
+                String emailBody = "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
                         + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
-                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send by IMS by Square";
-                emailUtils.sendMail(requestMap.get("email"), subject, text);
+                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
+                emailUtils.sendMail(user.getEmail(), subject, emailBody);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
                 return InventoryUtils.getResponse("Email or UserID Already Exist", HttpStatus.BAD_REQUEST);
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     private String getCurrentUserName() {
-        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
-        String name=user.getFirstName()+" "+user.getLastName();
+
+        User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
+        String name = user.getFirstName() + " " + user.getLastName();
         return name;
     }
 
@@ -95,7 +103,6 @@ public class UserServiceImpl implements UserService {
                     return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
                 }
             }
-
         } catch (Exception ex) {
             log.error("{}", ex);
         }
@@ -105,88 +112,114 @@ public class UserServiceImpl implements UserService {
     @Override
     public ByteArrayInputStream load() {
         List<User> users = userRepository.findAll();
-
         ByteArrayInputStream in = ExcelHelper.UserToExcel(users);
         return in;
     }
 
     @Override
-    public ResponseEntity<User> update(User user, Integer userId) {
-        Optional<User> user1 = userRepository.findById(userId);
-        if (user1.isPresent()) {
-            User user2 = user1.get();
-            user2.setEmail(user.getEmail());
-            user2.setPassword(user.getPassword());
-            user2.setFirstName(user.getFirstName());
-            user2.setLastName(user.getLastName());
-            user2.setContactNumber(user.getContactNumber());
-            user2.setWorkPlace(user.getWorkPlace());
-            user2.setRole(user.getRole());
-            user2.setStatus(user.getStatus());
-            userRepository.save(user2);
-
+    public ResponseEntity<String> update(UserUpdateDTO user, Integer userId) {
+        try {
+            Optional<User> user1 = userRepository.findById(userId);
+            if (user1.isPresent()) {
+                User user2 = user1.get();
+                user2.setFirstName(user.getFirstName());
+                user2.setLastName(user.getLastName());
+                user2.setContactNumber(user.getContactNumber());
+                userRepository.save(user2);
+            }
+            return new ResponseEntity<>("User Updated", HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>("Fail to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserRole(String role, Integer userID) {
+        String userName = null;
+        try {
+            Optional<User> user1 = userRepository.findById(userID);
+            if (user1.isPresent()) {
+                User user2 = user1.get();
+                user2.setRole(role);
+                userRepository.save(user2);
+                userName = user2.getFirstName() + " " + user2.getLastName() + "New Role : " + role;
+            }
+            return new ResponseEntity<>(userName, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>("Fail to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
+        String userName = null;
+        try {
+            Optional<User> user = userRepository.findById(userID);
+            if (user.isPresent()) {
+                User newUser = user.get();
+                newUser.setRole(status);
+                userRepository.save(newUser);
+                userName = newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status;
+            }
+            return new ResponseEntity<>(userName, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>("Fail to upDate Status", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> deleteUser(Integer userId) {
-        Optional<User> optional = userRepository.findById(userId);
 
-        if (optional.isPresent()) {
+        Optional<User> optional = userRepository.findById(userId);
+        User user = optional.get();
+        log.info("Role {}", user.getRole());
+
+        if (optional.isPresent() && !"admin".equals(user.getRole())) {
+
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
+
+        } else if (user.getRole().equals("admin")) {
+            return new ResponseEntity<>("Can not  Delete Admin ", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
         }
     }
 
     @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public List<User> getAllUserByPagination(int page, int size) {
+    public List<UserDTO> getAllUserByPagination(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Page<User> pageResult = userRepository.findAll(paging);
+        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<User>();
+            return new ArrayList<UserDTO>();
         }
     }
 
     @Override
-    public List<User> getAllUserByPaginationBySort(int page, int size, String sortBy) {
+    public List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy) {
         Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<User> pageResult = userRepository.findAll(paging);
+        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<User>();
+            return new ArrayList<UserDTO>();
         }
     }
 
-    private User getUserFromMap(Map<String, String> requestMap) {
+    private User getUserFromMap(UserDTO userDTO) {
         User user = new User();
-        user.setUserID(Integer.parseInt(requestMap.get("userID")));
-        user.setFirstName(requestMap.get("firstName"));
-        user.setLastName(requestMap.get("lastName"));
-        user.setContactNumber(requestMap.get("contactNumber"));
-        user.setEmail(requestMap.get("email"));
-        user.setPassword(requestMap.get("password"));
-        user.setRole(requestMap.get("role"));
-        user.setStatus(requestMap.get("status"));
-        user.setWorkPlace(requestMap.get("workPlace"));
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setContactNumber(userDTO.getContactNumber());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        user.setRole(userDTO.getRole());
+        user.setStatus(userDTO.getStatus());
         return user;
-    }
-
-    private boolean validateSignUpMap(Map<String, String> requestMap) {
-        if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("contactNumber")
-                && requestMap.containsKey("email") && requestMap.containsKey("password") && requestMap.containsKey("workPlace")) {
-            return true;
-        }
-        return false;
     }
 }
