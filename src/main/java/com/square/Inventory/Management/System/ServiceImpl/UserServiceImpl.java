@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
+import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
@@ -137,7 +138,7 @@ public class UserServiceImpl implements UserService {
         if (optional.isPresent() &&!"admin".equals(user.getRole())) {
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
-        }else if (user.getRole().matches("admin")) {
+        }else if (user.getRole().equals("admin")) {
             return new ResponseEntity<>("Can not  Delete Admin ", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
@@ -145,24 +146,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUserByPagination(int page, int size) {
+    public List<UserDTO> getAllUserByPagination(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Page<User> pageResult = userRepository.findAll(paging);
+        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<User>();
+            return new ArrayList<UserDTO>();
         }
     }
 
     @Override
-    public List<User> getAllUserByPaginationBySort(int page, int size, String sortBy) {
+    public List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy) {
         Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<User> pageResult = userRepository.findAll(paging);
+        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<User>();
+            return new ArrayList<UserDTO>();
         }
     }
 

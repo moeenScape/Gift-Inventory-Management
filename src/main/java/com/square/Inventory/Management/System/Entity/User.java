@@ -42,6 +42,6 @@ public class User {
     private String role;
 
     @Column(name = "status")
-    private String status;
+    private String  status;
 
 }

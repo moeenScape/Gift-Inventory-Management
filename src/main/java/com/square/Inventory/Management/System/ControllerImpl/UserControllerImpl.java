@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.ControllerImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
+import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
@@ -75,20 +76,20 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllUsers(int page, int size) {
+    public ResponseEntity<List<UserDTO>> getAllUsers(int page, int size) {
         if (jwtFilter.isAdmin()) {
-            List<User> userList = userService.getAllUserByPagination(page, size);
-            return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+            List<UserDTO> userList = userService.getAllUserByPagination(page, size);
+            return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllByPaginationBySorting(int page, int size, String sortBy) {
+    public ResponseEntity<List<UserDTO>> getAllByPaginationBySorting(int page, int size, String sortBy) {
         if (jwtFilter.isAdmin()) {
-            List<User> userList = userService.getAllUserByPaginationBySort(page, size, sortBy);
-            return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+            List<UserDTO> userList = userService.getAllUserByPaginationBySort(page, size, sortBy);
+            return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
