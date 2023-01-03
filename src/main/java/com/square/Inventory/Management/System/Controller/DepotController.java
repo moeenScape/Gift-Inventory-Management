@@ -1,5 +1,6 @@
 package com.square.Inventory.Management.System.Controller;
 
+import com.square.Inventory.Management.System.DTO.DepotDTO;
 import com.square.Inventory.Management.System.Entity.Depot;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface DepotController {
 
     @PostMapping("/addDepot")
-    ResponseEntity<Depot> addDepot(@RequestBody Depot depot);
+    ResponseEntity<Depot> addDepot(@RequestBody DepotDTO depotDTO);
 
     @PostMapping("/addDepotMain")
     ResponseEntity<Depot> addDepotMain(@RequestBody Depot depot);

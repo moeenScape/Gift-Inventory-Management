@@ -1,5 +1,6 @@
 package com.square.Inventory.Management.System.Service;
 
+import com.square.Inventory.Management.System.DTO.DepotDTO;
 import com.square.Inventory.Management.System.Entity.Depot;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
@@ -20,11 +21,14 @@ public class DepotService {
         this.depotRepository = depotRepository;
     }
 
-    public Depot addDepot(Depot depot){
-        return depotRepository.save(depot);
+    public Depot addDepot(DepotDTO depotDTO) {
+//        return depotRepository.save(depot);
+        Depot _depot = new Depot();
+        _depot = depotDTO.convertDepot(depotDTO);
+        return depotRepository.save(_depot);
     }
 
-    public Depot addDepotMain(Depot getFullDepot){
+    public Depot addDepotMain(Depot getFullDepot) {
         Depot depot = new Depot();
         depot.setLocation(getFullDepot.getLocation());
         depot.setDepotName(getFullDepot.getDepotName());
@@ -33,7 +37,7 @@ public class DepotService {
         return depotRepository.save(depot);
     }
 
-    public Depot editDepot(Long id, Depot givenDepot){
+    public Depot editDepot(Long id, Depot givenDepot) {
         Optional<Depot> depot = depotRepository.findById(id);
         if (depot.isPresent()){
             Depot changeDepot = depot.get();
@@ -52,7 +56,7 @@ public class DepotService {
         depotRepository.delete(_depot);
     }
 
-    public List<Depot> viewDepotsPaginated(int page, int size){
+    public List<Depot> viewDepotsPaginated(int page, int size) {
         List<Depot> depots = new ArrayList<Depot>();
         Pageable paging = PageRequest.of(page, size);
         Page<Depot> pageDepots = depotRepository.findAll(paging);
