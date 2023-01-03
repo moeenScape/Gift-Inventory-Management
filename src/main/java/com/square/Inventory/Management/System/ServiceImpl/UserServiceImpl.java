@@ -1,6 +1,8 @@
 package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
+import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
@@ -114,30 +116,68 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<User> update(User user, Integer userId) {
-        Optional<User> user1 = userRepository.findById(userId);
-        if (user1.isPresent()) {
-            User user2 = user1.get();
-            user2.setPassword(user.getPassword());
-            user2.setFirstName(user.getFirstName());
-            user2.setLastName(user.getLastName());
-            user2.setContactNumber(user.getContactNumber());
-            user2.setRole(user.getRole());
-            user2.setStatus(user.getStatus());
-            userRepository.save(user2);
+    public ResponseEntity<String> update(UserUpdateDTO user, Integer userId) {
+        try {
+            Optional<User> user1 = userRepository.findById(userId);
+            if (user1.isPresent()) {
+                User user2 = user1.get();
+                user2.setFirstName(user.getFirstName());
+                user2.setLastName(user.getLastName());
+                user2.setContactNumber(user.getContactNumber());
+                userRepository.save(user2);
+            }
+            return new ResponseEntity<>("User Updated", HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>("Fail to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserRole(String role, Integer userID) {
+        String userName=null;
+        try {
+            Optional<User> user1 = userRepository.findById(userID);
+            if (user1.isPresent()) {
+                User user2 = user1.get();
+                user2.setRole(role);
+                userRepository.save(user2);
+                userName=user2.getFirstName()+" "+user2.getLastName() + "New Role : "+role;
+            }
+            return new ResponseEntity<>(userName, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>("Fail to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
+        String userName=null;
+        try {
+            Optional<User> user = userRepository.findById(userID);
+            if (user.isPresent()) {
+                User newUser = user.get();
+                newUser.setRole(status);
+                userRepository.save(newUser);
+                userName=newUser.getFirstName()+" "+newUser.getLastName() + "New Role : "+status;
+            }
+            return new ResponseEntity<>(userName, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>("Fail to upDate Status", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> deleteUser(Integer userId) {
         Optional<User> optional = userRepository.findById(userId);
-        User user=optional.get();
-        log.info("Role {}",user.getRole());
-        if (optional.isPresent() &&!"admin".equals(user.getRole())) {
+        User user = optional.get();
+        log.info("Role {}", user.getRole());
+        if (optional.isPresent() && !"admin".equals(user.getRole())) {
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
-        }else if (user.getRole().matches("admin")) {
+        } else if (user.getRole().equals("admin")) {
             return new ResponseEntity<>("Can not  Delete Admin ", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
@@ -145,24 +185,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUserByPagination(int page, int size) {
+    public List<UserDTO> getAllUserByPagination(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Page<User> pageResult = userRepository.findAll(paging);
+        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<User>();
+            return new ArrayList<UserDTO>();
         }
     }
 
     @Override
-    public List<User> getAllUserByPaginationBySort(int page, int size, String sortBy) {
+    public List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy) {
         Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<User> pageResult = userRepository.findAll(paging);
+        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<User>();
+            return new ArrayList<UserDTO>();
         }
     }
 
