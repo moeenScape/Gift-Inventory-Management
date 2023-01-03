@@ -4,11 +4,10 @@ import javax.persistence.*;
 
 @Entity
 public class Depot {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "depot_id")
-    private long depotID;
+    private long id;
 
     @Column
     private String depotName;

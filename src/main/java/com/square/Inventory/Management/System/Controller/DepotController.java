@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/depot")
 public interface DepotController {
 
-    @PostMapping("/addDepot")
+    @PostMapping("/add")
     ResponseEntity<Depot> addDepot(@RequestBody DepotDTO depotDTO);
 
     @PostMapping("/addDepotMain")

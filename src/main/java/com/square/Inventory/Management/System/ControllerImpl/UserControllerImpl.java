@@ -31,16 +31,17 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> createUser(Map<String, String> requestMap) {
-        try {
-            if (jwtFilter.isAdmin()) {
-                return userService.createUser(requestMap);
-            } else {
-                return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+//        try {
+//            if (jwtFilter.isAdmin()) {
+//                return userService.createUser(requestMap);
+//            } else {
+//                return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        return userService.createUser(requestMap);
     }
 
     @Override
