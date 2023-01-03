@@ -2,8 +2,10 @@ package com.square.Inventory.Management.System.Service;
 
 import com.square.Inventory.Management.System.DTO.DepotDTO;
 import com.square.Inventory.Management.System.Entity.Depot;
+import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
+import com.square.Inventory.Management.System.Repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +18,31 @@ import java.util.Optional;
 @Service
 public class DepotService {
     private final DepotRepository depotRepository;
+    private final UserRepository userRepository;
 
-    public DepotService(DepotRepository depotRepository){
+    public DepotService(DepotRepository depotRepository, UserRepository userRepository){
         this.depotRepository = depotRepository;
+        this.userRepository = userRepository;
     }
 
     public Depot addDepot(DepotDTO depotDTO) {
-//        return depotRepository.save(depot);
         Depot _depot = new Depot();
-        _depot = depotDTO.convertDepot(depotDTO);
-        return depotRepository.save(_depot);
+        Integer user_id = depotDTO.getUser_id();
+        if (user_id == null) {
+            _depot.setDepotName(depotDTO.getDepotName());
+            _depot.setLocation(depotDTO.getLocation());
+            return depotRepository.save(_depot);
+        }
+        else {
+            Optional<User> user = userRepository.findById(user_id);
+            if (user.isPresent()) {
+                _depot = depotDTO.convertDepot(depotDTO, user.get());
+                return depotRepository.save(_depot);
+            }
+            else {
+                return null;
+            }
+        }
     }
 
     public Depot addDepotMain(Depot getFullDepot) {

@@ -1,11 +1,16 @@
 package com.square.Inventory.Management.System.DTO;
 
 import com.square.Inventory.Management.System.Entity.Depot;
+import com.square.Inventory.Management.System.Entity.User;
+
+import javax.validation.constraints.NotNull;
 
 public class DepotDTO {
+    @NotNull
     private String depotName;
+    @NotNull
     private String location;
-    private String user_id;
+    private Integer user_id;
 
     public String getDepotName() {
         return depotName;
@@ -23,27 +28,27 @@ public class DepotDTO {
         this.location = location;
     }
 
-    public String getUser_id() {
+    public Integer getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 
-    public Depot convertDepot(DepotDTO depotDTO) {
+    public Depot convertDepot(DepotDTO depotDTO, User user) {
         Depot depot = new Depot();
         depot.setDepotName(depotDTO.getDepotName());
-//        depot.setUser(depotDTO.getUser_id());
         depot.setLocation(depotDTO.getLocation());
+        depot.setUser(user);
         return depot;
     }
 
-    public DepotDTO convertDepotDTO(Depot depot) {
+    public DepotDTO convertDepotDTO(Depot depot, User user) {
         DepotDTO depotDTO = new DepotDTO();
         depotDTO.setDepotName(depot.getDepotName());
         depotDTO.setLocation(depot.getLocation());
-//        depotDTO.setUser_id(depot.get);
+        depotDTO.setUser_id(user.getUserID());
         return depotDTO;
     }
 

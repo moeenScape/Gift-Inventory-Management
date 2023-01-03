@@ -26,7 +26,7 @@ public class User {
     private String lastName;
 
     @Pattern(regexp = "^(?:\\+?88)?01[15-9]\\d{8}$")
-    @Column(name = "contractNumber")
+    @Column(name = "contactNumber")
     private String contactNumber;
 
     @Email
