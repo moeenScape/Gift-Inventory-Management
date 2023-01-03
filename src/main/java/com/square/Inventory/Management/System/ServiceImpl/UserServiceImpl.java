@@ -208,7 +208,6 @@ public class UserServiceImpl implements UserService {
 
     private User getUserFromMap(Map<String, String> requestMap) {
         User user = new User();
-        user.setUserID(Integer.parseInt(requestMap.get("userID")));
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setContactNumber(requestMap.get("contactNumber"));
