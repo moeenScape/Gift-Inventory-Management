@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    private Integer userID;
+    private Integer id;
 
     private String firstName;
 
@@ -24,12 +24,5 @@ public class UserDTO {
 
     private String status;
 
-//    public User userConverter(User user)
-//    {
-//        User user1=new User();
-//        user1.setFirstName(user.getFirstName());
-//        user1.setLastName(user.getLastName());
-//        user1.setContactNumber(user.getContactNumber());
-//        return user1;
-//    };
+
 }
