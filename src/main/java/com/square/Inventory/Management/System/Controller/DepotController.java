@@ -15,26 +15,23 @@ public interface DepotController {
     @PostMapping("/add")
     ResponseEntity<Depot> addDepot(@RequestBody DepotDTO depotDTO);
 
-    @PostMapping("/addDepotMain")
-    ResponseEntity<Depot> addDepotMain(@RequestBody Depot depot);
-
-    @PutMapping("/editDepot/{id}")
+    @PutMapping("/edit")
     ResponseEntity<Depot> editDepot(@PathVariable("id") Long id, @RequestBody Depot depot);
 
-    @GetMapping("/viewDepot/{id}")
+    @GetMapping("/view/{id}")
     ResponseEntity<?> getDepotWithoutUser(@PathVariable("id") Long id);
 
-    @GetMapping("/viewAllDepots")
+    @GetMapping("/viewAll")
     ResponseEntity<List<Depot>> viewAllDepots();
 
     @GetMapping("/viewAllDepotsName")
     ResponseEntity<List<DepotProjectionInterface>> showAllDepotName();
 
-    @GetMapping("/viewAllDepotsPaginated")
+    @GetMapping("/viewAllPaginated")
     ResponseEntity<?> viewAllDepotsPaginated(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue="10") int size);
 
-    @DeleteMapping("/deleteDepot/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<?> deleteDepot(@PathVariable("id") Long id);
 }

@@ -1,8 +1,8 @@
 create table depot (
     id bigint not null auto_increment,
-    depotName varchar(255),
+    depot_name varchar(255),
     location varchar(255),
-    userId int,
+    userid int,
     primary key (id),
-    foreign key (userId) references user(userId)
+    foreign key (userid) references user(userid)
 );
