@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserService {
-    ResponseEntity<String> createUser(Map<String, String> requestMap);
+    ResponseEntity<String> createUser(UserDTO user);
 
     ResponseEntity<String> login(Map<String, String> requestMap);
 

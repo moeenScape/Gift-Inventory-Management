@@ -30,18 +30,17 @@ public class UserControllerImpl implements UserController {
     JWTFilter jwtFilter;
 
     @Override
-    public ResponseEntity<String> createUser(Map<String, String> requestMap) {
-//        try {
-//            if (jwtFilter.isAdmin()) {
-//                return userService.createUser(requestMap);
-//            } else {
-//                return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-        return userService.createUser(requestMap);
+    public ResponseEntity<String> createUser(UserDTO user) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                return userService.createUser(user);
+            } else {
+                return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -99,20 +98,20 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<?> updateUserRole(String role,Integer userID) {
-        if(jwtFilter.isAdmin()) {
-            return userService.updateUserRole(role,userID);
-        }else {
-            return new ResponseEntity<>("You do not have access",HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<?> updateUserRole(String role, Integer userID) {
+        if (jwtFilter.isAdmin()) {
+            return userService.updateUserRole(role, userID);
+        } else {
+            return new ResponseEntity<>("You do not have access", HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Override
     public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
-        if(jwtFilter.isAdmin()) {
-            return userService.updateUserStatus(status,userID);
-        }else {
-            return new ResponseEntity<>("You do not have access to update User Status",HttpStatus.UNAUTHORIZED);
+        if (jwtFilter.isAdmin()) {
+            return userService.updateUserStatus(status, userID);
+        } else {
+            return new ResponseEntity<>("You do not have access to update User Status", HttpStatus.UNAUTHORIZED);
         }
 
     }
