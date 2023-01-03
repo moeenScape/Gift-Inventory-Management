@@ -59,24 +59,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> createUser(Map<String, String> requestMap) {
+
         if (validateSignUpMap(requestMap)) {
+
             User user = userRepository.findByEmail(requestMap.get("email"));
             Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
+
             if (Objects.isNull(user) && optional.isEmpty()) {
+
                 userRepository.save(getUserFromMap(requestMap));
-                String subject = "Account Approved By" + " " + "getCurrentUserName()";
+                String subject = "Account Approved By" + " " + getCurrentUserName();
                 String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
                         + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
                         + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
                 emailUtils.sendMail(requestMap.get("email"), subject, text);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
-
             } else {
                 return InventoryUtils.getResponse("Email or UserID Already Exist", HttpStatus.BAD_REQUEST);
             }
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     private String getCurrentUserName() {
@@ -101,7 +103,6 @@ public class UserServiceImpl implements UserService {
                     return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
                 }
             }
-
         } catch (Exception ex) {
             log.error("{}", ex);
         }
@@ -135,14 +136,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> updateUserRole(String role, Integer userID) {
-        String userName=null;
+        String userName = null;
         try {
             Optional<User> user1 = userRepository.findById(userID);
             if (user1.isPresent()) {
                 User user2 = user1.get();
                 user2.setRole(role);
                 userRepository.save(user2);
-                userName=user2.getFirstName()+" "+user2.getLastName() + "New Role : "+role;
+                userName = user2.getFirstName() + " " + user2.getLastName() + "New Role : " + role;
             }
             return new ResponseEntity<>(userName, HttpStatus.OK);
         } catch (Exception ex) {
@@ -153,14 +154,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
-        String userName=null;
+        String userName = null;
         try {
             Optional<User> user = userRepository.findById(userID);
             if (user.isPresent()) {
                 User newUser = user.get();
                 newUser.setRole(status);
                 userRepository.save(newUser);
-                userName=newUser.getFirstName()+" "+newUser.getLastName() + "New Role : "+status;
+                userName = newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status;
             }
             return new ResponseEntity<>(userName, HttpStatus.OK);
         } catch (Exception ex) {
@@ -171,12 +172,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> deleteUser(Integer userId) {
+
         Optional<User> optional = userRepository.findById(userId);
         User user = optional.get();
         log.info("Role {}", user.getRole());
+
         if (optional.isPresent() && !"admin".equals(user.getRole())) {
+
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
+
         } else if (user.getRole().equals("admin")) {
             return new ResponseEntity<>("Can not  Delete Admin ", HttpStatus.BAD_REQUEST);
         } else {
@@ -208,7 +213,6 @@ public class UserServiceImpl implements UserService {
 
     private User getUserFromMap(Map<String, String> requestMap) {
         User user = new User();
-        user.setUserID(Integer.parseInt(requestMap.get("userID")));
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setContactNumber(requestMap.get("contactNumber"));

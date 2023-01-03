@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
@@ -15,8 +13,9 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 public class User {
     @Id
-    @Column(name = "userID")
-    private Integer userID;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "firstName")
     @NotNull
