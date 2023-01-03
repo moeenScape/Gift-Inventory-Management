@@ -3,6 +3,7 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
@@ -62,8 +63,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<User> updateUser(User user, Integer userId) {
-        return userService.update(user, userId);
+    public ResponseEntity<String> updateUser(UserUpdateDTO userUpdateDTO, Integer userId) {
+        return userService.update(userUpdateDTO, userId);
     }
 
     @Override
@@ -92,6 +93,25 @@ public class UserControllerImpl implements UserController {
             return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserRole(String role,Integer userID) {
+        if(jwtFilter.isAdmin()) {
+            return userService.updateUserRole(role,userID);
+        }else {
+            return new ResponseEntity<>("You do not have access",HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
+        if(jwtFilter.isAdmin()) {
+            return userService.updateUserStatus(status,userID);
+        }else {
+            return new ResponseEntity<>("You do not have access to update User Status",HttpStatus.UNAUTHORIZED);
         }
 
     }

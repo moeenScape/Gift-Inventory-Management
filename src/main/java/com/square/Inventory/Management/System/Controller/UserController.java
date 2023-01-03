@@ -1,5 +1,6 @@
 package com.square.Inventory.Management.System.Controller;
 
+import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,8 @@ public interface UserController {
     public ResponseEntity<String> createUser(@RequestBody(required = true) Map<String, String> requestMap);
 
     @PutMapping(path = "/update/{userId}")
-    ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Integer userId);
+    ResponseEntity<String> updateUser(@RequestBody UserUpdateDTO userUpdateDTO,
+                                    @PathVariable Integer userId);
 
     @DeleteMapping(path = "/delete/{userId}")
     ResponseEntity<String> deleteUser(@PathVariable Integer userId);
@@ -30,6 +32,15 @@ public interface UserController {
     ResponseEntity<?> getAllByPaginationBySorting(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "id") String sortBy);
+
+    @PutMapping(path = "/update/role/{userID}")
+    ResponseEntity<?> updateUserRole(@RequestBody String role,
+                                     @PathVariable Integer userID);
+
+    @PutMapping(path = "/update/status/{userID}")
+    ResponseEntity<?> updateUserStatus(@RequestBody String status,
+                                       @PathVariable Integer userID);
+
 
     @GetMapping(path = "/dump")
     Object getFile();

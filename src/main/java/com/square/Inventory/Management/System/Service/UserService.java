@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Service;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import org.springframework.http.ResponseEntity;
 
@@ -21,5 +22,9 @@ public interface UserService {
 
     List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy);
 
-    ResponseEntity<User> update(User user, Integer userId);
+    ResponseEntity<String> update(UserUpdateDTO userUpdateDTO, Integer userId);
+
+    ResponseEntity<?> updateUserRole(String role,Integer userID);
+
+    ResponseEntity<?> updateUserStatus(String status, Integer userID);
 }
