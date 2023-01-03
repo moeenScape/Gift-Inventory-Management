@@ -58,30 +58,30 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public ResponseEntity<String> createUser(Map<String, String> requestMap) {
+    public ResponseEntity<String> createUser(UserDTO user) {
+        try {
+            User newUser = userRepository.findByEmail(user.getEmail());
+            if (Objects.isNull(user)) {
 
-        if (validateSignUpMap(requestMap)) {
-
-            User user = userRepository.findByEmail(requestMap.get("email"));
-            Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("userID")));
-
-            if (Objects.isNull(user) && optional.isEmpty()) {
-
-                userRepository.save(getUserFromMap(requestMap));
+                userRepository.save(getUserFromMap(user));
                 String subject = "Account Approved By" + " " + getCurrentUserName();
-                String text = "Email: " + requestMap.get("email") + "\n" + "Password " + requestMap.get("password") + "\n"
+                String emailBody = "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
                         + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
                         + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
-                emailUtils.sendMail(requestMap.get("email"), subject, text);
+                emailUtils.sendMail(user.getEmail(), subject, emailBody);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
+
             } else {
                 return InventoryUtils.getResponse("Email or UserID Already Exist", HttpStatus.BAD_REQUEST);
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getCurrentUserName() {
+
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
         String name = user.getFirstName() + " " + user.getLastName();
         return name;
@@ -211,23 +211,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User getUserFromMap(Map<String, String> requestMap) {
+    private User getUserFromMap(UserDTO userDTO) {
         User user = new User();
-        user.setFirstName(requestMap.get("firstName"));
-        user.setLastName(requestMap.get("lastName"));
-        user.setContactNumber(requestMap.get("contactNumber"));
-        user.setEmail(requestMap.get("email"));
-        user.setPassword(bCryptPasswordEncoder.encode(requestMap.get("password")));
-        user.setRole(requestMap.get("role"));
-        user.setStatus(requestMap.get("status"));
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setContactNumber(userDTO.getContactNumber());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        user.setRole(userDTO.getRole());
+        user.setStatus(userDTO.getStatus());
         return user;
-    }
-
-    private boolean validateSignUpMap(Map<String, String> requestMap) {
-        if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("contactNumber")
-                && requestMap.containsKey("email") && requestMap.containsKey("password")) {
-            return true;
-        }
-        return false;
     }
 }

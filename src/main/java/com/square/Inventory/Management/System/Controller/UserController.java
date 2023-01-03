@@ -1,5 +1,6 @@
 package com.square.Inventory.Management.System.Controller;
 
+import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public interface UserController {
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
     @PostMapping(path = "/create")
-    public ResponseEntity<String> createUser(@RequestBody(required = true) Map<String, String> requestMap);
+    public ResponseEntity<String> createUser(@RequestBody UserDTO user);
 
     @PutMapping(path = "/update/{userId}")
     ResponseEntity<String> updateUser(@RequestBody UserUpdateDTO userUpdateDTO,

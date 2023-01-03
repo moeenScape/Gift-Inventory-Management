@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 @Slf4j
 @Component
 public class JWTFilter extends OncePerRequestFilter {
@@ -26,8 +27,6 @@ public class JWTFilter extends OncePerRequestFilter {
     CustomUserServiceDetails customUserServiceDetails;
 
     Claims claims = null;
-
-    Claims newClaim;
 
     private String userName = null;
 
@@ -44,8 +43,6 @@ public class JWTFilter extends OncePerRequestFilter {
                 token = authorizationHeader.substring(7);
                 userName = jwtUtils.extractUserName(token);
                 claims = jwtUtils.extractAllClaims(token);
-                newClaim=claims;
-                log.info("Inside Claim {}",String.valueOf(claims));
 
             }
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -67,17 +64,15 @@ public class JWTFilter extends OncePerRequestFilter {
 
 
     public boolean isAdmin() {
-        return "admin".equalsIgnoreCase((String) newClaim.get("role"));
+        return "admin".equalsIgnoreCase((String) claims.get("role"));
     }
 
     public boolean isDepot() {
         return "depot".equalsIgnoreCase((String) claims.get("role"));
     }
 
-    public String getRole()
-    {
+    public String getRole() {
         return customUserServiceDetails.getRole();
-
     }
 
     public boolean isSSU() {
