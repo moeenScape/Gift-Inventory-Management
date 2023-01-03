@@ -48,7 +48,7 @@ public class DepotDTO {
         DepotDTO depotDTO = new DepotDTO();
         depotDTO.setDepotName(depot.getDepotName());
         depotDTO.setLocation(depot.getLocation());
-        depotDTO.setUser_id(user.getUserID());
+        depotDTO.setUser_id(user.getId());
         return depotDTO;
     }
 
