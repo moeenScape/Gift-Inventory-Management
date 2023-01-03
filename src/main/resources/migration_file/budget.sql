@@ -1,0 +1,21 @@
+create table budget(
+id int auto_increment,
+budgetid varchar(256),
+sap_code varchar(256),
+product_name varchar(256),
+production_unit varchar(256),
+package_size varchar(256),
+SUB varchar(256),
+field_colleagueid varchar(256),
+field_colleague_name varchar(256),
+quantity int,
+depot_name varchar(256),
+depotid varchar(256),
+category varchar(256),
+month varchar(256),
+year int,
+ssu_id varchar(256),
+is_depot_received boolean,
+is_inssu boolean,
+CONSTRAINT budget_pk PRIMARY KEY (id)
+);
