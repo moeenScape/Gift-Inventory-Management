@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
     ResponseEntity<String> createUser(UserDTO user);

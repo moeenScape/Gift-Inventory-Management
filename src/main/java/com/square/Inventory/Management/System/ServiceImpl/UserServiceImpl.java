@@ -60,15 +60,14 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> createUser(UserDTO user) {
         try {
             User newUser = userRepository.findByEmail(user.getEmail());
-            log.info("Inside log in {}",newUser);
+            log.info("Inside log in {}", newUser);
             if (Objects.isNull(newUser)) {
 
-                userRepository.save(getUserFromMap(user));
-                String subject = "Account Approved By" + " " + getCurrentUserName();
-                String emailBody = "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
-                        + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
-                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
-                //emailUtils.sendMail(user.getEmail(), subject, emailBody);
+                userRepository.save(getUserFromDTO(user));
+                emailUtils.sendMail(user.getEmail(), "Account Approved By" + " " + getCurrentUserName(),
+                        "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
+                                + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
+                                + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
@@ -89,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> login(UserDTO userDTO) {
-        log.info("Inside Login{}",userDTO);
+        log.info("Inside Login{}", userDTO);
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
@@ -126,8 +125,10 @@ public class UserServiceImpl implements UserService {
                 user2.setLastName(user.getLastName());
                 user2.setContactNumber(user.getContactNumber());
                 userRepository.save(user2);
+                return new ResponseEntity<>("User Updated", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User is not present", HttpStatus.OK);
             }
-            return new ResponseEntity<>("User Updated", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -136,16 +137,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> updateUserRole(String role, Integer userID) {
-        String userName = null;
         try {
             Optional<User> user1 = userRepository.findById(userID);
             if (user1.isPresent()) {
                 User user2 = user1.get();
                 user2.setRole(role);
                 userRepository.save(user2);
-                userName = user2.getFirstName() + " " + user2.getLastName() + "New Role : " + role;
+                return new ResponseEntity<>(user2.getFirstName() + " " + user2.getLastName() + "New Role : " + role, HttpStatus.OK);
             }
-            return new ResponseEntity<>(userName, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -154,16 +153,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
-        String userName = null;
         try {
             Optional<User> user = userRepository.findById(userID);
             if (user.isPresent()) {
                 User newUser = user.get();
                 newUser.setRole(status);
                 userRepository.save(newUser);
-                userName = newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status;
+                return new ResponseEntity<>(newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status, HttpStatus.OK);
             }
-            return new ResponseEntity<>(userName, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -211,7 +208,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User getUserFromMap(UserDTO userDTO) {
+    private User getUserFromDTO(UserDTO userDTO) {
         User user = new User();
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());

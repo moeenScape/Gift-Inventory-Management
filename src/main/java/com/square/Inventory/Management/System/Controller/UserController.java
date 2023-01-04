@@ -17,7 +17,7 @@ public interface UserController {
 
     @PutMapping(path = "/update/{userId}")
     ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO,
-                                    @PathVariable Integer userId);
+                                      @PathVariable Integer userId);
 
     @DeleteMapping(path = "/delete/{userId}")
     ResponseEntity<String> deleteUser(@PathVariable Integer userId);
@@ -44,6 +44,3 @@ public interface UserController {
     Object getFile();
 
 }
-
-
-
