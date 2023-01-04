@@ -26,21 +26,24 @@ public class DepotService {
     }
 
     public Depot addDepot(DepotDTO depotDTO) {
-        Depot _depot = new Depot();
         Integer user_id = depotDTO.getUser_id();
+
+        Depot depot = new Depot();
+
         if (user_id == null) {
-            _depot.setDepotName(depotDTO.getDepotName());
-            _depot.setLocation(depotDTO.getLocation());
-            return depotRepository.save(_depot);
-        }
-        else {
+            depot.setDepotName(depotDTO.getDepotName());
+            depot.setLocation(depotDTO.getLocation());
+
+            return depotRepository.save(depot);
+        } else {
             Optional<User> user = userRepository.findById(user_id);
+
             if (user.isPresent()) {
-                _depot = depotDTO.convertDepot(depotDTO, user.get());
-                return depotRepository.save(_depot);
-            }
-            else {
-                return null;
+                depot = depotDTO.convertDepot(depotDTO, user.get());
+
+                return depotRepository.save(depot);
+            } else {
+                return null; // todo need improvement
             }
         }
     }
@@ -56,14 +59,13 @@ public class DepotService {
 
     public Depot editDepot(Long id, Depot givenDepot) {
         Optional<Depot> depot = depotRepository.findById(id);
-        if (depot.isPresent()){
+        if (depot.isPresent()) {
             Depot changeDepot = depot.get();
             changeDepot.setDepotName(givenDepot.getDepotName());
             changeDepot.setLocation(givenDepot.getLocation());
             depotRepository.save(changeDepot);
             return changeDepot;
-        }
-        else{
+        } else {
             System.out.println("Invalid Id given");
             return null;
         }

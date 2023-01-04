@@ -34,11 +34,6 @@ public class DepotControllerImpl implements DepotController {
     }
 
     @Override
-    public ResponseEntity<Depot> addDepotMain(@RequestBody Depot depot) {
-        return new ResponseEntity<Depot>(depotService.addDepotMain(depot), HttpStatus.CREATED);
-    }
-
-    @Override
     public ResponseEntity<Depot> editDepot(@PathVariable("id") Long id, @RequestBody Depot depot){
         return new ResponseEntity<Depot>(depotService.editDepot(id,depot), HttpStatus.OK);
     }

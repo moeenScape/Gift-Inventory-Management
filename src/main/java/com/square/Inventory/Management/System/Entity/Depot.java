@@ -2,11 +2,10 @@ package com.square.Inventory.Management.System.Entity;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "depot")
 public class Depot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "depot_id")
     private long id;
 
     @Column
