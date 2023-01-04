@@ -4,7 +4,7 @@ import com.square.Inventory.Management.System.Entity.SBU;
 import com.poiji.annotation.ExcelCell;
 import com.poiji.annotation.ExcelRow;
 
-public class BudgetExcelDTO {
+public class BudgetExcelDto {
     @ExcelRow
     private int rowIndex;
     @ExcelCell(0)

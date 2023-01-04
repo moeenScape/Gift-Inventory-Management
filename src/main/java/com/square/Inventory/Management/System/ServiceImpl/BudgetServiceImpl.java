@@ -6,13 +6,12 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
-import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
+import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.IMSUtils.TimeUtils;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,9 +32,9 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<BudgetExcelDTO> getAllBudgetFromExcel() {
-        List<BudgetExcelDTO> budgets = Poiji.fromExcel(new File("sample_budgets.xlsx"), BudgetExcelDTO.class);
-        return new ArrayList<BudgetExcelDTO>(budgets);
+    public List<BudgetExcelDto> getAllBudgetFromExcel() {
+        List<BudgetExcelDto> budgets = Poiji.fromExcel(new File("sample_budgets.xlsx"), BudgetExcelDto.class);
+        return new ArrayList<BudgetExcelDto>(budgets);
     }
 
     @Override
@@ -43,11 +42,11 @@ public class BudgetServiceImpl implements BudgetService {
         String filename = file.getOriginalFilename();
 //        log.info(filename);
         assert filename != null;
-        List<BudgetExcelDTO> BudgetExcelDTO = Poiji.fromExcel(new File(filename), BudgetExcelDTO.class);
+        List<BudgetExcelDto> BudgetExcelDTO = Poiji.fromExcel(new File(filename), BudgetExcelDto.class);
         List<Budget> allBudget = new ArrayList<>();
         int len = BudgetExcelDTO.size();
         for (int i = 0; i < len; i++) {
-            BudgetExcelDTO _BudgetExcelDTO = BudgetExcelDTO.get(i);
+            BudgetExcelDto _BudgetExcelDTO = BudgetExcelDTO.get(i);
             Budget _budget = new Budget();
             _budget.setSapCode(_BudgetExcelDTO.getSapCode());
             _budget.setBudgetID(_BudgetExcelDTO.getBudgetID());

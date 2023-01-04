@@ -6,7 +6,7 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
-import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
+import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
@@ -37,8 +37,8 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<BudgetExcelDTO>> getAllEmployeesFromExcel() {
-        return new ResponseEntity<List<BudgetExcelDTO>>(budgetService.getAllBudgetFromExcel(), HttpStatus.OK);
+    public ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel() {
+        return new ResponseEntity<List<BudgetExcelDto>>(budgetService.getAllBudgetFromExcel(), HttpStatus.OK);
     }
 
     /**
