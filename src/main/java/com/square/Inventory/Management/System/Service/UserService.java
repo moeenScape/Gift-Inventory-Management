@@ -13,15 +13,15 @@ public interface UserService {
 
     ByteArrayInputStream load();
 
-    ResponseEntity<String> deleteUser(Integer userId);
+    ResponseEntity<String> deleteUser(Long userId);
 
     List<UserDTO> getAllUserByPagination(int page, int size);
 
     List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy);
 
-    ResponseEntity<String> update(UserDTO userDTO, Integer userId);
+    ResponseEntity<String> update(UserDTO userDTO, Long userId);
 
-    ResponseEntity<?> updateUserRole(String role,Integer userID);
+    ResponseEntity<?> updateUserRole(String role,Long userID);
 
-    ResponseEntity<?> updateUserStatus(String status, Integer userID);
+    ResponseEntity<?> updateUserStatus(String status, Long userID);
 }

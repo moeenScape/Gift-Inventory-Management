@@ -82,25 +82,26 @@ public class UserServiceImpl implements UserService {
     private String getCurrentUserName() {
 
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
-        String name = user.getFirstName() + " " + user.getLastName();
-        return name;
+        return user.getFirstName()+"  "+user.getLastName();
     }
 
     @Override
     public ResponseEntity<String> login(UserDTO userDTO) {
-        log.info("Inside Login{}", userDTO);
         try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
-            );
-
-            if (auth.isAuthenticated()) {
-                if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
-                    return new ResponseEntity<String>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
-                            customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
-                } else {
-                    return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
+            User user=userRepository.findByEmail(userDTO.getEmail());
+            if(Objects.nonNull(user)) {
+                Authentication auth = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+                if (auth.isAuthenticated()) {
+                    if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
+                        return new ResponseEntity<String>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
+                                customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
+                    } else {
+                        return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
+                    }
                 }
+            } else {
+                return InventoryUtils.getResponse("No user found by this Email",HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             log.error("{}", ex);
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> update(UserDTO user, Integer userId) {
+    public ResponseEntity<String> update(UserDTO user, Long userId) {
         try {
             Optional<User> user1 = userRepository.findById(userId);
             if (user1.isPresent()) {
@@ -132,11 +133,11 @@ public class UserServiceImpl implements UserService {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>("Fail to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Fail to update", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    public ResponseEntity<?> updateUserRole(String role, Integer userID) {
+    public ResponseEntity<?> updateUserRole(String role, Long userID) {
         try {
             Optional<User> user1 = userRepository.findById(userID);
             if (user1.isPresent()) {
@@ -152,7 +153,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
+    public ResponseEntity<?> updateUserStatus(String status, Long userID) {
         try {
             Optional<User> user = userRepository.findById(userID);
             if (user.isPresent()) {
@@ -168,11 +169,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> deleteUser(Integer userId) {
+    public ResponseEntity<String> deleteUser(Long userId) {
 
         Optional<User> optional = userRepository.findById(userId);
         User user = optional.get();
-        log.info("Role {}", user.getRole());
 
         if (optional.isPresent() && !"admin".equals(user.getRole())) {
 

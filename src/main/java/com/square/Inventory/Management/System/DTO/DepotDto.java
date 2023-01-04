@@ -6,7 +6,7 @@ import com.square.Inventory.Management.System.Entity.User;
 import javax.validation.constraints.NotNull;
 
 public class DepotDto {
-    private Long id;
+    private long id;
 
     @NotNull
     private String depotName;
@@ -38,12 +38,8 @@ public class DepotDto {
         this.user_id = user_id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Depot convertDepot(DepotDto depotDTO, User user) {
@@ -57,18 +53,13 @@ public class DepotDto {
     }
 
     public DepotDto convertDepotDTO(Depot depot, User user) {
-        DepotDto depotDto = new DepotDto();
+        DepotDto depotDTO = new DepotDto();
 
-        depotDto.setId(depot.getId());
-        depotDto.setDepotName(depot.getDepotName());
-        depotDto.setLocation(depot.getLocation());
+        depotDTO.setDepotName(depot.getDepotName());
+        depotDTO.setLocation(depot.getLocation());
+        depotDTO.setUser_id(Math.toIntExact(user.getId()));
 
-        if (user == null) {
-            return depotDto;
-        }
-
-        depotDto.setUser_id(user.getId());
-        return depotDto;
+        return depotDTO;
     }
 
 }

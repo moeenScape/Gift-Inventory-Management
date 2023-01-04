@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UserDTO {
 
-    private Integer id;
+    private Long id;
     private String firstName;
 
     private String lastName;
@@ -27,7 +27,7 @@ public class UserDTO {
 
     private String status;
 
-    public UserDTO(Integer id, String firstName, String lastName,
+    public UserDTO(Long id, String firstName, String lastName,
                    String contactNumber, String email, String role, String status) {
         this.id = id;
         this.firstName = firstName;
