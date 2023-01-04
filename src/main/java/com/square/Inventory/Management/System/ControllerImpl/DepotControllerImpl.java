@@ -1,7 +1,7 @@
 package com.square.Inventory.Management.System.ControllerImpl;
 
 import com.square.Inventory.Management.System.Controller.DepotController;
-import com.square.Inventory.Management.System.DTO.DepotDTO;
+import com.square.Inventory.Management.System.DTO.DepotDto;
 import com.square.Inventory.Management.System.Entity.Depot;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
@@ -18,50 +18,51 @@ public class DepotControllerImpl implements DepotController {
     private final DepotService depotService;
     private final DepotRepository depotRepository;
 
-    public DepotControllerImpl(DepotService depotService, DepotRepository depotRepository){
+    public DepotControllerImpl(DepotService depotService, DepotRepository depotRepository) {
         this.depotService = depotService;
         this.depotRepository = depotRepository;
     }
 
     /**
-     * add depots
-     * @param depot something
-     * @return something
+     * add depots with or without user!!
+     *
+     * @param depotDto object
+     * @return an depot Object
      */
     @Override
-    public ResponseEntity<Depot> addDepot(@RequestBody DepotDTO depotDTO) {
-        return new ResponseEntity<Depot>(depotService.addDepot(depotDTO), HttpStatus.CREATED);
+    public ResponseEntity<DepotDto> addDepot(@RequestBody DepotDto depotDto) {
+        Depot depot = depotService.addDepot(depotDto);
+        return ResponseEntity.ok(depotDto.convertDepotDTO(depot, depot.getUser()));
     }
 
     @Override
-    public ResponseEntity<Depot> editDepot(@PathVariable("id") Long id, @RequestBody Depot depot){
-        return new ResponseEntity<Depot>(depotService.editDepot(id,depot), HttpStatus.OK);
+    public ResponseEntity<Depot> editDepot(@RequestBody DepotDto depotDTO) {
+        return ResponseEntity.ok(depotService.editDepot(depotDTO));
     }
 
     @Override
     public ResponseEntity<?> getDepotWithoutUser(@PathVariable("id") Long id) {
         Optional<Depot> depot = depotRepository.findById(id);
         if (depot.isPresent()) {
-            Depot _depot = depot.get();
-            return new ResponseEntity<Depot>(_depot, HttpStatus.OK);
+            return new ResponseEntity<Depot>(depot.get(), HttpStatus.OK);
         }
         return new ResponseEntity<String>("No Depot Found", HttpStatus.NOT_FOUND);
     }
 
     @Override
-    public ResponseEntity<List<Depot>> viewAllDepots(){
-        return new ResponseEntity<List<Depot>>(depotRepository.findAll(),HttpStatus.OK);
+    public ResponseEntity<List<Depot>> viewAllDepots() {
+        return new ResponseEntity<List<Depot>>(depotRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> viewAllDepotsPaginated(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue="10") int size) {
-        return new ResponseEntity<>(depotService.viewDepotsPaginated(page,size),HttpStatus.OK);
+            @RequestParam(defaultValue = "10") int size) {
+        return new ResponseEntity<>(depotService.viewDepotsPaginated(page, size), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<DepotProjectionInterface>> showAllDepotName(){
+    public ResponseEntity<List<DepotProjectionInterface>> showAllDepotName() {
         return new ResponseEntity<>(depotService.showAllDepotName(), HttpStatus.OK);
     }
 
