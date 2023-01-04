@@ -41,10 +41,10 @@ public class DepotControllerImpl implements DepotController {
     }
 
     @Override
-    public ResponseEntity<?> getDepotWithoutUser(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getDepot(@PathVariable("id") Long id) {
         Optional<Depot> depot = depotRepository.findById(id);
         if (depot.isPresent()) {
-            return new ResponseEntity<Depot>(depot.get(), HttpStatus.OK);
+            return ResponseEntity.ok(depot.get());
         }
         return new ResponseEntity<String>("No Depot Found", HttpStatus.NOT_FOUND);
     }
