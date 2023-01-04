@@ -18,6 +18,6 @@ public class SampleSectionUnit {
     private Integer numberOfEmployee;
 
     @OneToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "id")
     private User user;
 }

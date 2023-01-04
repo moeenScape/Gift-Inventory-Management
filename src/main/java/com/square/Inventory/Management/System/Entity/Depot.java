@@ -16,7 +16,7 @@ public class Depot {
     private String location;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private User user;
 
     public String getLocation() {
