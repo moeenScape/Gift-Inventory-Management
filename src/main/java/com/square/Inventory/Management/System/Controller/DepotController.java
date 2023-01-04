@@ -1,6 +1,6 @@
 package com.square.Inventory.Management.System.Controller;
 
-import com.square.Inventory.Management.System.DTO.DepotDTO;
+import com.square.Inventory.Management.System.DTO.DepotDto;
 import com.square.Inventory.Management.System.Entity.Depot;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import org.springframework.http.ResponseEntity;
@@ -8,15 +8,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RequestMapping("/depot")
 public interface DepotController {
 
     @PostMapping("/add")
-    ResponseEntity<Depot> addDepot(@RequestBody DepotDTO depotDTO);
+    ResponseEntity<DepotDto> addDepot(@RequestBody DepotDto depotDto);
 
     @PutMapping("/edit")
-    ResponseEntity<Depot> editDepot(@PathVariable("id") Long id, @RequestBody Depot depot);
+    ResponseEntity<Depot> editDepot(@RequestBody DepotDto depotDto);
 
     @GetMapping("/view/{id}")
     ResponseEntity<?> getDepotWithoutUser(@PathVariable("id") Long id);
@@ -24,7 +23,7 @@ public interface DepotController {
     @GetMapping("/viewAll")
     ResponseEntity<List<Depot>> viewAllDepots();
 
-    @GetMapping("/viewAllDepotsName")
+    @GetMapping("/viewAllName")
     ResponseEntity<List<DepotProjectionInterface>> showAllDepotName();
 
     @GetMapping("/viewAllPaginated")

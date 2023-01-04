@@ -4,9 +4,6 @@ import com.square.Inventory.Management.System.Entity.SBU;
 import com.poiji.annotation.ExcelCell;
 import com.poiji.annotation.ExcelRow;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 public class BudgetExcelDTO {
     @ExcelRow
     private int rowIndex;

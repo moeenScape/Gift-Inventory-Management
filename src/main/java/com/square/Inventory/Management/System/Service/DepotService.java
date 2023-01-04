@@ -1,6 +1,6 @@
 package com.square.Inventory.Management.System.Service;
 
-import com.square.Inventory.Management.System.DTO.DepotDTO;
+import com.square.Inventory.Management.System.DTO.DepotDto;
 import com.square.Inventory.Management.System.Entity.Depot;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
@@ -20,26 +20,26 @@ public class DepotService {
     private final DepotRepository depotRepository;
     private final UserRepository userRepository;
 
-    public DepotService(DepotRepository depotRepository, UserRepository userRepository){
+    public DepotService(DepotRepository depotRepository, UserRepository userRepository) {
         this.depotRepository = depotRepository;
         this.userRepository = userRepository;
     }
 
-    public Depot addDepot(DepotDTO depotDTO) {
-        Integer user_id = depotDTO.getUser_id();
+    public Depot addDepot(DepotDto depotDto) {
+        Integer userId = depotDto.getUser_id();
 
         Depot depot = new Depot();
 
-        if (user_id == null) {
-            depot.setDepotName(depotDTO.getDepotName());
-            depot.setLocation(depotDTO.getLocation());
+        if (userId == null) {
+            depot.setDepotName(depotDto.getDepotName());
+            depot.setLocation(depotDto.getLocation());
 
             return depotRepository.save(depot);
         } else {
-            Optional<User> user = userRepository.findById(user_id);
+            Optional<User> user = userRepository.findById(userId);
 
             if (user.isPresent()) {
-                depot = depotDTO.convertDepot(depotDTO, user.get());
+                depot = depotDto.convertDepot(depotDto, user.get());
 
                 return depotRepository.save(depot);
             } else {
@@ -48,31 +48,19 @@ public class DepotService {
         }
     }
 
-    public Depot addDepotMain(Depot getFullDepot) {
-        Depot depot = new Depot();
-        depot.setLocation(getFullDepot.getLocation());
-        depot.setDepotName(getFullDepot.getDepotName());
-        depot.setUser(getFullDepot.getUser());
+    public Depot editDepot(DepotDto depotDto) {
+        Depot depot = depotRepository.findById(depotDto.getId()).orElseThrow(); // todo custom exception
 
-        return depotRepository.save(depot);
+        depot.setDepotName(depotDto.getDepotName());
+        depot.setLocation(depotDto.getLocation());
+
+        depot = depotRepository.save(depot);
+
+        return depot;
     }
 
-    public Depot editDepot(Long id, Depot givenDepot) {
-        Optional<Depot> depot = depotRepository.findById(id);
-        if (depot.isPresent()) {
-            Depot changeDepot = depot.get();
-            changeDepot.setDepotName(givenDepot.getDepotName());
-            changeDepot.setLocation(givenDepot.getLocation());
-            depotRepository.save(changeDepot);
-            return changeDepot;
-        } else {
-            System.out.println("Invalid Id given");
-            return null;
-        }
-    }
-
-    public void deleteDepot(Depot _depot){
-        depotRepository.delete(_depot);
+    public void deleteDepot(Depot depot) {
+        depotRepository.delete(depot);
     }
 
     public List<Depot> viewDepotsPaginated(int page, int size) {
@@ -90,7 +78,7 @@ public class DepotService {
         return depots;
     }
 
-    public List<DepotProjectionInterface> showAllDepotName(){
+    public List<DepotProjectionInterface> showAllDepotName() {
         return depotRepository.getAllDepotName();
     }
 
