@@ -48,17 +48,18 @@ public class BudgetControllerImpl implements BudgetController {
      */
     @Override
     public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file) {
-        try{
-            if(jwtFilter.isAdmin())
-            {
+        try {
+            if (jwtFilter.isAdmin()) {
                 return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
-            }else {
-                return new ResponseEntity<>(new ArrayList<>(),HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);}
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @Override
     public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) {
         return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
@@ -112,18 +113,18 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary(){
+    public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary() {
         return budgetService.getSSUSummary();
     }
 
     @Override
     public ResponseEntity<List<SSU>> getPreviousSSUBudgetByMonthAndYear(String ssu_id, String month, int year) {
-        return budgetService.getPreviousMonthBudgetByMonthAndYear(ssu_id,month,year);
+        return budgetService.getPreviousMonthBudgetByMonthAndYear(ssu_id, month, year);
     }
 
     @Override
     public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
-        return budgetService.getPreviousDepotBudgetByMonthAndYear(depotID,month,year);
+        return budgetService.getPreviousDepotBudgetByMonthAndYear(depotID, month, year);
     }
 
 

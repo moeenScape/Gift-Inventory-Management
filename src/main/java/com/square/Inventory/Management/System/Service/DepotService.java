@@ -26,7 +26,7 @@ public class DepotService {
     }
 
     public Depot addDepot(DepotDto depotDto) {
-        Integer userId = depotDto.getUser_id();
+        Long userId = Long.valueOf(depotDto.getUser_id());
 
         Depot depot = new Depot();
 

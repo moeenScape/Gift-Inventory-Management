@@ -57,7 +57,7 @@ public class DepotDto {
 
         depotDTO.setDepotName(depot.getDepotName());
         depotDTO.setLocation(depot.getLocation());
-        depotDTO.setUser_id(user.getId());
+        depotDTO.setUser_id(Math.toIntExact(user.getId()));
 
         return depotDTO;
     }

@@ -17,10 +17,10 @@ public interface UserController {
 
     @PutMapping(path = "/update/{userId}")
     ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO,
-                                      @PathVariable Integer userId);
+                                      @PathVariable Long userId);
 
     @DeleteMapping(path = "/delete/{userId}")
-    ResponseEntity<String> deleteUser(@PathVariable Integer userId);
+    ResponseEntity<String> deleteUser(@PathVariable Long userId);
 
     @GetMapping(path = "/all")
     ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,
@@ -33,11 +33,11 @@ public interface UserController {
 
     @PutMapping(path = "/update/role/{userID}")
     ResponseEntity<?> updateUserRole(@RequestBody String role,
-                                     @PathVariable Integer userID);
+                                     @PathVariable Long userID);
 
     @PutMapping(path = "/update/status/{userID}")
     ResponseEntity<?> updateUserStatus(@RequestBody String status,
-                                       @PathVariable Integer userID);
+                                       @PathVariable Long userID);
 
 
     @GetMapping(path = "/dump")
