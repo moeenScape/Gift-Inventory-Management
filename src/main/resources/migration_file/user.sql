@@ -5,7 +5,7 @@ create table user (
     last_name varchar(250),
     email varchar(250),
     contact_number varchar(11),
-    password varchar(10),
+    password varchar(250),
     role varchar(10),
     status varchar(10),
 
@@ -13,5 +13,5 @@ create table user (
 );
 
 --insert
-insert into user(id,first_name,last_name,email,contract_number,password,role,status)
+insert into user(id,first_name,last_name,email,contact_number,password,role,status)
 value(?,?,?,?,?,?,?,?);
