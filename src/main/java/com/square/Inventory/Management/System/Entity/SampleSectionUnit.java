@@ -1,8 +1,15 @@
 package com.square.Inventory.Management.System.Entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class SampleSectionUnit {
     @Id
     @Column(name = "ssuID")
@@ -18,6 +25,6 @@ public class SampleSectionUnit {
     private Integer numberOfEmployee;
 
     @OneToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 }

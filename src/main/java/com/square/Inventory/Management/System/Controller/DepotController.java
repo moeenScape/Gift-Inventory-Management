@@ -18,7 +18,7 @@ public interface DepotController {
     ResponseEntity<Depot> editDepot(@RequestBody DepotDto depotDto);
 
     @GetMapping("/view/{id}")
-    ResponseEntity<?> getDepotWithoutUser(@PathVariable("id") Long id);
+    ResponseEntity<?> getDepot(@PathVariable("id") Long id);
 
     @GetMapping("/viewAll")
     ResponseEntity<List<Depot>> viewAllDepots();

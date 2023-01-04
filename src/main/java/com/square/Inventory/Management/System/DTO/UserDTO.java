@@ -1,35 +1,44 @@
 package com.square.Inventory.Management.System.DTO;
 
-import com.square.Inventory.Management.System.Entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserDTO {
 
+    private Long id;
     private String firstName;
 
     private String lastName;
 
     private String contactNumber;
-
-    @Email(message = "Valid Email")
+    @Email
     private String email;
 
-    @NotBlank(message = "Password Mandatory")
+    @NotBlank(message = "Password is mandatory")
     private String password;
 
-    @NotBlank(message = "Role Mandatory")
+    @NotBlank(message = "role is mandatory")
     private String role;
 
     private String status;
 
+    public UserDTO(Long id, String firstName, String lastName,
+                   String contactNumber, String email, String role, String status) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.role = role;
+        this.status = status;
+    }
 
+    public UserDTO() {
+
+    }
 }

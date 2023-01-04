@@ -1,18 +1,18 @@
 package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
+import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
-import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDTO;
+import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.IMSUtils.TimeUtils;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,9 +33,9 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<BudgetExcelDTO> getAllBudgetFromExcel() {
-        List<BudgetExcelDTO> budgets = Poiji.fromExcel(new File("sample_budgets.xlsx"), BudgetExcelDTO.class);
-        return new ArrayList<BudgetExcelDTO>(budgets);
+    public List<BudgetExcelDto> getAllBudgetFromExcel() {
+        List<BudgetExcelDto> budgets = Poiji.fromExcel(new File("sample_budgets.xlsx"), BudgetExcelDto.class);
+        return new ArrayList<BudgetExcelDto>(budgets);
     }
 
     @Override
@@ -43,11 +43,11 @@ public class BudgetServiceImpl implements BudgetService {
         String filename = file.getOriginalFilename();
 //        log.info(filename);
         assert filename != null;
-        List<BudgetExcelDTO> BudgetExcelDTO = Poiji.fromExcel(new File(filename), BudgetExcelDTO.class);
+        List<BudgetExcelDto> BudgetExcelDTO = Poiji.fromExcel(new File(filename), BudgetExcelDto.class);
         List<Budget> allBudget = new ArrayList<>();
         int len = BudgetExcelDTO.size();
         for (int i = 0; i < len; i++) {
-            BudgetExcelDTO _BudgetExcelDTO = BudgetExcelDTO.get(i);
+            BudgetExcelDto _BudgetExcelDTO = BudgetExcelDTO.get(i);
             Budget _budget = new Budget();
             _budget.setSapCode(_BudgetExcelDTO.getSapCode());
             _budget.setBudgetID(_BudgetExcelDTO.getBudgetID());
@@ -76,7 +76,7 @@ public class BudgetServiceImpl implements BudgetService {
         List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
         if (ssuList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(ssuList, HttpStatus.OK);
         }
@@ -88,7 +88,7 @@ public class BudgetServiceImpl implements BudgetService {
         List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
         if (depotList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(depotList, HttpStatus.OK);
         }
@@ -99,7 +99,7 @@ public class BudgetServiceImpl implements BudgetService {
         List<Budget> budgetList = budgetRepository.getBudgetByMonth(TimeUtils.getCurrentMonth());
 
         if (budgetList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(budgetList, HttpStatus.OK);
         }
@@ -110,7 +110,7 @@ public class BudgetServiceImpl implements BudgetService {
         List<Budget> budgetList = budgetRepository.findAll();
 
         if (budgetList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(budgetList, HttpStatus.OK);
         }
@@ -120,7 +120,7 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseEntity<List<BudgetSummary>> getSummary() {
         List<BudgetSummary> budgetSummaryList = budgetRepository.getSummary();
         if (budgetSummaryList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
         }
@@ -130,7 +130,7 @@ public class BudgetServiceImpl implements BudgetService {
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
         List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
         if (categoryWiseSummaryList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
         }
@@ -152,7 +152,7 @@ public class BudgetServiceImpl implements BudgetService {
         List<SSU> getPreviousMonthBudgetByMonthAndYearList = budgetRepository.getBudgetForSSUByName(ssu_id, month, year);
 
         if (getPreviousMonthBudgetByMonthAndYearList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList, HttpStatus.OK);
         }
@@ -163,7 +163,7 @@ public class BudgetServiceImpl implements BudgetService {
         List<DEPOT> getPreviousDepotBudgetByMonthAndYearList = budgetRepository.getBudgetForDepotByID(depotID, month, year);
 
         if (getPreviousDepotBudgetByMonthAndYearList.isEmpty()) {
-            return new ResponseEntity("No Such Data Found in Database", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList, HttpStatus.OK);
         }

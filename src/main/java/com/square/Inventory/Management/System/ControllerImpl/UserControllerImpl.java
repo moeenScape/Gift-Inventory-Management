@@ -3,8 +3,6 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
-import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
-import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Service.UserService;
@@ -18,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class UserControllerImpl implements UserController {
@@ -44,8 +41,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> login(Map<String, String> requestMap) {
-        return userService.login(requestMap);
+    public ResponseEntity<String> login(UserDTO userDTO) {
+        return userService.login(userDTO);
     }
 
     @Override
@@ -63,12 +60,16 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> updateUser(UserUpdateDTO userUpdateDTO, Integer userId) {
-        return userService.update(userUpdateDTO, userId);
+    public ResponseEntity<String> updateUser(UserDTO userDTO, Long userId) {
+        if (jwtFilter.isAdmin()) {
+            return userService.update(userDTO, userId);
+        } else {
+            return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @Override
-    public ResponseEntity<String> deleteUser(Integer userId) {
+    public ResponseEntity<String> deleteUser(Long userId) {
         if (jwtFilter.isAdmin()) {
             return userService.deleteUser(userId);
         } else {
@@ -94,11 +95,10 @@ public class UserControllerImpl implements UserController {
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
     }
 
     @Override
-    public ResponseEntity<?> updateUserRole(String role, Integer userID) {
+    public ResponseEntity<?> updateUserRole(String role, Long userID) {
         if (jwtFilter.isAdmin()) {
             return userService.updateUserRole(role, userID);
         } else {
@@ -107,13 +107,11 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
+    public ResponseEntity<?> updateUserStatus(String status, Long userID) {
         if (jwtFilter.isAdmin()) {
             return userService.updateUserStatus(status, userID);
         } else {
             return new ResponseEntity<>("You do not have access to update User Status", HttpStatus.UNAUTHORIZED);
         }
-
     }
-
 }

@@ -2,7 +2,6 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.UserDTO;
-import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
@@ -61,14 +60,14 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> createUser(UserDTO user) {
         try {
             User newUser = userRepository.findByEmail(user.getEmail());
-            if (Objects.isNull(user)) {
+            log.info("Inside log in {}", newUser);
+            if (Objects.isNull(newUser)) {
 
-                userRepository.save(getUserFromMap(user));
-                String subject = "Account Approved By" + " " + getCurrentUserName();
-                String emailBody = "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
-                        + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
-                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
-                emailUtils.sendMail(user.getEmail(), subject, emailBody);
+                userRepository.save(getUserFromDTO(user));
+                emailUtils.sendMail(user.getEmail(), "Account Approved By" + " " + getCurrentUserName(),
+                        "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
+                                + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
+                                + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
@@ -83,25 +82,26 @@ public class UserServiceImpl implements UserService {
     private String getCurrentUserName() {
 
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
-        String name = user.getFirstName() + " " + user.getLastName();
-        return name;
+        return user.getFirstName()+"  "+user.getLastName();
     }
 
     @Override
-    public ResponseEntity<String> login(Map<String, String> requestMap) {
-        log.info("Inside Login{}", requestMap);
+    public ResponseEntity<String> login(UserDTO userDTO) {
         try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
-            );
-
-            if (auth.isAuthenticated()) {
-                if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
-                    return new ResponseEntity<String>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
-                            customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
-                } else {
-                    return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
+            User user=userRepository.findByEmail(userDTO.getEmail());
+            if(Objects.nonNull(user)) {
+                Authentication auth = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+                if (auth.isAuthenticated()) {
+                    if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
+                        return new ResponseEntity<String>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
+                                customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
+                    } else {
+                        return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
+                    }
                 }
+            } else {
+                return InventoryUtils.getResponse("No user found by this Email",HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             log.error("{}", ex);
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> update(UserUpdateDTO user, Integer userId) {
+    public ResponseEntity<String> update(UserDTO user, Long userId) {
         try {
             Optional<User> user1 = userRepository.findById(userId);
             if (user1.isPresent()) {
@@ -126,26 +126,26 @@ public class UserServiceImpl implements UserService {
                 user2.setLastName(user.getLastName());
                 user2.setContactNumber(user.getContactNumber());
                 userRepository.save(user2);
+                return new ResponseEntity<>("User Updated", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User is not present", HttpStatus.OK);
             }
-            return new ResponseEntity<>("User Updated", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>("Fail to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Fail to update", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    public ResponseEntity<?> updateUserRole(String role, Integer userID) {
-        String userName = null;
+    public ResponseEntity<?> updateUserRole(String role, Long userID) {
         try {
             Optional<User> user1 = userRepository.findById(userID);
             if (user1.isPresent()) {
                 User user2 = user1.get();
                 user2.setRole(role);
                 userRepository.save(user2);
-                userName = user2.getFirstName() + " " + user2.getLastName() + "New Role : " + role;
+                return new ResponseEntity<>(user2.getFirstName() + " " + user2.getLastName() + "New Role : " + role, HttpStatus.OK);
             }
-            return new ResponseEntity<>(userName, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -153,17 +153,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> updateUserStatus(String status, Integer userID) {
-        String userName = null;
+    public ResponseEntity<?> updateUserStatus(String status, Long userID) {
         try {
             Optional<User> user = userRepository.findById(userID);
             if (user.isPresent()) {
                 User newUser = user.get();
                 newUser.setRole(status);
                 userRepository.save(newUser);
-                userName = newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status;
+                return new ResponseEntity<>(newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status, HttpStatus.OK);
             }
-            return new ResponseEntity<>(userName, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -171,11 +169,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> deleteUser(Integer userId) {
+    public ResponseEntity<String> deleteUser(Long userId) {
 
         Optional<User> optional = userRepository.findById(userId);
         User user = optional.get();
-        log.info("Role {}", user.getRole());
 
         if (optional.isPresent() && !"admin".equals(user.getRole())) {
 
@@ -211,7 +208,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User getUserFromMap(UserDTO userDTO) {
+    private User getUserFromDTO(UserDTO userDTO) {
         User user = new User();
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
