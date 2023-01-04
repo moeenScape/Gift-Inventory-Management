@@ -2,7 +2,6 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.UserDTO;
-import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
@@ -61,14 +60,15 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> createUser(UserDTO user) {
         try {
             User newUser = userRepository.findByEmail(user.getEmail());
-            if (Objects.isNull(user)) {
+            log.info("Inside log in {}",newUser);
+            if (Objects.isNull(newUser)) {
 
                 userRepository.save(getUserFromMap(user));
                 String subject = "Account Approved By" + " " + getCurrentUserName();
                 String emailBody = "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
                         + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
                         + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square";
-                emailUtils.sendMail(user.getEmail(), subject, emailBody);
+                //emailUtils.sendMail(user.getEmail(), subject, emailBody);
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
@@ -88,11 +88,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> login(Map<String, String> requestMap) {
-        log.info("Inside Login{}", requestMap);
+    public ResponseEntity<String> login(UserDTO userDTO) {
+        log.info("Inside Login{}",userDTO);
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
+                    new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
             );
 
             if (auth.isAuthenticated()) {
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> update(UserUpdateDTO user, Integer userId) {
+    public ResponseEntity<String> update(UserDTO user, Integer userId) {
         try {
             Optional<User> user1 = userRepository.findById(userId);
             if (user1.isPresent()) {

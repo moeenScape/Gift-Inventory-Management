@@ -3,8 +3,6 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
-import com.square.Inventory.Management.System.DTO.UserUpdateDTO;
-import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Service.UserService;
@@ -44,8 +42,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> login(Map<String, String> requestMap) {
-        return userService.login(requestMap);
+    public ResponseEntity<String> login(UserDTO userDTO) {
+        return userService.login(userDTO);
     }
 
     @Override
@@ -63,8 +61,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> updateUser(UserUpdateDTO userUpdateDTO, Integer userId) {
-        return userService.update(userUpdateDTO, userId);
+    public ResponseEntity<String> updateUser(UserDTO userDTO, Integer userId) {
+        return userService.update(userDTO, userId);
     }
 
     @Override
