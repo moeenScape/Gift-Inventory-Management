@@ -49,6 +49,7 @@ public class DepotDto {
     public Depot convertDepot(DepotDto depotDTO, User user) {
         Depot depot = new Depot();
 
+        depot.setId(depotDTO.getId());
         depot.setDepotName(depotDTO.getDepotName());
         depot.setLocation(depotDTO.getLocation());
         depot.setUser(user);
