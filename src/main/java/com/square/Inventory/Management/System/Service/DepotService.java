@@ -6,6 +6,7 @@ import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -49,14 +51,12 @@ public class DepotService {
     }
 
     public Depot editDepot(DepotDto depotDto) {
-        Depot depot = depotRepository.findById(depotDto.getId()).orElseThrow(); // todo custom exception
+        Depot depot = depotRepository.findById(depotDto.getId()).orElseThrow(NoSuchElementException::new); // todo custom exception
 
         depot.setDepotName(depotDto.getDepotName());
         depot.setLocation(depotDto.getLocation());
 
-        depot = depotRepository.save(depot);
-
-        return depot;
+        return depotRepository.save(depot);
     }
 
     public void deleteDepot(Depot depot) {

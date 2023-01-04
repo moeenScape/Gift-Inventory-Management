@@ -4,5 +4,5 @@ create table depot (
     location varchar(255),
     userid int,
     primary key (id),
-    foreign key (userid) references user(userid)
+    foreign key (userid) references user(id)
 );
