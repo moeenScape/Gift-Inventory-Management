@@ -9,7 +9,6 @@ import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
-import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +31,11 @@ import java.util.*;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private BudgetRepository budgetRepository;
 
     @Autowired
     UserRepository userRepository;
 
-    @Autowired(required = true)
+    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
@@ -54,7 +51,7 @@ public class UserServiceImpl implements UserService {
     EmailUtils emailUtils;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public ResponseEntity<String> createUser(UserDTO user) {
@@ -82,29 +79,29 @@ public class UserServiceImpl implements UserService {
     private String getCurrentUserName() {
 
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
-        return user.getFirstName()+"  "+user.getLastName();
+        return user.getFirstName() + "  " + user.getLastName();
     }
 
     @Override
     public ResponseEntity<String> login(UserDTO userDTO) {
         try {
-            User user=userRepository.findByEmail(userDTO.getEmail());
-            if(Objects.nonNull(user)) {
+            User user = userRepository.findByEmail(userDTO.getEmail());
+            if (Objects.nonNull(user)) {
                 Authentication auth = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
                 if (auth.isAuthenticated()) {
                     if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
-                        return new ResponseEntity<String>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
+                        return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
                                 customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
                         return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
                     }
                 }
             } else {
-                return InventoryUtils.getResponse("No user found by this Email",HttpStatus.BAD_REQUEST);
+                return InventoryUtils.getResponse("No user found by this Email", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
-            log.error("{}", ex);
+            log.error("Error {}", ex);
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -112,8 +109,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ByteArrayInputStream load() {
         List<User> users = userRepository.findAll();
-        ByteArrayInputStream in = ExcelHelper.UserToExcel(users);
-        return in;
+        return ExcelHelper.UserToExcel(users);
     }
 
     @Override
@@ -173,7 +169,6 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> optional = userRepository.findById(userId);
         User user = optional.get();
-
         if (optional.isPresent() && !"admin".equals(user.getRole())) {
 
             userRepository.deleteById(userId);
@@ -193,7 +188,7 @@ public class UserServiceImpl implements UserService {
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<UserDTO>();
+            return new ArrayList<>();
         }
     }
 
@@ -204,7 +199,7 @@ public class UserServiceImpl implements UserService {
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<UserDTO>();
+            return new ArrayList<>();
         }
     }
 

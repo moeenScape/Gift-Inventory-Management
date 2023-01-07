@@ -10,12 +10,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SampleSectionRepository extends JpaRepository<SampleSectionUnit,Long> {
+public interface SampleSectionRepository extends JpaRepository<SampleSectionUnit, Long> {
 
     @Query("select new com.square.Inventory.Management.System.DTO.SsuDto(s.ssuID,s.ssuName," +
             "s.location) from SampleSectionUnit s")
     Page<SsuDto> getAllUser(Pageable paging);
 
-    @Query(value = "select user_id from sample_section_unit where user_id=:user_id ",nativeQuery = true)
-    Long getUserIDbySsuID(@Param("user_id")Long user_id);
+    @Query(value = "select user_id from sample_section_unit where user_id=:user_id ", nativeQuery = true)
+    Long getUserIDbySsuID(@Param("user_id") Long user_id);
 }
