@@ -28,7 +28,7 @@ public class DepotService {
     }
 
     public Depot addDepot(DepotDto depotDto) {
-        Long userId = Long.valueOf(depotDto.getUser_id());
+        Long userId = depotDto.getUser_id();
 
         Depot depot = new Depot();
 
@@ -55,6 +55,10 @@ public class DepotService {
 
         depot.setDepotName(depotDto.getDepotName());
         depot.setLocation(depotDto.getLocation());
+        if (depotDto.getUser_id() != null) {
+            User _user = userRepository.findById(depotDto.getUser_id()).orElseThrow(NoSuchElementException::new);
+            depot = depotDto.convertDepot(depotDto, _user);
+        }
 
         return depotRepository.save(depot);
     }
