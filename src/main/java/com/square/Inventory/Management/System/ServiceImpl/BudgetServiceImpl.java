@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
+import com.poiji.exception.PoijiExcelType;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
@@ -18,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,19 +34,21 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<BudgetExcelDto> getAllBudgetFromExcel() {
-        List<BudgetExcelDto> budgets = Poiji.fromExcel(new File("sample_budgets.xlsx"), BudgetExcelDto.class);
+    public List<BudgetExcelDto> getAllBudgetFromExcel(MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+
+        List<BudgetExcelDto> budgets = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
         return new ArrayList<BudgetExcelDto>(budgets);
     }
 
     @Override
-    public List<Budget> addBudgetFromExcel(MultipartFile file) {
-        String filename = file.getOriginalFilename();
-//        log.info(filename);
-        assert filename != null;
-        List<BudgetExcelDto> BudgetExcelDTO = Poiji.fromExcel(new File(filename), BudgetExcelDto.class);
+    public List<Budget> addBudgetFromExcel(MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+        List<BudgetExcelDto> BudgetExcelDTO = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
+
         List<Budget> allBudget = new ArrayList<>();
         int len = BudgetExcelDTO.size();
+
         for (int i = 0; i < len; i++) {
             BudgetExcelDto _BudgetExcelDTO = BudgetExcelDTO.get(i);
             Budget _budget = new Budget();

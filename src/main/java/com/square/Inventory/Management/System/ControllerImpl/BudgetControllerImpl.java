@@ -15,9 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +39,8 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel() {
-        return new ResponseEntity<List<BudgetExcelDto>>(budgetService.getAllBudgetFromExcel(), HttpStatus.OK);
+    public ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        return new ResponseEntity<List<BudgetExcelDto>>(budgetService.getAllBudgetFromExcel(file), HttpStatus.OK);
     }
 
     /**
@@ -61,7 +63,7 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) {
+    public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) throws IOException {
         return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
     }
 

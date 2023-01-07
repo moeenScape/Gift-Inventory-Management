@@ -6,7 +6,6 @@ import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,17 +49,20 @@ public class DepotService {
         }
     }
 
-    public Depot editDepot(DepotDto depotDto) {
+    public DepotDto editDepot(DepotDto depotDto) {
         Depot depot = depotRepository.findById(depotDto.getId()).orElseThrow(NoSuchElementException::new); // todo custom exception
 
         depot.setDepotName(depotDto.getDepotName());
         depot.setLocation(depotDto.getLocation());
+        User user = null;
         if (depotDto.getUser_id() != null) {
-            User _user = userRepository.findById(depotDto.getUser_id()).orElseThrow(NoSuchElementException::new);
-            depot = depotDto.convertDepot(depotDto, _user);
+            user = userRepository.findById(depotDto.getUser_id()).orElseThrow(NoSuchElementException::new);
+            depot = depotDto.convertDepot(depotDto, user);
         }
 
-        return depotRepository.save(depot);
+        depot = depotRepository.save(depot); // todo response should be a dto ... not entity
+        depotDto = depotDto.convertDepotDTO(depot, user);
+        return depotDto;
     }
 
     public void deleteDepot(Depot depot) {
