@@ -15,7 +15,7 @@ public interface DepotController {
     ResponseEntity<DepotDto> addDepot(@RequestBody DepotDto depotDto);
 
     @PutMapping("/edit")
-    ResponseEntity<Depot> editDepot(@RequestBody DepotDto depotDto);
+    ResponseEntity<DepotDto> editDepot(@RequestBody DepotDto depotDto);
 
     @GetMapping("/view/{id}")
     ResponseEntity<?> getDepot(@PathVariable("id") Long id);

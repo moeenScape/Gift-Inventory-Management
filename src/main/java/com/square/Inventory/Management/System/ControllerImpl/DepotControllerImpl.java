@@ -36,7 +36,7 @@ public class DepotControllerImpl implements DepotController {
     }
 
     @Override
-    public ResponseEntity<Depot> editDepot(@RequestBody DepotDto depotDTO) {
+    public ResponseEntity<DepotDto> editDepot(@RequestBody DepotDto depotDTO) {
         return ResponseEntity.ok(depotService.editDepot(depotDTO));
     }
 
