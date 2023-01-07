@@ -19,7 +19,7 @@ public interface BudgetService {
 
     List<BudgetExcelDto> getAllBudgetFromExcel(MultipartFile file) throws IOException;
 
-    List<Budget> addBudgetFromExcel(MultipartFile file);
+    List<Budget> addBudgetFromExcel(MultipartFile file) throws IOException;
 
     ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName);
 

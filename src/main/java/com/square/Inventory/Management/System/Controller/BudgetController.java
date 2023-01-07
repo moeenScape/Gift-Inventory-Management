@@ -17,13 +17,13 @@ import java.util.List;
 @RequestMapping("/budget")
 public interface BudgetController {
 
-    @PostMapping("/showAll")
+    @PostMapping("/showExcel")
     ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
     ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file);
 
     @PostMapping("/addBudgetFromExcel")
-    ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file);
+    ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
     @GetMapping(path = "/for/ssu/{ssuName}")
     ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);

@@ -42,13 +42,13 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<Budget> addBudgetFromExcel(MultipartFile file) {
-        String filename = file.getOriginalFilename();
-//        log.info(filename);
-        assert filename != null;
-        List<BudgetExcelDto> BudgetExcelDTO = Poiji.fromExcel(new File(filename), BudgetExcelDto.class);
+    public List<Budget> addBudgetFromExcel(MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+        List<BudgetExcelDto> BudgetExcelDTO = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
+
         List<Budget> allBudget = new ArrayList<>();
         int len = BudgetExcelDTO.size();
+
         for (int i = 0; i < len; i++) {
             BudgetExcelDto _BudgetExcelDTO = BudgetExcelDTO.get(i);
             Budget _budget = new Budget();

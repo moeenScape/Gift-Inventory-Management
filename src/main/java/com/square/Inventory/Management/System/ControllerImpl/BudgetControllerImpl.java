@@ -63,7 +63,7 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) {
+    public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) throws IOException {
         return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
     }
 
