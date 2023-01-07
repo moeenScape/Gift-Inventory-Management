@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,27 +31,43 @@ public class SampleSectionServiceImpl implements SampleSectionService {
     @Override
     public ResponseEntity<String> createSSU(SsuDto sampleSectionUnit) {
         try {
-            Long user_id = sampleSectionUnit.getUser_id();
-            SampleSectionUnit newSampleSectionUnit = new SampleSectionUnit();
-            if (user_id == null) {
-                newSampleSectionUnit.setSsuID(sampleSectionUnit.getSsuID());
-                newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
-                newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
-                newSampleSectionUnit.setNumberOfEmployee(sampleSectionUnit.getNumberOfEmployee());
-                sampleSectionRepository.save(newSampleSectionUnit);
-                return new ResponseEntity<>("Add SSU without User", HttpStatus.OK);
+
+            Optional<SampleSectionUnit> sectionUnit = sampleSectionRepository.findById(sampleSectionUnit.getSsuID());
+            if (sectionUnit.isPresent()) {
+                return new ResponseEntity<>("This Sample Section ID Already Exist", HttpStatus.BAD_REQUEST);
+            } else if (findUserID(sampleSectionUnit.getUser_id())) {
+                return new ResponseEntity<>("This User Already Assign in a SSU", HttpStatus.BAD_REQUEST);
             } else {
-                Optional<User> user = userRepository.findById(user_id);
-                if (user.isPresent()) {
-                    newSampleSectionUnit = sampleSectionUnit.convertSSU(sampleSectionUnit, user.get());
+                Long user_id = sampleSectionUnit.getUser_id();
+                SampleSectionUnit newSampleSectionUnit = new SampleSectionUnit();
+                if (user_id == null) {
+
+                    newSampleSectionUnit.setSsuID(sampleSectionUnit.getSsuID());
+                    newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
+                    newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
+                    newSampleSectionUnit.setNumberOfEmployee(sampleSectionUnit.getNumberOfEmployee());
                     sampleSectionRepository.save(newSampleSectionUnit);
-                    return new ResponseEntity<>("Add SSu with User", HttpStatus.OK);
+                    return new ResponseEntity<>("Add SSU without User", HttpStatus.OK);
+
+                } else {
+
+                    Optional<User> user = userRepository.findById(user_id);
+                    if (user.isPresent()) {
+                        newSampleSectionUnit = sampleSectionUnit.convertSSU(sampleSectionUnit, user.get());
+                        sampleSectionRepository.save(newSampleSectionUnit);
+                        return new ResponseEntity<>("Add SSu with User", HttpStatus.OK);
+                    }
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return new ResponseEntity<>("Failed to Add", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private boolean findUserID(Long user_id) {
+        if (Objects.isNull(sampleSectionRepository.getUserIDbySsuID(user_id))) return false;
+        return true;
     }
 
     @Override
@@ -71,8 +88,11 @@ public class SampleSectionServiceImpl implements SampleSectionService {
 
             if (sectionUnit.isPresent()) {
                 SampleSectionUnit newSampleSectionUnit = sampleSectionUnit;
+                newSampleSectionUnit.setSsuID(ssuID);
                 newSampleSectionUnit.setSsuName(sampleSectionUnit.getSsuName());
                 newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
+                newSampleSectionUnit.setUser(sectionUnit.get().getUser());
+                newSampleSectionUnit.setNumberOfEmployee(sectionUnit.get().getNumberOfEmployee());
                 sampleSectionRepository.save(newSampleSectionUnit);
                 return new ResponseEntity<>("Sample Section Unit Update", HttpStatus.OK);
             } else {
@@ -91,15 +111,15 @@ public class SampleSectionServiceImpl implements SampleSectionService {
 
             if (sampleSectionUnit.isPresent()) {
                 sampleSectionRepository.deleteById(ssuID);
-                return new ResponseEntity<>("Delete SSU" + sampleSectionUnit.get().getSsuName(),HttpStatus.OK);
-            }else {
-                return new ResponseEntity<>("There are no SSU With "+ssuID +"ID", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Delete SSU  " + sampleSectionUnit.get().getSsuName(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("There are no SSU With " + ssuID + "ID", HttpStatus.BAD_REQUEST);
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        return new ResponseEntity<>("Failed to Delete",HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Failed to Delete", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
