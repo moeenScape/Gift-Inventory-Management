@@ -24,4 +24,6 @@ public interface UserService {
     ResponseEntity<?> updateUserRole(String role,Long userID);
 
     ResponseEntity<?> updateUserStatus(String status, Long userID);
+
+    ResponseEntity<?> forgetPassword(String email);
 }

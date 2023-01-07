@@ -219,4 +219,11 @@ public class UserServiceImpl implements UserService {
         user.setStatus(userDTO.getStatus());
         return user;
     }
+
+    @Override
+    public ResponseEntity<?> forgetPassword(String email) {
+//        return ResponseEntity.ok("user found");
+
+    }
+
 }

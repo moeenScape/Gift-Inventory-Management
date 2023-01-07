@@ -43,4 +43,7 @@ public interface UserController {
     @GetMapping(path = "/dump")
     Object getFile();
 
+    @PostMapping("/forgetPassword")
+    ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO);
+
 }
