@@ -6,7 +6,6 @@ import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

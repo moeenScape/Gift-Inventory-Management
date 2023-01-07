@@ -11,13 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/budget")
 public interface BudgetController {
 
-    @GetMapping("/showAll")
-    ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel();
+    @PostMapping("/showAll")
+    ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
     ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file);
 

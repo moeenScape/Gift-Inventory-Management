@@ -11,11 +11,13 @@ import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProject
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public interface BudgetService {
 
-    List<BudgetExcelDto> getAllBudgetFromExcel();
+    List<BudgetExcelDto> getAllBudgetFromExcel(MultipartFile file) throws IOException;
 
     List<Budget> addBudgetFromExcel(MultipartFile file);
 

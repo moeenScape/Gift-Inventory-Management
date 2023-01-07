@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
+import com.poiji.exception.PoijiExcelType;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
@@ -18,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +34,10 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<BudgetExcelDto> getAllBudgetFromExcel() {
-        List<BudgetExcelDto> budgets = Poiji.fromExcel(new File("sample_budgets.xlsx"), BudgetExcelDto.class);
+    public List<BudgetExcelDto> getAllBudgetFromExcel(MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+
+        List<BudgetExcelDto> budgets = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
         return new ArrayList<BudgetExcelDto>(budgets);
     }
 
