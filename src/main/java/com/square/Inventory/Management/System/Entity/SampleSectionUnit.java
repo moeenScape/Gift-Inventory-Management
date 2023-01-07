@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class SampleSectionUnit {
     @Id
     @Column(name = "ssuID")
-    private Integer ssuID;
+    private Long ssuID;
 
     @Column(name = "ssuName")
     private String ssuName;
