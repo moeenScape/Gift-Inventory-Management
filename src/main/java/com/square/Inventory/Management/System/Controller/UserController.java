@@ -4,23 +4,24 @@ import com.square.Inventory.Management.System.DTO.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
+
 
 @RequestMapping(path = "/user")
 public interface UserController {
 
     @PostMapping(path = "/login")
-    public ResponseEntity<String> login(@RequestBody(required = true) UserDTO userDTO);
+    ResponseEntity<String> login(@RequestBody UserDTO userDTO);
 
     @PostMapping(path = "/create")
-    public ResponseEntity<String> createUser(@RequestBody UserDTO user);
+    ResponseEntity<String> createUser(@RequestBody UserDTO user);
 
     @PutMapping(path = "/update/{userId}")
     ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO,
                                       @PathVariable Long userId);
 
-    @DeleteMapping(path = "/delete/{userId}")
-    ResponseEntity<String> deleteUser(@PathVariable Long userId);
+    @PutMapping(path = "/disable/{userId}")
+    ResponseEntity<String> disableUser(@PathVariable Long userId);
 
     @GetMapping(path = "/all")
     ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,
@@ -39,8 +40,12 @@ public interface UserController {
     ResponseEntity<?> updateUserStatus(@RequestBody String status,
                                        @PathVariable Long userID);
 
+    @GetMapping(path = "/claim_details")
+    List<String> getClaimDetails();
 
-    @GetMapping(path = "/dump")
-    Object getFile();
+    @GetMapping(path = "/claim_object")
+    Object getClaimFromLogin();
+
+
 
 }
