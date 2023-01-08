@@ -25,4 +25,6 @@ public interface UserService {
     List<String> getClaimDetails();
 
     Object getClaimFromLogin();
+
+    ResponseEntity<?> forgetPassword(String email);
 }

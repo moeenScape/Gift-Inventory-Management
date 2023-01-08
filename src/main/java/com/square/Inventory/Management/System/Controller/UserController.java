@@ -48,4 +48,7 @@ public interface UserController {
 
 
 
+    @PostMapping("/forgetPassword")
+    ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO);
+
 }

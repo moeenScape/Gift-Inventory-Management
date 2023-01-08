@@ -6,6 +6,7 @@ import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
+import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,6 +25,8 @@ import java.util.Optional;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
     private final JWTFilter jwtFilter;
 
@@ -116,5 +120,16 @@ public class UserControllerImpl implements UserController {
     @Override
     public Object getClaimFromLogin() {
         return userService.getClaimFromLogin();
+    }
+
+    @Override
+    public ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        return Optional
+                .ofNullable(userRepository.findByEmail(email) )
+                .map( user -> ResponseEntity.ok(userService.forgetPassword(email) ) )
+                .orElseGet( () -> ResponseEntity.notFound().build() );
+
+//        return ResponseEntity.ok(userService.forgetPassword(userDTO));
     }
 }
