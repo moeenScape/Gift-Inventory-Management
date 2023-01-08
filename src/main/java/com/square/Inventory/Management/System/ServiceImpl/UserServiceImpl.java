@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
             Optional<User> user = userRepository.findById(userID);
             if (user.isPresent()) {
                 User newUser = user.get();
-                newUser.setRole(status);
+                newUser.setStatus(status);
                 userRepository.save(newUser);
                 return new ResponseEntity<>(newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status, HttpStatus.OK);
             }

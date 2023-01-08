@@ -24,8 +24,6 @@ public interface BudgetService {
 
     ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID);
 
-    ResponseEntity<List<Budget>> viewAllBudgetByMonth();
-
     ResponseEntity<List<Budget>> getAllBudget();
 
     ResponseEntity<List<BudgetSummary>> getSummary();
@@ -39,4 +37,6 @@ public interface BudgetService {
     ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year);
 
     ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year);
+
+    ResponseEntity<List<DEPOT>> getDepotBudgetWithUser();
 }
