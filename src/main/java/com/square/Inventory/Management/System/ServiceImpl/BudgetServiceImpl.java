@@ -132,9 +132,9 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
         List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
-        if (categoryWiseSummaryList.isEmpty())
+        if (categoryWiseSummaryList.isEmpty()) {
             return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        else {
+        } else {
             return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
         }
     }

@@ -3,15 +3,17 @@ package com.square.Inventory.Management.System.ServiceImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.User;
+import com.square.Inventory.Management.System.ExcelHepler.ExcelHelper;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
+import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,41 +26,35 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.util.*;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private BudgetRepository budgetRepository;
 
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
-    private final AuthenticationManager authenticationManager;
+    @Autowired(required = true)
+    AuthenticationManager authenticationManager;
 
-    private final CustomUserServiceDetails customUserServiceDetails;
+    @Autowired
+    CustomUserServiceDetails customUserServiceDetails;
 
-    private final JWTUtils jwtUtils;
+    @Autowired
+    JWTUtils jwtUtils;
 
-    private final JWTFilter jwtFilter;
+    @Autowired
+    JWTFilter jwtFilter;
 
-    private final EmailUtils emailUtils;
+    @Autowired
+    EmailUtils emailUtils;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public UserServiceImpl(UserRepository userRepository,
-                           AuthenticationManager authenticationManager,
-                           CustomUserServiceDetails customUserServiceDetails,
-                           JWTUtils jwtUtils,
-                           JWTFilter jwtFilter,
-                           EmailUtils emailUtils,
-                           BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.authenticationManager = authenticationManager;
-        this.customUserServiceDetails = customUserServiceDetails;
-        this.jwtUtils = jwtUtils;
-        this.jwtFilter = jwtFilter;
-        this.emailUtils = emailUtils;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public ResponseEntity<String> createUser(UserDTO user) {
@@ -86,33 +82,39 @@ public class UserServiceImpl implements UserService {
     private String getCurrentUserName() {
 
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
-        return user.getFirstName() + "  " + user.getLastName();
+        return user.getFirstName()+"  "+user.getLastName();
     }
 
     @Override
     public ResponseEntity<String> login(UserDTO userDTO) {
         try {
-            User user = userRepository.findByEmail(userDTO.getEmail());
-            if (Objects.nonNull(user)) {
+            User user=userRepository.findByEmail(userDTO.getEmail());
+            if(Objects.nonNull(user)) {
                 Authentication auth = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
                 if (auth.isAuthenticated()) {
                     if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
-                        return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
+                        return new ResponseEntity<String>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
                                 customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
                         return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
                     }
                 }
             } else {
-                return InventoryUtils.getResponse("No user found by this Email", HttpStatus.BAD_REQUEST);
+                return InventoryUtils.getResponse("No user found by this Email",HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
-            log.error("Error {}", ex);
+            log.error("{}", ex);
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ByteArrayInputStream load() {
+        List<User> users = userRepository.findAll();
+        ByteArrayInputStream in = ExcelHelper.UserToExcel(users);
+        return in;
+    }
 
     @Override
     public ResponseEntity<String> update(UserDTO user, Long userId) {
@@ -167,38 +169,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getClaimDetails() {
-        List<String> stringList=new ArrayList<>();
-        stringList.add(jwtFilter.getCurrentUser());
-        stringList.add(jwtFilter.getRole());
-        return stringList;
-    }
-
-    @Override
-    public Object getClaimFromLogin() {
-        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
-
-        UserDTO userDTO=new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFirstName(user.getFirstName());
-        userDTO.setLastName(user.getLastName());
-        userDTO.setRole(user.getRole());
-        return userDTO;
-    }
-
-    @Override
-    public ResponseEntity<String> disableUser(Long userId) {
+    public ResponseEntity<String> deleteUser(Long userId) {
 
         Optional<User> optional = userRepository.findById(userId);
         User user = optional.get();
+
         if (optional.isPresent() && !"admin".equals(user.getRole())) {
 
-            userRepository.disableUser(userId);
-            return new ResponseEntity<>("User Disable Successfully ", HttpStatus.OK);
+            userRepository.deleteById(userId);
+            return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
 
         } else if (user.getRole().equals("admin")) {
-            return new ResponseEntity<>("Can not  Disable Admin ", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Can not  Delete Admin ", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
         }
@@ -211,7 +193,7 @@ public class UserServiceImpl implements UserService {
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<>();
+            return new ArrayList<UserDTO>();
         }
     }
 
@@ -222,7 +204,7 @@ public class UserServiceImpl implements UserService {
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<>();
+            return new ArrayList<UserDTO>();
         }
     }
 
@@ -237,4 +219,14 @@ public class UserServiceImpl implements UserService {
         user.setStatus(userDTO.getStatus());
         return user;
     }
+
+    @Override
+    public ResponseEntity<?> forgetPassword(String email) {
+        return ResponseEntity.ok("user found");
+//        emailUtils.sendMail(email, "Forget Password Request",
+//                String.format("email %s", email),
+//                        + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
+//                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
+    }
+
 }

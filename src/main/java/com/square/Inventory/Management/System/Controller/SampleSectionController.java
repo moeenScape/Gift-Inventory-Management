@@ -5,6 +5,9 @@ import com.square.Inventory.Management.System.Entity.SampleSectionUnit;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 @RequestMapping(path = "/ssu")
 public interface SampleSectionController {
     @PostMapping(path = "/create")

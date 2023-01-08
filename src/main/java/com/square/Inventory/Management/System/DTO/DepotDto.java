@@ -38,7 +38,7 @@ public class DepotDto {
         this.user_id = user_id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

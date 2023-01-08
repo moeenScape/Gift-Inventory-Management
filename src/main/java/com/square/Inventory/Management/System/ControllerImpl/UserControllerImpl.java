@@ -3,9 +3,9 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
-import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
+import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,15 +23,13 @@ import java.util.Optional;
 @RestController
 public class UserControllerImpl implements UserController {
 
-    private final UserService userService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
-    private final JWTFilter jwtFilter;
-
-    public UserControllerImpl(UserService userService,
-                              JWTFilter jwtFilter) {
-        this.userService = userService;
-        this.jwtFilter = jwtFilter;
-    }
+    @Autowired
+    JWTFilter jwtFilter;
 
     @Override
     public ResponseEntity<String> createUser(UserDTO user) {
@@ -51,6 +50,19 @@ public class UserControllerImpl implements UserController {
         return userService.login(userDTO);
     }
 
+    @Override
+    public ResponseEntity<Resource> getFile() {
+        if (jwtFilter.isAdmin()) {
+            String filename = "user.xlsx";
+            InputStreamResource file = new InputStreamResource(userService.load());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                    .body(file);
+        }
+        return null;
+    }
 
     @Override
     public ResponseEntity<String> updateUser(UserDTO userDTO, Long userId) {
@@ -62,9 +74,9 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> disableUser(Long userId) {
+    public ResponseEntity<String> deleteUser(Long userId) {
         if (jwtFilter.isAdmin()) {
-            return userService.disableUser(userId);
+            return userService.deleteUser(userId);
         } else {
             return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
         }
@@ -74,7 +86,7 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers(int page, int size) {
         if (jwtFilter.isAdmin()) {
             List<UserDTO> userList = userService.getAllUserByPagination(page, size);
-            return new ResponseEntity<>(userList, HttpStatus.OK);
+            return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -84,7 +96,7 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<List<UserDTO>> getAllByPaginationBySorting(int page, int size, String sortBy) {
         if (jwtFilter.isAdmin()) {
             List<UserDTO> userList = userService.getAllUserByPaginationBySort(page, size, sortBy);
-            return new ResponseEntity<>(userList, HttpStatus.OK);
+            return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -109,12 +121,13 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public List<String> getClaimDetails() {
-        return userService.getClaimDetails();
-    }
+    public ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        return Optional
+                .ofNullable(userRepository.findByEmail(email) )
+                .map( user -> ResponseEntity.ok(userService.forgetPassword(email) ) )
+                .orElseGet( () -> ResponseEntity.notFound().build() );
 
-    @Override
-    public Object getClaimFromLogin() {
-        return userService.getClaimFromLogin();
+//        return ResponseEntity.ok(userService.forgetPassword(userDTO));
     }
 }

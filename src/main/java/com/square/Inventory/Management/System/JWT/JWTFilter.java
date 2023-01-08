@@ -43,7 +43,6 @@ public class JWTFilter extends OncePerRequestFilter {
                 token = authorizationHeader.substring(7);
                 userName = jwtUtils.extractUserName(token);
                 claims = jwtUtils.extractAllClaims(token);
-                log.info("inside login {}",claims);
 
             }
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -83,5 +82,4 @@ public class JWTFilter extends OncePerRequestFilter {
     public String getCurrentUser() {
         return userName;
     }
-
 }
