@@ -10,7 +10,6 @@ import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -192,7 +191,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> optional = userRepository.findById(userId);
         User user = optional.get();
-        if (optional.isPresent() && !"admin".equals(user.getRole())) {
+        if (!"admin".equals(user.getRole())) {
 
             userRepository.disableUser(userId);
             return new ResponseEntity<>("User Disable Successfully ", HttpStatus.OK);
