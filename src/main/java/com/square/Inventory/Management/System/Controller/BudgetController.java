@@ -30,10 +30,6 @@ public interface BudgetController {
 
     @GetMapping(path = "/for/depot/{depotID}")
     ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String depotID);
-
-    @GetMapping(path = "/by/month")
-    ResponseEntity<List<Budget>> viewAllBudgetByMonth();
-
     @GetMapping(path = "/all")
     ResponseEntity<List<Budget>> getAllBudget();
 
@@ -59,4 +55,9 @@ public interface BudgetController {
                                                                      @PathVariable String month,
                                                                      @PathVariable int year);
 
+    @GetMapping(path = "/depot")
+    ResponseEntity<List<DEPOT>> getDepotUserWiseBudget();
+
+    @GetMapping(path = "/ssu")
+    ResponseEntity<List<SSU>> getSSUUserWiseBudget();
 }

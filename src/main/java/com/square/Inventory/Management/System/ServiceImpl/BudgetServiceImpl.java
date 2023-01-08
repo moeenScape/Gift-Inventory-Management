@@ -2,16 +2,20 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
 import com.poiji.exception.PoijiExcelType;
-import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
+import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.IMSUtils.TimeUtils;
+import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
+import com.square.Inventory.Management.System.Repository.DepotRepository;
+import com.square.Inventory.Management.System.Repository.SampleSectionRepository;
+import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +34,20 @@ public class BudgetServiceImpl implements BudgetService {
 
     private final BudgetRepository budgetRepository;
 
-    public BudgetServiceImpl(BudgetRepository budgetRepository) {
+    private final JWTFilter jwtFilter;
+
+    private final UserRepository userRepository;
+
+    private final DepotRepository depotRepository;
+
+    private final SampleSectionRepository sampleSectionRepository;
+
+    public BudgetServiceImpl(BudgetRepository budgetRepository, JWTFilter jwtFilter, UserRepository userRepository, DepotRepository depotRepository, SampleSectionRepository sampleSectionRepository) {
         this.budgetRepository = budgetRepository;
+        this.jwtFilter = jwtFilter;
+        this.userRepository = userRepository;
+        this.depotRepository = depotRepository;
+        this.sampleSectionRepository = sampleSectionRepository;
     }
 
     @Override
@@ -78,11 +95,7 @@ public class BudgetServiceImpl implements BudgetService {
 
         List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
-        if (ssuList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(ssuList, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(ssuList, HttpStatus.OK);
     }
 
     @Override
@@ -90,53 +103,28 @@ public class BudgetServiceImpl implements BudgetService {
 
         List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
-        if (depotList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(depotList, HttpStatus.OK);
-        }
-    }
-
-    @Override
-    public ResponseEntity<List<Budget>> viewAllBudgetByMonth() {
-        List<Budget> budgetList = budgetRepository.getBudgetByMonth(TimeUtils.getCurrentMonth());
-
-        if (budgetList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(budgetList, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(depotList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<Budget>> getAllBudget() {
         List<Budget> budgetList = budgetRepository.findAll();
 
-        if (budgetList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(budgetList, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(budgetList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<BudgetSummary>> getSummary() {
         List<BudgetSummary> budgetSummaryList = budgetRepository.getSummary();
-        if (budgetSummaryList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
-        }
+
+        return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
         List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
-        if (categoryWiseSummaryList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
     }
 
     @Override
@@ -153,22 +141,30 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year) {
         List<SSU> getPreviousMonthBudgetByMonthAndYearList = budgetRepository.getBudgetForSSUByName(ssu_id, month, year);
-
-        if (getPreviousMonthBudgetByMonthAndYearList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
         List<DEPOT> getPreviousDepotBudgetByMonthAndYearList = budgetRepository.getBudgetForDepotByID(depotID, month, year);
+        return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList, HttpStatus.OK);
 
-        if (getPreviousDepotBudgetByMonthAndYearList.isEmpty()) {
-            return new ResponseEntity(InventoryConstant.NO_DATA, HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList, HttpStatus.OK);
-        }
+    }
+
+    @Override
+    public ResponseEntity<List<DEPOT>> getDepotBudgetWithUser() {
+        User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
+        List<DEPOT> getUserWiseBudget = budgetRepository.getBudgetForDepotByID(depotRepository.getDepotID(user.getId()),
+                TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
+
+        return new ResponseEntity<>(getUserWiseBudget, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<SSU>> getSSUWiseBudget() {
+        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
+        List<SSU> getSSUWiseBudget=budgetRepository.getBudgetForSSUByName(sampleSectionRepository.getSSUNameByUID(user.getId()),
+                TimeUtils.getCurrentMonth(),TimeUtils.getCurrentYear());
+        return new ResponseEntity<>(getSSUWiseBudget,HttpStatus.OK);
     }
 }

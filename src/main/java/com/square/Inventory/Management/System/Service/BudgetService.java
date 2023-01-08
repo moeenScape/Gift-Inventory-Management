@@ -11,7 +11,6 @@ import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProject
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,8 +23,6 @@ public interface BudgetService {
     ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName);
 
     ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID);
-
-    ResponseEntity<List<Budget>> viewAllBudgetByMonth();
 
     ResponseEntity<List<Budget>> getAllBudget();
 
@@ -40,4 +37,8 @@ public interface BudgetService {
     ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year);
 
     ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year);
+
+    ResponseEntity<List<DEPOT>> getDepotBudgetWithUser();
+
+    ResponseEntity<List<SSU>> getSSUWiseBudget();
 }

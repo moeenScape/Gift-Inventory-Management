@@ -66,8 +66,7 @@ public class SampleSectionServiceImpl implements SampleSectionService {
     }
 
     private boolean findUserID(Long user_id) {
-        if (Objects.isNull(sampleSectionRepository.getUserIDbySsuID(user_id))) return false;
-        return true;
+        return !Objects.isNull(sampleSectionRepository.getUserIDbySsuID(user_id));
     }
 
     @Override
@@ -77,7 +76,7 @@ public class SampleSectionServiceImpl implements SampleSectionService {
         if (pageResult.hasContent()) {
             return pageResult.getContent();
         } else {
-            return new ArrayList<SsuDto>();
+            return new ArrayList<>();
         }
     }
 
@@ -87,12 +86,9 @@ public class SampleSectionServiceImpl implements SampleSectionService {
             Optional<SampleSectionUnit> sectionUnit = sampleSectionRepository.findById(ssuID);
 
             if (sectionUnit.isPresent()) {
-                SampleSectionUnit newSampleSectionUnit = sampleSectionUnit;
-                newSampleSectionUnit.setSsuID(ssuID);
+                SampleSectionUnit newSampleSectionUnit = sectionUnit.get();
                 newSampleSectionUnit.setSsuName(sampleSectionUnit.getSsuName());
                 newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
-                newSampleSectionUnit.setUser(sectionUnit.get().getUser());
-                newSampleSectionUnit.setNumberOfEmployee(sectionUnit.get().getNumberOfEmployee());
                 sampleSectionRepository.save(newSampleSectionUnit);
                 return new ResponseEntity<>("Sample Section Unit Update", HttpStatus.OK);
             } else {
