@@ -222,8 +222,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> forgetPassword(String email) {
-//        return ResponseEntity.ok("user found");
-
+        return ResponseEntity.ok("user found");
+//        emailUtils.sendMail(email, "Forget Password Request",
+//                String.format("email %s", email),
+//                        + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
+//                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
     }
 
 }
