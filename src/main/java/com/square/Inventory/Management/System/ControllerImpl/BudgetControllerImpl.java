@@ -121,8 +121,13 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getDepotBudgetWithUser() {
+    public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
         return budgetService.getDepotBudgetWithUser();
+    }
+
+    @Override
+    public ResponseEntity<List<SSU>> getSSUUserWiseBudget() {
+        return budgetService.getSSUWiseBudget();
     }
 
 

@@ -56,5 +56,8 @@ public interface BudgetController {
                                                                      @PathVariable int year);
 
     @GetMapping(path = "/depot")
-    ResponseEntity<List<DEPOT>> getDepotBudgetWithUser();
+    ResponseEntity<List<DEPOT>> getDepotUserWiseBudget();
+
+    @GetMapping(path = "/ssu")
+    ResponseEntity<List<SSU>> getSSUUserWiseBudget();
 }

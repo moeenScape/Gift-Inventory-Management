@@ -16,6 +16,9 @@ public interface SampleSectionRepository extends JpaRepository<SampleSectionUnit
             "s.location) from SampleSectionUnit s")
     Page<SsuDto> getAllUser(Pageable paging);
 
-    @Query(value = "select user_id from sample_section_unit where user_id=:user_id ", nativeQuery = true)
-    Long getUserIDbySsuID(@Param("user_id") Long user_id);
+    @Query(value = "select user_id from sample_section_unit where user_id=:user_id ",nativeQuery = true)
+    Long getUserIDbySsuID(@Param("user_id")Long user_id);
+
+    @Query(value = "select ssu_name from sample_section_unit where user_id=:id",nativeQuery = true)
+    String getSSUNameByUID(@Param("id") Long id);
 }
