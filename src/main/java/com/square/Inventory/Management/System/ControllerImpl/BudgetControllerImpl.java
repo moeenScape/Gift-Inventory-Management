@@ -67,17 +67,17 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<SSU>> getBudgetBySSU(String ssuName) {
 
-//        if (jwtFilter.isAdmin() || jwtFilter.isSSU()) {
-//            return budgetService.getBudgetForSSUByName(ssuName);
-//        }
-//        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-        return budgetService.getBudgetForSSUByName(ssuName);
+        if (jwtFilter.isAdmin()) {
+            return budgetService.getBudgetForSSUByName(ssuName);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+
     }
 
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String depotID) {
 
-        if (jwtFilter.isAdmin() || (jwtFilter.isDepot())) {
+        if (jwtFilter.isAdmin()) {
             return budgetService.getBudgetForDepotByID(depotID);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
@@ -122,12 +122,20 @@ public class BudgetControllerImpl implements BudgetController {
 
     @Override
     public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
-        return budgetService.getDepotBudgetWithUser();
+        if (jwtFilter.isDepot()) {
+            return budgetService.getDepotBudgetWithUser();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+
     }
 
     @Override
     public ResponseEntity<List<SSU>> getSSUUserWiseBudget() {
-        return budgetService.getSSUWiseBudget();
+        if (jwtFilter.isSSU()) {
+            return budgetService.getSSUWiseBudget();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+
     }
 
 
