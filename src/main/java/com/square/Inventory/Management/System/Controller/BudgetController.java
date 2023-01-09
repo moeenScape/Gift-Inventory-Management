@@ -8,6 +8,7 @@ import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
+import com.square.Inventory.Management.System.Projection.FieldColleagueProjection;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,4 +70,7 @@ public interface BudgetController {
 
     @GetMapping("/dashboard/monthWiseSum")
     ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum();
+
+    @GetMapping("/dashboard/totalFieldColleague")
+    ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague();
 }
