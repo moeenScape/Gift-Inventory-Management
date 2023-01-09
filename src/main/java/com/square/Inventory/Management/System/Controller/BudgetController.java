@@ -6,6 +6,7 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.Entity.Budget;
+import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,4 +66,7 @@ public interface BudgetController {
 
     @GetMapping(path = "/ssu")
     ResponseEntity<List<SSU>> getSSUUserWiseBudget();
+
+    @GetMapping("/dashboard/monthWiseSum")
+    ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum();
 }

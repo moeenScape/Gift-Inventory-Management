@@ -5,6 +5,7 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
+import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -45,4 +46,6 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
     @Query(value = "select distinct(ssu_id), sum(quantity) as Total, sum(is_inssu) as TotalInSSU, sum(is_depot_received) as TotalInDepot from budget group by ssu_id", nativeQuery = true)
     List<BudgetSSUSummaryProjection> getSSUSummary();
 
+    @Query(value = "select month, sum(quantity) as sum from budget group by month", nativeQuery = true)
+    List<BudgetMonthWiseSumProjection> getMonthWiseSum();
 }
