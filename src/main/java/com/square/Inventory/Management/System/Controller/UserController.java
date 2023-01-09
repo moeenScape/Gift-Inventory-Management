@@ -46,9 +46,13 @@ public interface UserController {
     @GetMapping(path = "/claim_object")
     Object getClaimFromLogin();
 
-
-
     @PostMapping("/forgetPassword")
     ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO);
+
+    @PostMapping("/checkOtpStatus")
+    ResponseEntity<?> checkOtpStatus(@RequestBody UserDTO userDTO);
+
+    @PostMapping("/resetPassword")
+    ResponseEntity<?> resetPassword(@RequestBody UserDTO userDTO);
 
 }

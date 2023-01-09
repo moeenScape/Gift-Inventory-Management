@@ -130,4 +130,27 @@ public class UserControllerImpl implements UserController {
                 .map( user -> ResponseEntity.ok(userService.forgetPassword(user) ) )
                 .orElseGet( () -> ResponseEntity.notFound().build() );
     }
+
+    @Override
+    public ResponseEntity<?> checkOtpStatus(@RequestBody UserDTO userDTO) {
+        String otp = userDTO.getOtp();
+        String email = userDTO.getEmail();
+
+        return Optional
+                .ofNullable(userRepository.findByEmail(email) )
+                .map( user -> ResponseEntity.ok(userService.checkOtpStatus(user,otp) ) )
+                .orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
+    @Override
+    public ResponseEntity<?> resetPassword(@RequestBody UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        String newPassword = userDTO.getPassword();
+
+        return Optional
+                .ofNullable(userRepository.findByEmail(email) )
+                .map( user -> ResponseEntity.ok(userService.resetPassword(user, newPassword) ) )
+                .orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
 }
