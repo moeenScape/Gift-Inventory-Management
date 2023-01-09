@@ -34,5 +34,6 @@ public interface UserService {
     Boolean checkOtpStatus(User user, String givenOtp);
 
     ResponseEntity<?> resetPassword(User user, String newPassword);
+    ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser();
 
 }

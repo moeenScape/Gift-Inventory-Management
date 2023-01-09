@@ -56,4 +56,7 @@ public interface UserController {
     @PostMapping("/resetPassword")
     ResponseEntity<?> resetPassword(@RequestBody UserDTO userDTO);
 
+    @GetMapping("/active_deactivate")
+    ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser();
+
 }
