@@ -122,8 +122,8 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
-        List<CategoryWiseSummary> categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
+    public ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary() {
+        CategoryWiseSummary categoryWiseSummaryList = budgetRepository.getCategoryWiseSummary();
         return new ResponseEntity<>(categoryWiseSummaryList, HttpStatus.OK);
     }
 

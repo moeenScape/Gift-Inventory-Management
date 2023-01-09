@@ -30,6 +30,7 @@ public interface BudgetController {
 
     @GetMapping(path = "/for/depot/{depotID}")
     ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String depotID);
+
     @GetMapping(path = "/all")
     ResponseEntity<List<Budget>> getAllBudget();
 
@@ -37,8 +38,12 @@ public interface BudgetController {
     ResponseEntity<List<BudgetSummary>> getSummary();
 
     @GetMapping(path = "/categoryWiseSummary")
-    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
+    ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary();
 
+    /**
+     * Dashboard card one
+     * @return ppm,sample,gift number
+     */
     @GetMapping(path = "/categoryWiseSummaryDepot")
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 

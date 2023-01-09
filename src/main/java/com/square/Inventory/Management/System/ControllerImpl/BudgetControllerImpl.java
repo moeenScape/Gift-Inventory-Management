@@ -96,8 +96,10 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
-        return budgetService.getCategoryWiseSummary();
+    public ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary() {
+        if(jwtFilter.isAdmin()) {
+            return budgetService.getCategoryWiseSummary();
+        } return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @Override
@@ -125,7 +127,7 @@ public class BudgetControllerImpl implements BudgetController {
         if (jwtFilter.isDepot()) {
             return budgetService.getDepotBudgetWithUser();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
     }
 
@@ -134,7 +136,7 @@ public class BudgetControllerImpl implements BudgetController {
         if (jwtFilter.isSSU()) {
             return budgetService.getSSUWiseBudget();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
     }
 
