@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final OtpUtils otpUtils;
 
     public UserServiceImpl(UserRepository userRepository,
                            AuthenticationManager authenticationManager,
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
                            JWTUtils jwtUtils,
                            JWTFilter jwtFilter,
                            EmailUtils emailUtils,
-                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+                           BCryptPasswordEncoder bCryptPasswordEncoder, OtpUtils otpUtils) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.customUserServiceDetails = customUserServiceDetails;
@@ -60,6 +61,7 @@ public class UserServiceImpl implements UserService {
         this.jwtFilter = jwtFilter;
         this.emailUtils = emailUtils;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.otpUtils = otpUtils;
     }
 
     @Override
@@ -242,7 +244,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> forgetPassword(User user) {
-        String otp = OtpUtils.generateOTP(user);
+        String otp = otpUtils.generateOTP(user);
         String email = user.getEmail();
 
         user.setOtp(otp);
@@ -256,6 +258,29 @@ public class UserServiceImpl implements UserService {
                         "Note: this OTP is set to expire in 5 minutes."
                 );
         return ResponseEntity.ok("OTP generated!! check mail");
+    }
+
+    @Override
+    public Boolean checkOtpStatus(User user, String givenOtp) {
+        String userOtp = user.getOtp();
+        boolean result = Objects.equals(userOtp, givenOtp);
+        if (!result) {
+            return false;
+        }
+        return otpUtils.isOtpExpired(user);
+    }
+
+    @Override
+    public ResponseEntity<?> resetPassword(User user, String newPassword) {
+        newPassword = bCryptPasswordEncoder.encode(newPassword);
+        String oldPassword = user.getPassword();
+        if (Objects.equals(newPassword, oldPassword)) {
+            return (ResponseEntity<?>) ResponseEntity.badRequest();
+        } else {
+            user.setPassword(newPassword);
+            otpUtils.clearOTP(user);
+            return ResponseEntity.ok("Password Updated!");
+        }
     }
 
 }
