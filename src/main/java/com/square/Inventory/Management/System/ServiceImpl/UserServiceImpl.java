@@ -5,6 +5,7 @@ import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
+import com.square.Inventory.Management.System.IMSUtils.OtpUtils;
 import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
     private final EmailUtils emailUtils;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     public UserServiceImpl(UserRepository userRepository,
                            AuthenticationManager authenticationManager,
@@ -239,12 +241,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> forgetPassword(String email) {
-        return ResponseEntity.ok("user found");
-//        emailUtils.sendMail(email, "Forget Password Request",
-//                String.format("email %s", email),
-//                        + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
-//                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
+    public ResponseEntity<?> forgetPassword(User user) {
+        String otp = OtpUtils.generateOTP(user);
+        String email = user.getEmail();
+
+        user.setOtp(otp);
+        user.setSetOtpGenerationTime(new Date());
+        userRepository.save(user);
+
+        emailUtils.sendMail(email, "Forget Password Request",
+                "Hello User,\n" +
+                        "Your OTP is: " + otp + "\n" + "\n" +
+                        "This mail Send from IMS by Square\n" +
+                        "Note: this OTP is set to expire in 5 minutes."
+                );
+        return ResponseEntity.ok("OTP generated!! check mail");
     }
 
     @Override

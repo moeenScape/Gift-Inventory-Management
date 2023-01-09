@@ -123,10 +123,8 @@ public class UserControllerImpl implements UserController {
         String email = userDTO.getEmail();
         return Optional
                 .ofNullable(userRepository.findByEmail(email) )
-                .map( user -> ResponseEntity.ok(userService.forgetPassword(email) ) )
+                .map( user -> ResponseEntity.ok(userService.forgetPassword(user) ) )
                 .orElseGet( () -> ResponseEntity.notFound().build() );
-
-//        return ResponseEntity.ok(userService.forgetPassword(userDTO));
     }
 
     @Override
