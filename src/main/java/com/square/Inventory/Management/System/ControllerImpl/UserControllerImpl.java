@@ -128,7 +128,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser() {
+    public ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser() {
             return userService.getActiveDeactivateUser();
     }
 }

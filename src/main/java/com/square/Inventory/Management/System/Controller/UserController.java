@@ -53,6 +53,6 @@ public interface UserController {
     ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO);
 
     @GetMapping("/active_deactivate")
-    ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser();
+    ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser();
 
 }
