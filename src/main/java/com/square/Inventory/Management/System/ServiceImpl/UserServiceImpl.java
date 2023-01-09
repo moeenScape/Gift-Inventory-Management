@@ -8,6 +8,7 @@ import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
+import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -244,6 +245,13 @@ public class UserServiceImpl implements UserService {
 //                String.format("email %s", email),
 //                        + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
 //                        + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
+    }
+
+    @Override
+    public ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser() {
+        List<ActivatedDeactivatedUser> activatedDeactivatedUsers=userRepository.getActiveDeactivateUser();
+        return new ResponseEntity<>(activatedDeactivatedUsers,HttpStatus.OK);
+
     }
 
 }

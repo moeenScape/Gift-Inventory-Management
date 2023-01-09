@@ -2,15 +2,18 @@ package com.square.Inventory.Management.System.Repository;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.User;
+import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -25,4 +28,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "update user set status= 'false' where id=:userId", nativeQuery = true)
     void disableUser(@Param("userId") Long userId);
+
+    @Query(value = "select sum(case when status ='true' then 1 else 0 end) as activatedUser," +
+            "sum(case when status ='false' then 1 else 0 end) as deactivatedUser from user", nativeQuery = true)
+    List<ActivatedDeactivatedUser> getActiveDeactivateUser();
 }

@@ -5,20 +5,23 @@ import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
+import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
-    @Autowired
+   @Autowired
     UserRepository userRepository;
 
     private final JWTFilter jwtFilter;
@@ -124,5 +127,10 @@ public class UserControllerImpl implements UserController {
                 .orElseGet( () -> ResponseEntity.notFound().build() );
 
 //        return ResponseEntity.ok(userService.forgetPassword(userDTO));
+    }
+
+    @Override
+    public ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser() {
+            return userService.getActiveDeactivateUser();
     }
 }

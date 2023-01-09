@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Service;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface UserService {
     Object getClaimFromLogin();
 
     ResponseEntity<?> forgetPassword(String email);
+
+    ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser();
 }
