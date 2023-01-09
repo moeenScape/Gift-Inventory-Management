@@ -149,7 +149,5 @@ public class UserControllerImpl implements UserController {
                 .orElseGet( () -> ResponseEntity.notFound().build() );
     }
 
-    public ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser() {
-            return userService.getActiveDeactivateUser();
-    }
+
 }

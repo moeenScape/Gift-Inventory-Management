@@ -283,11 +283,4 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser() {
-        List<ActivatedDeactivatedUser> activatedDeactivatedUsers=userRepository.getActiveDeactivateUser();
-        return new ResponseEntity<>(activatedDeactivatedUsers,HttpStatus.OK);
-
-
-    }
-
 }

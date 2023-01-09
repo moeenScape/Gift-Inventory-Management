@@ -50,15 +50,10 @@ public interface UserController {
     @PostMapping("/forgetPassword")
     ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO);
 
-<<<<<<< HEAD
     @PostMapping("/checkOtpStatus")
     ResponseEntity<?> checkOtpStatus(@RequestBody UserDTO userDTO);
 
     @PostMapping("/resetPassword")
     ResponseEntity<?> resetPassword(@RequestBody UserDTO userDTO);
-=======
-    @GetMapping("/active_deactivate")
-    ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser();
->>>>>>> main
 
 }
