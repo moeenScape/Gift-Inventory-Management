@@ -3,17 +3,13 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
-import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
+import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +21,7 @@ import java.util.Optional;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
-    @Autowired
+   @Autowired
     UserRepository userRepository;
 
     private final JWTFilter jwtFilter;
@@ -153,4 +149,7 @@ public class UserControllerImpl implements UserController {
                 .orElseGet( () -> ResponseEntity.notFound().build() );
     }
 
+    public ResponseEntity<List<ActivatedDeactivatedUser>> getActiveDeactivateUser() {
+            return userService.getActiveDeactivateUser();
+    }
 }

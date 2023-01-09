@@ -28,7 +28,7 @@ public interface BudgetService {
 
     ResponseEntity<List<BudgetSummary>> getSummary();
 
-    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
+    ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary();
 
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 

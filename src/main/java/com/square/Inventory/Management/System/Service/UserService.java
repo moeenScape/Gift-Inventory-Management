@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Service;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import com.square.Inventory.Management.System.Entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
