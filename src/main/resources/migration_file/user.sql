@@ -8,7 +8,8 @@ create table user (
     password varchar(250),
     role varchar(10),
     status varchar(10),
-
+    otp varchar(64),
+    otp_generation_time datetime,
     CONSTRAINT user_pk PRIMARY KEY (id)
 );
 

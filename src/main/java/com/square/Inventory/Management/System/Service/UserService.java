@@ -1,6 +1,7 @@
 package com.square.Inventory.Management.System.Service;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.Entity.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -26,5 +27,5 @@ public interface UserService {
 
     Object getClaimFromLogin();
 
-    ResponseEntity<?> forgetPassword(String email);
+    ResponseEntity<?> forgetPassword(User user);
 }
