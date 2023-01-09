@@ -30,5 +30,4 @@ public interface UserService {
 
     ResponseEntity<?> forgetPassword(String email);
 
-    ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser();
 }

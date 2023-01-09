@@ -126,9 +126,4 @@ public class UserControllerImpl implements UserController {
                 .map( user -> ResponseEntity.ok(userService.forgetPassword(user) ) )
                 .orElseGet( () -> ResponseEntity.notFound().build() );
     }
-
-    @Override
-    public ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser() {
-            return userService.getActiveDeactivateUser();
-    }
 }

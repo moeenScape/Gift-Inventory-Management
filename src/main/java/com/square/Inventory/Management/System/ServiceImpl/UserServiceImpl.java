@@ -258,11 +258,4 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok("OTP generated!! check mail");
     }
 
-    @Override
-    public ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser() {
-        ActivatedDeactivatedUser activatedDeactivatedUsers=userRepository.getActiveDeactivateUser();
-        return new ResponseEntity<>(activatedDeactivatedUsers,HttpStatus.OK);
-
-    }
-
 }
