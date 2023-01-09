@@ -11,7 +11,9 @@ import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.IMSUtils.TimeUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
+import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
+import com.square.Inventory.Management.System.Projection.FieldColleagueProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Repository.DepotRepository;
 import com.square.Inventory.Management.System.Repository.SampleSectionRepository;
@@ -166,5 +168,16 @@ public class BudgetServiceImpl implements BudgetService {
         List<SSU> getSSUWiseBudget=budgetRepository.getBudgetForSSUByName(sampleSectionRepository.getSSUNameByUID(user.getId()),
                 TimeUtils.getCurrentMonth(),TimeUtils.getCurrentYear());
         return new ResponseEntity<>(getSSUWiseBudget,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum() {
+        return ResponseEntity.ok(budgetRepository.getMonthWiseSum() );
+    }
+
+    @Override
+    public ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague() {
+        String month = TimeUtils.getCurrentMonth();
+        return ResponseEntity.ok(budgetRepository.getCurrentMonthFieldColleague(month) );
     }
 }
