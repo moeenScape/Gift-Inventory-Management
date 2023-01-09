@@ -29,12 +29,10 @@ public interface UserService {
 
     Object getClaimFromLogin();
 
-
     ResponseEntity<?> forgetPassword(User user);
 
     Boolean checkOtpStatus(User user, String givenOtp);
 
     ResponseEntity<?> resetPassword(User user, String newPassword);
-    
-    ResponseEntity<?> forgetPassword(String email);
+
 }
