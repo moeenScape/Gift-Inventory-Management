@@ -29,5 +29,4 @@ public interface UserService {
     Object getClaimFromLogin();
 
     ResponseEntity<?> forgetPassword(String email);
-
 }
