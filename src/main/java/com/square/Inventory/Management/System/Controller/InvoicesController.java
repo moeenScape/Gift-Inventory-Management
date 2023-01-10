@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RequestMapping(path = "/inventory")
 public interface InvoicesController {
 

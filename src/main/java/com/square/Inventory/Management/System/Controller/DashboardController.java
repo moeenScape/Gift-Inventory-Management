@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RequestMapping(path = "/admin/dashboard")
 public interface DashboardController {
     @GetMapping(path = "/active_deactivate")
