@@ -22,7 +22,7 @@ public interface DepotController {
     ResponseEntity<?> getDepot(@PathVariable("id") Long id);
 
     @GetMapping("/viewAll")
-    ResponseEntity<List<Depot>> viewAllDepots();
+    ResponseEntity<List<DepotDto>> viewAllDepots();
 
     @GetMapping("/viewAllName")
     ResponseEntity<List<DepotProjectionInterface>> showAllDepotName();

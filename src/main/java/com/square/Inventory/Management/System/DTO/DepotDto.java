@@ -14,6 +14,12 @@ public class DepotDto {
     private String location;
     private Long user_id;
 
+    private String adminName;
+
+    private String contactNumber;
+
+    private String email;
+
     public String getDepotName() {
         return depotName;
     }
@@ -46,12 +52,36 @@ public class DepotDto {
         this.id = id;
     }
 
-    public Depot convertDepot(DepotDto depotDTO, User user) {
+    public String getAdminName() {
+        return adminName;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Depot convertDepot(DepotDto depotDto, User user) {
         Depot depot = new Depot();
 
-        depot.setId(depotDTO.getId());
-        depot.setDepotName(depotDTO.getDepotName());
-        depot.setLocation(depotDTO.getLocation());
+        depot.setId(depotDto.getId());
+        depot.setDepotName(depotDto.getDepotName());
+        depot.setLocation(depotDto.getLocation());
         depot.setUser(user);
 
         return depot;
@@ -69,6 +99,10 @@ public class DepotDto {
         }
 
         depotDto.setUser_id(user.getId());
+        depotDto.setAdminName(user.getFirstName() + ' ' + user.getLastName());
+        depotDto.setEmail(user.getEmail());
+        depotDto.setContactNumber(user.getContactNumber());
+
         return depotDto;
     }
 
