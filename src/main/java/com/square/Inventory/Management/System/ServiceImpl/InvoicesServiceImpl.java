@@ -22,9 +22,9 @@ public class InvoicesServiceImpl implements InvoicesService {
     private Invoices getFromMap(Map<String, String> requestMap) {
         Invoices invoices=new Invoices();
         invoices.setCreateDate(new Date());
-        invoices.setDepotName(requestMap.get("DepotName"));
-        invoices.setProductDetails(requestMap.get("productDetails"));
-        invoices.setWarehouseName(requestMap.get("warehouseName"));
+        invoices.setDepotName((String) requestMap.get("DepotName"));
+        invoices.setProductDetails((String) requestMap.get("productDetails"));
+        invoices.setWarehouseName((String) requestMap.get("warehouseName"));
         return invoices;
     }
 }

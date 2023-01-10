@@ -1,16 +1,20 @@
 package com.square.Inventory.Management.System.IMSUtils;
 
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 
 public class TimeUtils {
 
     public static String getCurrentMonth() {
         LocalDate localDate = LocalDate.now();
-        return localDate.getMonth().toString();
+        String currentMonth = localDate.getMonth().toString();
+        return currentMonth;
     }
 
     public static Integer getCurrentYear() {
         LocalDate localDate = LocalDate.now();
-        return localDate.getYear();
+        Integer currentYear = localDate.getYear();
+        return currentYear;
     }
 }

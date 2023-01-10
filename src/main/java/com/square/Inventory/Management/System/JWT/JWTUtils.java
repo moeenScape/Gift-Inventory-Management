@@ -14,7 +14,7 @@ import java.util.function.Function;
 @Service
 public class JWTUtils {
 
-    private final String secret = "moeensaftaSojib";
+    private String secret = "moeensaftaSojib";
 
     public String extractUserName(String token) {
         return extractClaims(token, Claims::getSubject);
