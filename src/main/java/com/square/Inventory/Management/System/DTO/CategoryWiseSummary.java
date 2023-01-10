@@ -5,6 +5,7 @@ public interface CategoryWiseSummary {
     Integer  getPPM();
 
     Integer getSample();
+
     Integer getGift();
 
 }

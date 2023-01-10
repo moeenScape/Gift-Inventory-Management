@@ -36,9 +36,7 @@ public class CustomUserServiceDetails implements UserDetailsService {
         return userDetails;
     }
 
-    public String getRole()
-    {
-        String role =getUserDetails().getRole();
-        return role;
+    public String getRole() {
+        return getUserDetails().getRole();
     }
 }

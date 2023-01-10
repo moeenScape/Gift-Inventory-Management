@@ -13,22 +13,21 @@ import java.util.List;
 
 @Slf4j
 public class ExcelHelper {
-    static String[] HEADERs = {"User Id", "FirstName", "LastName", "Email", "Contract Number", "Role", "Status", "WorkPlace"};
+    static String[] HEADER = {"User Id", "FirstName", "LastName", "Email", "Contract Number", "Role", "Status", "WorkPlace"};
     static String SHEET = "User";
 
 
-    //    *****<<<<For DownLoad >>>>****
     public static ByteArrayInputStream UserToExcel(List<User> userList) {
 
         try (Workbook workbook = new XSSFWorkbook();
-             ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet(SHEET);
 
             Row headerRow = sheet.createRow(0);
 
-            for (int col = 0; col < HEADERs.length; col++) {
+            for (int col = 0; col < HEADER.length; col++) {
                 Cell cell = headerRow.createCell(col);
-                cell.setCellValue(HEADERs[col]);
+                cell.setCellValue(HEADER[col]);
             }
 
             int rowIdx = 1;

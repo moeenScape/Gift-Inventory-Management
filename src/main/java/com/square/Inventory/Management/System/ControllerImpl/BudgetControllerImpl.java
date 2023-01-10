@@ -8,10 +8,7 @@ import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
-import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
-import com.square.Inventory.Management.System.Projection.FieldColleagueProjection;
-import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,7 +29,7 @@ public class BudgetControllerImpl implements BudgetController {
 
     private final BudgetService budgetService;
 
-    public BudgetControllerImpl(BudgetRepository budgetRepository, JWTFilter jwtFilter, BudgetService budgetService) {
+    public BudgetControllerImpl(JWTFilter jwtFilter, BudgetService budgetService) {
         this.jwtFilter = jwtFilter;
         this.budgetService = budgetService;
     }
