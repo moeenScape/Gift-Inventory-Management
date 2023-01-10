@@ -49,10 +49,10 @@ public class DepotControllerImpl implements DepotController {
         return new ResponseEntity<String>("No Depot Found", HttpStatus.NOT_FOUND);
     }
 
-    @Override
-    public ResponseEntity<List<Depot>> viewAllDepots() {
-        return new ResponseEntity<List<Depot>>(depotRepository.findAll(), HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<List<DepotDto>> viewAllDepots() {
+//        return new ResponseEntity<List<DepotDto>>(depotService.viewAllDepots(), HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<?> viewAllDepotsPaginated(

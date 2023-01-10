@@ -84,6 +84,10 @@ public class DepotService {
         return depots;
     }
 
+//    public List<DepotDto> viewAllDepots() {
+//
+//    }
+
     public List<DepotProjectionInterface> showAllDepotName() {
         return depotRepository.getAllDepotName();
     }
