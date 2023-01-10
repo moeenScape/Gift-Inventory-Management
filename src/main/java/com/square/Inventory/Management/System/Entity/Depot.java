@@ -1,5 +1,7 @@
 package com.square.Inventory.Management.System.Entity;
 
+import com.square.Inventory.Management.System.DTO.DepotDto;
+
 import javax.persistence.*;
 
 @Entity(name = "depot")
