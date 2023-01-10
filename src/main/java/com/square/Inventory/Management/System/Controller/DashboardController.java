@@ -5,11 +5,13 @@ import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUse
 import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.FieldColleagueProjection;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/admin/dashboard")
 public interface DashboardController {
     @GetMapping(path = "/active_deactivate")
