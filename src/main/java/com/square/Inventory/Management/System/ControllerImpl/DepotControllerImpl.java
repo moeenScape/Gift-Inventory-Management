@@ -50,8 +50,8 @@ public class DepotControllerImpl implements DepotController {
     }
 
     @Override
-    public ResponseEntity<List<Depot>> viewAllDepots() {
-        return new ResponseEntity<List<Depot>>(depotRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<DepotDto>> viewAllDepots() {
+        return ResponseEntity.ok(depotService.viewAllDepots());
     }
 
     @Override

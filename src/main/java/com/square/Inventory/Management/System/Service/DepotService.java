@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 @Service
 public class DepotService {
     private final DepotRepository depotRepository;
@@ -82,6 +81,22 @@ public class DepotService {
 
         // to show all the values in list format
         return depots;
+    }
+
+    public List<DepotDto> viewAllDepots() {
+        List<Depot> allDepots = new ArrayList<>();
+        DepotDto _depotDto = new DepotDto();
+        User _user;
+
+        allDepots = depotRepository.findAll();
+        int len = allDepots.size();
+        List<DepotDto> allDepotsDto = new ArrayList<>(len);
+
+        for (Depot allDepot : allDepots) {
+            _user = allDepot.getUser();
+            allDepotsDto.add(_depotDto.convertDepotDTO(allDepot, _user));
+        }
+        return allDepotsDto;
     }
 
     public List<DepotProjectionInterface> showAllDepotName() {
