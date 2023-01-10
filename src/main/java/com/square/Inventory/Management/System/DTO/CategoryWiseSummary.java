@@ -2,7 +2,9 @@ package com.square.Inventory.Management.System.DTO;
 
 public interface CategoryWiseSummary {
 
-    String getCategory();
-    Integer getSum();
+    Integer  getPPM();
+
+    Integer getSample();
+    Integer getGift();
 
 }

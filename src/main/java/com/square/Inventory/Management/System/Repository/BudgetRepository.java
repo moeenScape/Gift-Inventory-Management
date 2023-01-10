@@ -5,7 +5,9 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
+import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
+import com.square.Inventory.Management.System.Projection.FieldColleagueProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,8 +36,10 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
             "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid", nativeQuery = true)
     List<BudgetSummary> getSummary();
 
-    @Query(value = "select category as Category,sum(quantity) as SUM from budget group by category;", nativeQuery = true)
-    List<CategoryWiseSummary> getCategoryWiseSummary();
+    @Query(value = "select sum(case when category='PPU' then quantity else 0 end) as PPM," +
+            "sum(case when category='Hiking' then quantity else 0 end) as Sample," +
+            "sum(case when category='gift' then quantity else 0 end) as Gift from budget;", nativeQuery = true)
+    CategoryWiseSummary getCategoryWiseSummary();
 
     @Query(value = "select depot_name as Category, sum(quantity) as Sum from budget group by depot_name", nativeQuery = true)
     List<CategoryWiseSummary> getCategoryWiseDepotSummary();
@@ -43,6 +47,9 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
     @Query(value = "select distinct(ssu_id), sum(quantity) as Total, sum(is_inssu) as TotalInSSU, sum(is_depot_received) as TotalInDepot from budget group by ssu_id", nativeQuery = true)
     List<BudgetSSUSummaryProjection> getSSUSummary();
 
-    @Query("select b from Budget b where b.month=:month ")
-    List<Budget> getBudgetByMonth(@Param("month") String month);
+    @Query(value = "select month, sum(quantity) as sum from budget group by month", nativeQuery = true)
+    List<BudgetMonthWiseSumProjection> getMonthWiseSum();
+
+    @Query(value = "select count(distinct(field_colleagueid)) as total from budget where month=:month",nativeQuery = true)
+    FieldColleagueProjection getCurrentMonthFieldColleague(@Param("month") String month);
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -42,5 +43,11 @@ public class User {
 
     @Column(name = "status")
     private String  status;
+
+    @Column(name= "otp")
+    private String otp;
+
+    @Column(name = "otp_generation_time")
+    private Date setOtpGenerationTime;
 
 }

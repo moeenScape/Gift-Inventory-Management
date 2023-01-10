@@ -1,9 +1,11 @@
 package com.square.Inventory.Management.System.Service;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
+import com.square.Inventory.Management.System.Entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public interface UserService {
@@ -11,9 +13,7 @@ public interface UserService {
 
     ResponseEntity<String> login(UserDTO userDTO);
 
-    ByteArrayInputStream load();
-
-    ResponseEntity<String> deleteUser(Long userId);
+    ResponseEntity<String> disableUser(Long userId);
 
     List<UserDTO> getAllUserByPagination(int page, int size);
 
@@ -25,5 +25,15 @@ public interface UserService {
 
     ResponseEntity<?> updateUserStatus(String status, Long userID);
 
-    ResponseEntity<?> forgetPassword(String email);
+    List<String> getClaimDetails();
+
+    Object getClaimFromLogin();
+
+    ResponseEntity<?> forgetPassword(User user);
+
+    Boolean checkOtpStatus(User user, String givenOtp);
+
+    ResponseEntity<?> resetPassword(User user, String newPassword);
+    ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser();
+
 }

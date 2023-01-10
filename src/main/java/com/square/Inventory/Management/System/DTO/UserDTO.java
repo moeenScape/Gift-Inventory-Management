@@ -27,6 +27,8 @@ public class UserDTO {
 
     private String status;
 
+    private String otp;
+
     public UserDTO(Long id, String firstName, String lastName,
                    String contactNumber, String email, String role, String status) {
         this.id = id;

@@ -6,7 +6,9 @@ import com.square.Inventory.Management.System.DTO.DEPOT;
 import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.Entity.Budget;
+import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
+import com.square.Inventory.Management.System.Projection.FieldColleagueProjection;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,9 +33,6 @@ public interface BudgetController {
     @GetMapping(path = "/for/depot/{depotID}")
     ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String depotID);
 
-    @GetMapping(path = "/by/month")
-    ResponseEntity<List<Budget>> viewAllBudgetByMonth();
-
     @GetMapping(path = "/all")
     ResponseEntity<List<Budget>> getAllBudget();
 
@@ -41,8 +40,12 @@ public interface BudgetController {
     ResponseEntity<List<BudgetSummary>> getSummary();
 
     @GetMapping(path = "/categoryWiseSummary")
-    ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary();
+    ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary();
 
+    /**
+     * Dashboard card one
+     * @return ppm,sample,gift number
+     */
     @GetMapping(path = "/categoryWiseSummaryDepot")
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 
@@ -59,4 +62,15 @@ public interface BudgetController {
                                                                      @PathVariable String month,
                                                                      @PathVariable int year);
 
+    @GetMapping(path = "/depot")
+    ResponseEntity<List<DEPOT>> getDepotUserWiseBudget();
+
+    @GetMapping(path = "/ssu")
+    ResponseEntity<List<SSU>> getSSUUserWiseBudget();
+
+    @GetMapping("/dashboard/monthWiseSum")
+    ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum();
+
+    @GetMapping("/dashboard/totalFieldColleague")
+    ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague();
 }

@@ -8,11 +8,12 @@ import com.square.Inventory.Management.System.DTO.SSU;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
+import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
+import com.square.Inventory.Management.System.Projection.FieldColleagueProjection;
 import com.square.Inventory.Management.System.Repository.BudgetRepository;
 import com.square.Inventory.Management.System.Service.BudgetService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,15 +27,13 @@ import java.util.List;
 @RestController
 @Slf4j
 public class BudgetControllerImpl implements BudgetController {
-    @Autowired
-    private BudgetRepository budgetRepository;
 
-    @Autowired
-    JWTFilter jwtFilter;
+    private final JWTFilter jwtFilter;
 
     private final BudgetService budgetService;
 
-    public BudgetControllerImpl(BudgetService budgetService) {
+    public BudgetControllerImpl(BudgetRepository budgetRepository, JWTFilter jwtFilter, BudgetService budgetService) {
+        this.jwtFilter = jwtFilter;
         this.budgetService = budgetService;
     }
 
@@ -70,27 +69,21 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<SSU>> getBudgetBySSU(String ssuName) {
 
-//        if (jwtFilter.isAdmin() || jwtFilter.isSSU()) {
-//            return budgetService.getBudgetForSSUByName(ssuName);
-//        }
-//        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-        return budgetService.getBudgetForSSUByName(ssuName);
+        if (jwtFilter.isAdmin()) {
+            return budgetService.getBudgetForSSUByName(ssuName);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+
     }
 
     @Override
     public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String depotID) {
 
-//        if (jwtFilter.isAdmin() || (jwtFilter.isDepot() && jwtFilter.getRole() == id)) {
-//            return budgetService.getBudgetForDepotByID(id);
-//        }
-//        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-        return budgetService.getBudgetForDepotByID(depotID);
-    }
+        if (jwtFilter.isAdmin()) {
+            return budgetService.getBudgetForDepotByID(depotID);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
 
-    @Override
-    public ResponseEntity<List<Budget>> viewAllBudgetByMonth() {
-
-        return budgetService.viewAllBudgetByMonth();
     }
 
     @Override
@@ -105,8 +98,10 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummary() {
-        return budgetService.getCategoryWiseSummary();
+    public ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary() {
+        if(jwtFilter.isAdmin()) {
+            return budgetService.getCategoryWiseSummary();
+        } return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @Override
@@ -127,6 +122,34 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
         return budgetService.getPreviousDepotBudgetByMonthAndYear(depotID, month, year);
+    }
+
+    @Override
+    public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
+        if (jwtFilter.isDepot()) {
+            return budgetService.getDepotBudgetWithUser();
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+
+    }
+
+    @Override
+    public ResponseEntity<List<SSU>> getSSUUserWiseBudget() {
+        if (jwtFilter.isSSU()) {
+            return budgetService.getSSUWiseBudget();
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+
+    }
+
+    @Override
+    public ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum() {
+        return budgetService.getMonthWiseSum();
+    }
+
+    @Override
+    public ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague() {
+        return budgetService.getCurrentMonthFieldColleague();
     }
 
 
