@@ -10,9 +10,10 @@ import com.square.Inventory.Management.System.Service.BudgetService;
 import com.square.Inventory.Management.System.Service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@RestController
 public class DashboardControllerImpl implements DashboardController {
 
     private final UserService userService;
@@ -29,17 +30,23 @@ public class DashboardControllerImpl implements DashboardController {
 
     @Override
     public ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser() {
-        return userService.getActiveDeactivateUser();
+        if(jwtFilter.isAdmin()) {
+            return userService.getActiveDeactivateUser();
+        }return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @Override
     public ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum() {
-        return budgetService.getMonthWiseSum();
+        if (jwtFilter.isAdmin()) {
+            return budgetService.getMonthWiseSum();
+        }return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @Override
     public ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague() {
-        return budgetService.getCurrentMonthFieldColleague();
+        if(jwtFilter.isAdmin()) {
+            return budgetService.getCurrentMonthFieldColleague();
+        }return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
     @Override
     public ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary() {

@@ -1,7 +1,6 @@
 package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
-import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

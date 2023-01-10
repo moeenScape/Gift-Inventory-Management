@@ -21,7 +21,7 @@ import java.util.Optional;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
-   @Autowired
+    @Autowired
     UserRepository userRepository;
 
     private final JWTFilter jwtFilter;
@@ -54,11 +54,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> updateUser(UserDTO userDTO, Long userId) {
-        if (jwtFilter.isAdmin()) {
-            return userService.update(userDTO, userId);
-        } else {
-            return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-        }
+        return userService.update(userDTO, userId);
     }
 
     @Override
@@ -122,9 +118,9 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO) {
         String email = userDTO.getEmail();
         return Optional
-                .ofNullable(userRepository.findByEmail(email) )
-                .map( user -> ResponseEntity.ok(userService.forgetPassword(user) ) )
-                .orElseGet( () -> ResponseEntity.notFound().build() );
+                .ofNullable(userRepository.findByEmail(email))
+                .map(user -> ResponseEntity.ok(userService.forgetPassword(user)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override
@@ -133,9 +129,9 @@ public class UserControllerImpl implements UserController {
         String email = userDTO.getEmail();
 
         return Optional
-                .ofNullable(userRepository.findByEmail(email) )
-                .map( user -> ResponseEntity.ok(userService.checkOtpStatus(user,otp) ) )
-                .orElseGet( () -> ResponseEntity.notFound().build() );
+                .ofNullable(userRepository.findByEmail(email))
+                .map(user -> ResponseEntity.ok(userService.checkOtpStatus(user, otp)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override
@@ -144,10 +140,8 @@ public class UserControllerImpl implements UserController {
         String newPassword = userDTO.getPassword();
 
         return Optional
-                .ofNullable(userRepository.findByEmail(email) )
-                .map( user -> ResponseEntity.ok(userService.resetPassword(user, newPassword) ) )
-                .orElseGet( () -> ResponseEntity.notFound().build() );
+                .ofNullable(userRepository.findByEmail(email))
+                .map(user -> ResponseEntity.ok(userService.resetPassword(user, newPassword)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
 }
