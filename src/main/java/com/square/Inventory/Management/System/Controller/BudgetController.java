@@ -39,13 +39,7 @@ public interface BudgetController {
     @GetMapping(path = "/summary")
     ResponseEntity<List<BudgetSummary>> getSummary();
 
-    @GetMapping(path = "/categoryWiseSummary")
-    ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary();
 
-    /**
-     * Dashboard card one
-     * @return ppm,sample,gift number
-     */
     @GetMapping(path = "/categoryWiseSummaryDepot")
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 
@@ -68,9 +62,4 @@ public interface BudgetController {
     @GetMapping(path = "/ssu")
     ResponseEntity<List<SSU>> getSSUUserWiseBudget();
 
-    @GetMapping("/dashboard/monthWiseSum")
-    ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum();
-
-    @GetMapping("/dashboard/totalFieldColleague")
-    ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague();
 }

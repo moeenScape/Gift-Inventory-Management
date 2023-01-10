@@ -97,12 +97,6 @@ public class BudgetControllerImpl implements BudgetController {
         return budgetService.getSummary();
     }
 
-    @Override
-    public ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary() {
-        if(jwtFilter.isAdmin()) {
-            return budgetService.getCategoryWiseSummary();
-        } return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
-    }
 
     @Override
     public ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot() {
@@ -140,16 +134,6 @@ public class BudgetControllerImpl implements BudgetController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
-    }
-
-    @Override
-    public ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum() {
-        return budgetService.getMonthWiseSum();
-    }
-
-    @Override
-    public ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague() {
-        return budgetService.getCurrentMonthFieldColleague();
     }
 
 
