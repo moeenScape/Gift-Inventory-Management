@@ -7,7 +7,6 @@ import com.square.Inventory.Management.System.Repository.SampleSectionRepository
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.SampleSectionService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +21,14 @@ import java.util.Optional;
 
 @Service
 public class SampleSectionServiceImpl implements SampleSectionService {
-    @Autowired
-    SampleSectionRepository sampleSectionRepository;
+    private final SampleSectionRepository sampleSectionRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public SampleSectionServiceImpl(SampleSectionRepository sampleSectionRepository, UserRepository userRepository) {
+        this.sampleSectionRepository = sampleSectionRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public ResponseEntity<String> createSSU(SsuDto sampleSectionUnit) {
@@ -87,8 +89,11 @@ public class SampleSectionServiceImpl implements SampleSectionService {
 
             if (sectionUnit.isPresent()) {
                 SampleSectionUnit newSampleSectionUnit = sectionUnit.get();
+                newSampleSectionUnit.setSsuID(ssuID);
                 newSampleSectionUnit.setSsuName(sampleSectionUnit.getSsuName());
                 newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
+                newSampleSectionUnit.setUser(sectionUnit.get().getUser());
+                newSampleSectionUnit.setNumberOfEmployee(sectionUnit.get().getNumberOfEmployee());
                 sampleSectionRepository.save(newSampleSectionUnit);
                 return new ResponseEntity<>("Sample Section Unit Update", HttpStatus.OK);
             } else {

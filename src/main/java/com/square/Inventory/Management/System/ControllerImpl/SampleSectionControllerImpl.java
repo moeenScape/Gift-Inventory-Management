@@ -7,7 +7,6 @@ import com.square.Inventory.Management.System.Entity.SampleSectionUnit;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Service.SampleSectionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +17,13 @@ import java.util.List;
 @RestController
 public class SampleSectionControllerImpl implements SampleSectionController {
 
-    @Autowired
-    JWTFilter jwtFilter;
+    private final JWTFilter jwtFilter;
+    private final SampleSectionService sampleSectionService;
 
-    @Autowired
-    SampleSectionService sampleSectionService;
+    public SampleSectionControllerImpl(JWTFilter jwtFilter, SampleSectionService sampleSectionService) {
+        this.jwtFilter = jwtFilter;
+        this.sampleSectionService = sampleSectionService;
+    }
 
     @Override
     public ResponseEntity<String> createSSu(SsuDto sampleSectionUnit) {

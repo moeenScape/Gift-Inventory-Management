@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
                 return InventoryUtils.getResponse("No user found by this Email", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
-            log.error("Error {}", ex);
+            ex.printStackTrace();
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getClaimDetails() {
-        List<String> stringList=new ArrayList<>();
+        List<String> stringList = new ArrayList<>();
         stringList.add(jwtFilter.getCurrentUser());
         stringList.add(jwtFilter.getRole());
         return stringList;
@@ -180,13 +180,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object getClaimFromLogin() {
-        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
+        User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
 
-        UserDTO userDTO=new UserDTO();
+        UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setEmail(user.getEmail());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
+        userDTO.setContactNumber(user.getContactNumber());
         userDTO.setRole(user.getRole());
         return userDTO;
     }
@@ -195,13 +196,12 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> disableUser(Long userId) {
 
         Optional<User> optional = userRepository.findById(userId);
-        User user = optional.get();
-        if (!"admin".equals(user.getRole())) {
+        if (optional.isPresent() && !"admin".equals(optional.get().getRole())) {
 
             userRepository.disableUser(userId);
             return new ResponseEntity<>("User Disable Successfully ", HttpStatus.OK);
 
-        } else if (user.getRole().equals("admin")) {
+        } else if (optional.isPresent() && optional.get().getRole().equals("admin")) {
             return new ResponseEntity<>("Can not  Disable Admin ", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
@@ -256,7 +256,7 @@ public class UserServiceImpl implements UserService {
                         "Your OTP is: " + otp + "\n" + "\n" +
                         "This mail Send from IMS by Square\n" +
                         "Note: this OTP is set to expire in 5 minutes."
-                );
+        );
         return ResponseEntity.ok("OTP generated!! check mail");
     }
 
@@ -282,10 +282,11 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.ok("Password Updated!");
         }
     }
+
     @Override
     public ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser() {
-        ActivatedDeactivatedUser activatedDeactivatedUsers=userRepository.getActiveDeactivateUser();
-        return new ResponseEntity<>(activatedDeactivatedUsers,HttpStatus.OK);
+        ActivatedDeactivatedUser activatedDeactivatedUsers = userRepository.getActiveDeactivateUser();
+        return new ResponseEntity<>(activatedDeactivatedUsers, HttpStatus.OK);
 
     }
 

@@ -10,6 +10,6 @@ public class InventoryUtils {
     }
     public static ResponseEntity<String> getResponse(String responseMessage, HttpStatus httpStatus)
     {
-        return new ResponseEntity<>("{\"message\":\"" + responseMessage + "\"}", httpStatus);
+        return new ResponseEntity<String>("{\"message\":\""+responseMessage+"\"}",httpStatus);
     }
 }

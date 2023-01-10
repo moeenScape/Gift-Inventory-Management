@@ -15,11 +15,10 @@ public class InvoicesControllerImpl implements InvoicesController {
     InvoicesService invoicesService;
 
     @Override
-    public ResponseEntity<String> generateInvoices(Map<String, String > requestMap) {
-        try{
+    public ResponseEntity<String> generateInvoices(Map<String, String> requestMap) {
+        try {
             return invoicesService.generateInvoices(requestMap);
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);

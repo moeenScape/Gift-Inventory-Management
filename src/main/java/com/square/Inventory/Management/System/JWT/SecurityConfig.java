@@ -1,6 +1,5 @@
 package com.square.Inventory.Management.System.JWT;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,11 +17,13 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    CustomUserServiceDetails customUserServiceDetails;
+    private final CustomUserServiceDetails customUserServiceDetails;
+    private final JWTFilter jwtFilter;
 
-    @Autowired
-    JWTFilter jwtFilter;
+    public SecurityConfig(CustomUserServiceDetails customUserServiceDetails, JWTFilter jwtFilter) {
+        this.customUserServiceDetails = customUserServiceDetails;
+        this.jwtFilter = jwtFilter;
+    }
 
 
     @Override
@@ -47,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/user/login")
+                .antMatchers("/user/login", "/user/forgetPassword")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -5,7 +5,6 @@ import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
-import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import java.util.Optional;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
-   @Autowired
+    @Autowired
     UserRepository userRepository;
 
     private final JWTFilter jwtFilter;
@@ -54,11 +53,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> updateUser(UserDTO userDTO, Long userId) {
-        if (jwtFilter.isAdmin()) {
-            return userService.update(userDTO, userId);
-        } else {
-            return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-        }
+        return userService.update(userDTO, userId);
     }
 
     @Override
@@ -122,9 +117,9 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO) {
         String email = userDTO.getEmail();
         return Optional
-                .ofNullable(userRepository.findByEmail(email) )
-                .map( user -> ResponseEntity.ok(userService.forgetPassword(user) ) )
-                .orElseGet( () -> ResponseEntity.notFound().build() );
+                .ofNullable(userRepository.findByEmail(email))
+                .map(user -> ResponseEntity.ok(userService.forgetPassword(user)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override
@@ -133,9 +128,9 @@ public class UserControllerImpl implements UserController {
         String email = userDTO.getEmail();
 
         return Optional
-                .ofNullable(userRepository.findByEmail(email) )
-                .map( user -> ResponseEntity.ok(userService.checkOtpStatus(user,otp) ) )
-                .orElseGet( () -> ResponseEntity.notFound().build() );
+                .ofNullable(userRepository.findByEmail(email))
+                .map(user -> ResponseEntity.ok(userService.checkOtpStatus(user, otp)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override
@@ -144,13 +139,8 @@ public class UserControllerImpl implements UserController {
         String newPassword = userDTO.getPassword();
 
         return Optional
-                .ofNullable(userRepository.findByEmail(email) )
-                .map( user -> ResponseEntity.ok(userService.resetPassword(user, newPassword) ) )
-                .orElseGet( () -> ResponseEntity.notFound().build() );
+                .ofNullable(userRepository.findByEmail(email))
+                .map(user -> ResponseEntity.ok(userService.resetPassword(user, newPassword)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @Override
-    public ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser() {
-        return userService.getActiveDeactivateUser();
-    }
-
 }
