@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.DTO.UserDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

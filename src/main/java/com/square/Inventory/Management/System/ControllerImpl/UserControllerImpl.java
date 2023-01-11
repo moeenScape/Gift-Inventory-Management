@@ -3,6 +3,7 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.Controller.UserController;
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.Exception.CustomException;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Repository.UserRepository;
@@ -10,9 +11,11 @@ import com.square.Inventory.Management.System.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +35,10 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> createUser(UserDTO user) {
+    public ResponseEntity<String> createUser(@Valid UserDTO user) {
         try {
-            if (jwtFilter.isAdmin()) {
-                return userService.createUser(user);
+            if (jwtFilter.isAdmin())  {
+                return userService.createUser(user) ;
             } else {
                 return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
