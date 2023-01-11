@@ -27,7 +27,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Email;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -53,13 +52,8 @@ public class UserServiceImpl implements UserService {
     private final OtpUtils otpUtils;
 
     private final LogInHistoryRepository logInHistoryRepository;
-    public UserServiceImpl(UserRepository userRepository,
-                           AuthenticationManager authenticationManager,
-                           CustomUserServiceDetails customUserServiceDetails,
-                           JWTUtils jwtUtils,
-                           JWTFilter jwtFilter,
-                           EmailUtils emailUtils,
-                           BCryptPasswordEncoder bCryptPasswordEncoder, OtpUtils otpUtils, LogInHistoryRepository logInHistoryRepository) {
+
+    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, CustomUserServiceDetails customUserServiceDetails, JWTUtils jwtUtils, JWTFilter jwtFilter, EmailUtils emailUtils, BCryptPasswordEncoder bCryptPasswordEncoder, OtpUtils otpUtils, LogInHistoryRepository logInHistoryRepository) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.customUserServiceDetails = customUserServiceDetails;
@@ -79,10 +73,7 @@ public class UserServiceImpl implements UserService {
             if (Objects.isNull(newUser)) {
 
                 userRepository.save(getUserFromDTO(user));
-                emailUtils.sendMail(user.getEmail(), "Account Approved By" + " " + getCurrentUserName(),
-                        "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n"
-                                + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword"
-                                + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
+                emailUtils.sendMail(user.getEmail(), "Account Approved By" + " " + getCurrentUserName(), "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n" + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword" + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
                 return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
 
             } else {
@@ -105,20 +96,18 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepository.findByEmail(userDTO.getEmail());
             if (Objects.nonNull(user)) {
-                Authentication auth = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+                Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
                 if (auth.isAuthenticated()) {
                     if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
-                        logInHistoryRepository.save(getLogInDetails(customUserServiceDetails.getUserDetails().getEmail()));
-                        return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
-                                customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
+                        logInHistoryRepository.save(getLogInDetails(userDTO));
+                        return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(), customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
-                        logInHistoryRepository.save(getLogInDetailsDisableUser(customUserServiceDetails.getUserDetails().getEmail()));
+                        logInHistoryRepository.save(getLogInDetails(userDTO));
                         return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
                     }
                 }
             } else {
-                logInHistoryRepository.save(GetUnknownUser(userDTO));
+                logInHistoryRepository.save(getLogInDetails(userDTO));
                 return InventoryUtils.getResponse("No user found by this Email", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
@@ -128,9 +117,9 @@ public class UserServiceImpl implements UserService {
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private LogInDetails getFailureLogIn(UserDTO userDTO){
-        LogInDetails logInDetails=new LogInDetails();
-        InetAddress inetAddress=InetAddress.getLoopbackAddress();
+    private LogInDetails getFailureLogIn(UserDTO userDTO) {
+        LogInDetails logInDetails = new LogInDetails();
+        InetAddress inetAddress = InetAddress.getLoopbackAddress();
         logInDetails.setLogInTime(new Date());
         logInDetails.setUserEmail(userDTO.getEmail());
         logInDetails.setLogInStatus("failed log in");
@@ -138,40 +127,27 @@ public class UserServiceImpl implements UserService {
         return logInDetails;
     }
 
-    private LogInDetails GetUnknownUser(UserDTO userDTO) throws UnknownHostException {
-        LogInDetails logInDetails=new LogInDetails();
-        InetAddress inetAddress=InetAddress.getLocalHost();
-        logInDetails.setLogInTime(new Date());
+
+    private LogInDetails getLogInDetails(UserDTO userDTO) throws UnknownHostException {
+
+        LogInDetails logInDetails = new LogInDetails();
+        InetAddress inetAddress = InetAddress.getLocalHost();
+        User user = userRepository.findByEmail(userDTO.getEmail());
+
+        if (Objects.nonNull(user) && user.getStatus().equals("true")) {
+            logInDetails.setUserId(user.getId());
+            logInDetails.setLogInStatus("success");
+        } else if (Objects.isNull(user)) {
+            logInDetails.setLogInStatus("No account");
+        } else {
+            logInDetails.setLogInStatus("Disable account");
+        }
+
         logInDetails.setUserEmail(userDTO.getEmail());
-        logInDetails.setLogInStatus("Don't have account");
-        logInDetails.setIP(inetAddress.getHostAddress());
-        return logInDetails;
-    }
-
-    private LogInDetails getLogInDetailsDisableUser(String email) throws UnknownHostException {
-        LogInDetails logInDetails=new LogInDetails();
-        InetAddress inetAddress=InetAddress.getLocalHost();
-        User user=userRepository.findByEmail(email);
-        logInDetails.setUserId(user.getId());
-        logInDetails.setUserEmail(user.getEmail());
         logInDetails.setLogInTime(new Date());
-        logInDetails.setLogInStatus("Disable Account");
         logInDetails.setIP(inetAddress.getHostAddress());
         return logInDetails;
     }
-
-    private LogInDetails getLogInDetails(@Email String email) throws UnknownHostException {
-        LogInDetails logInDetails=new LogInDetails();
-        InetAddress inetAddress=InetAddress.getLocalHost();
-        User user=userRepository.findByEmail(email);
-        logInDetails.setUserId(user.getId());
-        logInDetails.setUserEmail(user.getEmail());
-        logInDetails.setLogInTime(new Date());
-        logInDetails.setLogInStatus("success");
-        logInDetails.setIP(inetAddress.getHostAddress());
-        return logInDetails;
-    }
-
 
     @Override
     public ResponseEntity<String> update(UserDTO user, Long userId) {
@@ -306,12 +282,7 @@ public class UserServiceImpl implements UserService {
         user.setSetOtpGenerationTime(new Date());
         userRepository.save(user);
 
-        emailUtils.sendMail(email, "Forget Password Request",
-                "Hello User,\n" +
-                        "Your OTP is: " + otp + "\n" + "\n" +
-                        "This mail Send from IMS by Square\n" +
-                        "Note: this OTP is set to expire in 5 minutes."
-        );
+        emailUtils.sendMail(email, "Forget Password Request", "Hello User,\n" + "Your OTP is: " + otp + "\n" + "\n" + "This mail Send from IMS by Square\n" + "Note: this OTP is set to expire in 5 minutes.");
         return ResponseEntity.ok("OTP generated!! check mail");
     }
 
