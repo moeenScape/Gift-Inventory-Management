@@ -113,16 +113,51 @@ public class UserServiceImpl implements UserService {
                         return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
                                 customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
+                        logInHistoryRepository.save(getLogInDetailsDisableUser(customUserServiceDetails.getUserDetails().getEmail()));
                         return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
                     }
                 }
             } else {
+                logInHistoryRepository.save(GetUnknownUser(userDTO));
                 return InventoryUtils.getResponse("No user found by this Email", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        logInHistoryRepository.save(getFailureLogIn(userDTO));
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private LogInDetails getFailureLogIn(UserDTO userDTO){
+        LogInDetails logInDetails=new LogInDetails();
+        InetAddress inetAddress=InetAddress.getLoopbackAddress();
+        logInDetails.setLogInTime(new Date());
+        logInDetails.setUserEmail(userDTO.getEmail());
+        logInDetails.setLogInStatus("failed log in");
+        logInDetails.setIP(inetAddress.getHostAddress());
+        return logInDetails;
+    }
+
+    private LogInDetails GetUnknownUser(UserDTO userDTO) throws UnknownHostException {
+        LogInDetails logInDetails=new LogInDetails();
+        InetAddress inetAddress=InetAddress.getLocalHost();
+        logInDetails.setLogInTime(new Date());
+        logInDetails.setUserEmail(userDTO.getEmail());
+        logInDetails.setLogInStatus("Don't have account");
+        logInDetails.setIP(inetAddress.getHostAddress());
+        return logInDetails;
+    }
+
+    private LogInDetails getLogInDetailsDisableUser(String email) throws UnknownHostException {
+        LogInDetails logInDetails=new LogInDetails();
+        InetAddress inetAddress=InetAddress.getLocalHost();
+        User user=userRepository.findByEmail(email);
+        logInDetails.setUserId(user.getId());
+        logInDetails.setUserEmail(user.getEmail());
+        logInDetails.setLogInTime(new Date());
+        logInDetails.setLogInStatus("Disable Account");
+        logInDetails.setIP(inetAddress.getHostAddress());
+        return logInDetails;
     }
 
     private LogInDetails getLogInDetails(@Email String email) throws UnknownHostException {
@@ -130,6 +165,7 @@ public class UserServiceImpl implements UserService {
         InetAddress inetAddress=InetAddress.getLocalHost();
         User user=userRepository.findByEmail(email);
         logInDetails.setUserId(user.getId());
+        logInDetails.setUserEmail(user.getEmail());
         logInDetails.setLogInTime(new Date());
         logInDetails.setLogInStatus("success");
         logInDetails.setIP(inetAddress.getHostAddress());

@@ -19,6 +19,16 @@ public class LogInDetails {
 
     private Long userId;
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    private String userEmail;
+
     private Date logInTime;
 
     private Date logOutTime;
@@ -26,6 +36,8 @@ public class LogInDetails {
     private String logInStatus;
 
     private String IP;
+
+
 
     public Long getId() {
         return id;
