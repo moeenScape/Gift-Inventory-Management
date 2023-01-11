@@ -262,9 +262,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean checkOtpStatus(User user, String givenOtp) {
-        String userOtp = user.getOtp();
-        boolean result = Objects.equals(userOtp, givenOtp);
-        if (!result) {
+        if (!user.getOtp().equals(givenOtp)) {
             return false;
         }
         return otpUtils.isOtpExpired(user);
