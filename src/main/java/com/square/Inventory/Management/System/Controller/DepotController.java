@@ -1,7 +1,6 @@
 package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.DTO.DepotDto;
-import com.square.Inventory.Management.System.Entity.Depot;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
