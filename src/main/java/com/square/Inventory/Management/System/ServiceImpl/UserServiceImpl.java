@@ -2,6 +2,7 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.UserDTO;
+import com.square.Inventory.Management.System.Entity.LogInDetails;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
@@ -10,6 +11,7 @@ import com.square.Inventory.Management.System.JWT.CustomUserServiceDetails;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.JWT.JWTUtils;
 import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUser;
+import com.square.Inventory.Management.System.Repository.LogInHistoryRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Email;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 @Slf4j
@@ -47,13 +52,14 @@ public class UserServiceImpl implements UserService {
 
     private final OtpUtils otpUtils;
 
+    private final LogInHistoryRepository logInHistoryRepository;
     public UserServiceImpl(UserRepository userRepository,
                            AuthenticationManager authenticationManager,
                            CustomUserServiceDetails customUserServiceDetails,
                            JWTUtils jwtUtils,
                            JWTFilter jwtFilter,
                            EmailUtils emailUtils,
-                           BCryptPasswordEncoder bCryptPasswordEncoder, OtpUtils otpUtils) {
+                           BCryptPasswordEncoder bCryptPasswordEncoder, OtpUtils otpUtils, LogInHistoryRepository logInHistoryRepository) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.customUserServiceDetails = customUserServiceDetails;
@@ -62,6 +68,7 @@ public class UserServiceImpl implements UserService {
         this.emailUtils = emailUtils;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.otpUtils = otpUtils;
+        this.logInHistoryRepository = logInHistoryRepository;
     }
 
     @Override
@@ -102,6 +109,7 @@ public class UserServiceImpl implements UserService {
                         new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
                 if (auth.isAuthenticated()) {
                     if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
+                        logInHistoryRepository.save(getLogInDetails(customUserServiceDetails.getUserDetails().getEmail()));
                         return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(),
                                 customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
@@ -115,6 +123,17 @@ public class UserServiceImpl implements UserService {
             ex.printStackTrace();
         }
         return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private LogInDetails getLogInDetails(@Email String email) throws UnknownHostException {
+        LogInDetails logInDetails=new LogInDetails();
+        InetAddress inetAddress=InetAddress.getLocalHost();
+        User user=userRepository.findByEmail(email);
+        logInDetails.setUserId(user.getId());
+        logInDetails.setLogInTime(new Date());
+        logInDetails.setLogInStatus("success");
+        logInDetails.setIP(inetAddress.getHostAddress());
+        return logInDetails;
     }
 
 
