@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
     @Query("select new com.square.Inventory.Management.System.DTO.SSU(b.budgetID,b.sapCode," +
-            "b.productName,b.productionUnit,b.packageSize,b.category,b.fieldColleagueID,b.fieldColleagueName," +
+            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
             "b.quantity,b.DepotID,b.depotName,b.month,b.year) from Budget " +
             "b where b.ssu_id=:ssuName AND b.month=:month AND b.year=:year")
     List<SSU> getBudgetForSSUByName(@Param("ssuName") String ssuName,
@@ -26,7 +26,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
                                     @Param("year") Integer year);
 
     @Query("select new com.square.Inventory.Management.System.DTO.DEPOT(b.budgetID,b.sapCode," +
-            "b.productName,b.productionUnit,b.packageSize,b.category,b.fieldColleagueID,b.fieldColleagueName," +
+            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
             "b.quantity,b.month,b.year) from Budget b where b.DepotID =:depotID AND b.month=:month AND b.year=:year")
     List<DEPOT> getBudgetForDepotByID(@Param("depotID") String depotID,
                                       @Param("month") String month,

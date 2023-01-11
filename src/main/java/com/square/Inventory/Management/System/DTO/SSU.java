@@ -1,5 +1,6 @@
 package com.square.Inventory.Management.System.DTO;
 
+import com.square.Inventory.Management.System.Entity.SBU;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class SSU {
 
     private String category;
 
+    private SBU sbu;
     private String fieldColleagueID;
 
     private String fieldColleagues;
@@ -34,7 +36,7 @@ public class SSU {
     private int year;
 
     public SSU(String budgetId, String sapCode, String productName, String productionUnit,
-               String packageSize, String category, String fieldColleagueID,
+               String packageSize, String category,SBU sbu,String fieldColleagueID,
                String fieldColleagues, int quantity, String depotID,
                String depotName, String month, int year) {
         this.budgetId = budgetId;
@@ -43,6 +45,7 @@ public class SSU {
         this.productionUnit = productionUnit;
         this.packageSize = packageSize;
         this.category = category;
+        this.sbu=sbu;
         this.fieldColleagueID = fieldColleagueID;
         this.fieldColleagues = fieldColleagues;
         this.quantity = quantity;
