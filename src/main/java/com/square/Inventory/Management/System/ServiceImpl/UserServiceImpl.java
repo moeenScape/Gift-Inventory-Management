@@ -4,7 +4,6 @@ import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.LogInDetails;
 import com.square.Inventory.Management.System.Entity.User;
-import com.square.Inventory.Management.System.Exception.CustomException;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.IMSUtils.OtpUtils;

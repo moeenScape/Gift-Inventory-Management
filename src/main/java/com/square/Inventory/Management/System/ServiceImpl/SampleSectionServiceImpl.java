@@ -45,7 +45,7 @@ public class SampleSectionServiceImpl implements SampleSectionService {
                 if (user_id == null) {
 
                     newSampleSectionUnit.setSsuID(sampleSectionUnit.getSsuID());
-                    newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
+                    newSampleSectionUnit.setSsuName(sampleSectionUnit.getLocation());
                     newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
                     newSampleSectionUnit.setNumberOfEmployee(sampleSectionUnit.getNumberOfEmployee());
                     sampleSectionRepository.save(newSampleSectionUnit);
