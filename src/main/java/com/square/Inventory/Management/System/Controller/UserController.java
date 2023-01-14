@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("http://localhost:4200")
 @RequestMapping(path = "/user")
 public interface UserController {
 
@@ -14,7 +14,8 @@ public interface UserController {
     ResponseEntity<String> login(@RequestBody UserDTO userDTO);
 
     @PostMapping(path = "/create")
-    ResponseEntity<String> createUser(@RequestBody UserDTO user);
+    ResponseEntity<String> createUser(@RequestBody UserDTO user,
+                                      BindingResult bindingResult);
 
     @PutMapping(path = "/update/{userId}")
     ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO,
