@@ -10,11 +10,15 @@ import com.square.Inventory.Management.System.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserControllerImpl implements UserController {
@@ -32,12 +36,21 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> createUser(UserDTO user) {
+    public ResponseEntity<String> createUser(@Valid UserDTO user, BindingResult bindingResult) {
         try {
-            if (jwtFilter.isAdmin()) {
-                return userService.createUser(user);
+            if (bindingResult.hasErrors()) {
+                return ResponseEntity.badRequest()
+                        .body(bindingResult
+                                .getAllErrors()
+                                .stream()
+                                .map(ObjectError::getDefaultMessage)
+                                .collect(Collectors.joining()));
             } else {
-                return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                if (jwtFilter.isAdmin()) {
+                    return userService.createUser(user);
+                } else {
+                    return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
