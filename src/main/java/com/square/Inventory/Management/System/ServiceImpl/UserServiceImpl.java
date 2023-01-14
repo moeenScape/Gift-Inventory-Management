@@ -231,12 +231,12 @@ public class UserServiceImpl implements UserService {
         if (optional.isPresent() && !"admin".equals(optional.get().getRole())) {
 
             userRepository.disableUser(userId);
-            return new ResponseEntity<>("User Disable Successfully ", HttpStatus.OK);
+            return new ResponseEntity<>("User Disable Successfully.ID:  "+userId, HttpStatus.OK);
 
         } else if (optional.isPresent() && optional.get().getRole().equals("admin")) {
-            return new ResponseEntity<>("Can not  Disable Admin ", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Can not  Disable Admin "+userId, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Not Find With ID:  "+userId, HttpStatus.BAD_REQUEST);
         }
     }
 
