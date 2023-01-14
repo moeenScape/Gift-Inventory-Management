@@ -230,8 +230,15 @@ public class UserServiceImpl implements UserService {
         Optional<User> optional = userRepository.findById(userId);
         if (optional.isPresent() && !"admin".equals(optional.get().getRole())) {
 
+
             userRepository.disableUser(userId);
-            return new ResponseEntity<>("User Disable Successfully.ID:  "+userId, HttpStatus.OK);
+            if(Objects.equals(optional.get().getStatus(), "true"))
+            {
+                return new ResponseEntity<>("User Disable Successfully.ID:  "+userId, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User Active Successfully.ID:  "+userId, HttpStatus.OK);
+            }
+
 
         } else if (optional.isPresent() && optional.get().getRole().equals("admin")) {
             return new ResponseEntity<>("Can not  Disable Admin "+userId, HttpStatus.BAD_REQUEST);
