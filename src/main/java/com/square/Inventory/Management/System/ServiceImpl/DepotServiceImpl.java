@@ -70,6 +70,7 @@ public class DepotServiceImpl implements DepotService {
 
     @Override
     public void deleteDepot(Depot depot) {
+        depot.setUser(null);
         depotRepository.delete(depot);
     }
 
@@ -96,8 +97,7 @@ public class DepotServiceImpl implements DepotService {
         User _user;
 
         allDepots = depotRepository.findAll();
-        int len = allDepots.size();
-        List<DepotDto> allDepotsDto = new ArrayList<>(len);
+        List<DepotDto> allDepotsDto = new ArrayList<>();
 
         for (Depot allDepot : allDepots) {
             _user = allDepot.getUser();
