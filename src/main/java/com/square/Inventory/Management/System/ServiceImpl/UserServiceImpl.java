@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(user2);
                 return new ResponseEntity<>("User Updated", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("User is not present", HttpStatus.OK);
+                return new ResponseEntity<>("User is not present", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
