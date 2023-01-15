@@ -17,27 +17,45 @@ import java.util.List;
 @RequestMapping("/budget")
 public interface BudgetController {
 
-    @PostMapping("/showExcel")
+    @PostMapping("/showExcel") // "/showExcel" is not understandable, use a proper name
+    // method name getAllEmployeesFromExcel -> getAllEmployeeFromExcel or getEmployeesFromExcel
+    // discuss with me about parameter name
+    // can we use @ExceptionHandler(IOException.class) on behalf throws IOException
     ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
+    // why List<Budget>, use dto, use Dto in return
+    // change name addBudgetFromExcel
     ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file);
 
+    // why List<Budget>, use dto, use Dto in return
+    // change name addBudgetExcelFromExcel
+    // @PostMapping("/addBudgetFromExcel") change to @PostMapping("/addBudget")
     @PostMapping("/addBudgetFromExcel")
     ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
+    // @GetMapping(path = "/for/ssu/{ssuName}") change to @GetMapping(path = "/ssu/{ssuName}")
+    // return dto
     @GetMapping(path = "/for/ssu/{ssuName}")
     ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);
 
+    // @GetMapping(path = "/for/depot/{depotID}") change to @GetMapping(path = "/depot/{depotID}")
+    // return dto
     @GetMapping(path = "/for/depot/{depotID}")
     ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String depotID);
 
+    // @GetMapping(path = "/all") change to @GetMapping(path = "/get/all")
+    // return dto
     @GetMapping(path = "/all")
     ResponseEntity<List<Budget>> getAllBudget();
 
+    // return dto
     @GetMapping(path = "/summary")
     ResponseEntity<List<BudgetSummary>> getSummary();
 
-
+    // remove line spacing
+    // @GetMapping(path = "/categoryWiseSummaryDepot") change to @GetMapping(path = "/categoryWiseDepotSummary")
+    // change method name getCategoryWiseSummaryDepot to getCategoryWiseDepotSummary
+    // return dto
     @GetMapping(path = "/categoryWiseSummaryDepot")
     ResponseEntity<List<CategoryWiseSummary>> getCategoryWiseSummaryDepot();
 

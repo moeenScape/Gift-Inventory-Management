@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+// remove line spacing
 
-
-@RequestMapping(path = "/admin/dashboard")
+@RequestMapping(path = "/admin/dashboard") // change @RequestMapping(path = "/admin/dashboard") to @RequestMapping(path = "/dashboard")
 public interface DashboardController {
-    @GetMapping(path = "/active_deactivate")
+    @GetMapping(path = "/active_deactivate") // change @GetMapping(path = "/active_deactivate") to @GetMapping(path = "/users")
     ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser();
 
     @GetMapping("/monthWiseSum")
