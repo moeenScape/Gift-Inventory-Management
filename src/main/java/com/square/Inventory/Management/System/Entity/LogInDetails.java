@@ -19,6 +19,7 @@ public class LogInDetails {
 
     private Long userId;
 
+    // setter and getter methods will be after property name
     public String getUserEmail() {
         return userEmail;
     }
@@ -29,13 +30,13 @@ public class LogInDetails {
 
     private String userEmail;
 
-    private Date logInTime;
+    private Date logInTime; // you can use loggedInAt
 
-    private Date logOutTime;
+    private Date logOutTime; // you can use loggedOutAt
 
     private String logInStatus;
 
-    private String IP;
+    private String IP; // name this ip
 
 
 

@@ -17,14 +17,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "firstName")
+    @Column(name = "firstName") // does not match datbase column
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "lastName") // does not match datbase column
     private String lastName;
 
     @Pattern(regexp = "^(?:\\+?88|0088)?01[15-9]\\d{8}$", message = "Number Must be valid Number")
-    @Column(name = "contactNumber")
+    @Column(name = "contactNumber") // does not match datbase column
     private String contactNumber;
 
     @Email

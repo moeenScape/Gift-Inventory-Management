@@ -13,7 +13,7 @@ public class SampleSectionUnit {
     @Id
     @Column(name = "ssuID")
     @NotNull(message = "Sample Section Unit ID is mandatory")
-    private Long ssuID;
+    private Long ssuID; // id
 
     @NotNull(message = "SAmple Section Unit is mandatory")
     @Column(name = "ssuName")

@@ -8,7 +8,7 @@ public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private long id; // use Long(Wrapper class)
 
     private String budgetID;
 
@@ -40,7 +40,7 @@ public class Budget {
     private String depotName;
 
     @Column
-    private String DepotID;
+    private String DepotID; // maintain proper variable naming
 
     @Column
     private String category;
@@ -52,14 +52,15 @@ public class Budget {
     private int year;
 
     @Column
-    private String ssu_id;
+    private String ssu_id;  // maintain proper variable naming
 
     @Column(columnDefinition = "boolean default false")
-    private boolean isDepotReceived = false;
+    private boolean isDepotReceived = false; // boolean default value is false, no need to initialize
 
     @Column(columnDefinition = "boolean default true")
     private boolean isInSSU = true;
 
+    // you can skip setter, getter methods by using Lombok, see this in free time
     public String getBudgetID() {
         return budgetID;
     }
