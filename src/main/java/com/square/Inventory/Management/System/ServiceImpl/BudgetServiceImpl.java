@@ -155,7 +155,7 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
-        List<DEPOT> getUserWiseBudget = budgetRepository.getBudgetForDepotByID(depotRepository.getDepotID(user.getId()),
+        List<DEPOT> getUserWiseBudget = budgetRepository.getBudgetForDepotUser(depotRepository.getDepotID(user.getId()),
                 TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
         return new ResponseEntity<>(getUserWiseBudget, HttpStatus.OK);
