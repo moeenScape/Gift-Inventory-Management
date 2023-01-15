@@ -5,16 +5,19 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Data
 @AllArgsConstructor
 public class UserDTO {
 
     private Long id;
+    @NotBlank(message = "name is Must")
     private String firstName;
 
     private String lastName;
 
+    @Pattern(regexp = "^(?:\\+?88|0088)?01[15-9]\\d{8}$", message = "Number Must be valid Number")
     private String contactNumber;
     @Email
     private String email;
@@ -22,9 +25,10 @@ public class UserDTO {
     @NotBlank(message = "Password is mandatory")
     private String password;
 
+    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU")
     @NotBlank(message = "role is mandatory")
     private String role;
-
+    @Pattern(regexp = "^(true|false)$", message = "role true or false")
     private String status;
 
     private String otp;

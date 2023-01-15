@@ -21,6 +21,7 @@ import java.util.Optional;
 
 @Service
 public class SampleSectionServiceImpl implements SampleSectionService {
+
     private final SampleSectionRepository sampleSectionRepository;
 
     private final UserRepository userRepository;
@@ -35,15 +36,16 @@ public class SampleSectionServiceImpl implements SampleSectionService {
         try {
 
             Optional<SampleSectionUnit> sectionUnit = sampleSectionRepository.findById(sampleSectionUnit.getSsuID());
+
             if (sectionUnit.isPresent()) {
                 return new ResponseEntity<>("This Sample Section ID Already Exist", HttpStatus.BAD_REQUEST);
             } else if (findUserID(sampleSectionUnit.getUser_id())) {
                 return new ResponseEntity<>("This User Already Assign in a SSU", HttpStatus.BAD_REQUEST);
             } else {
+
                 Long user_id = sampleSectionUnit.getUser_id();
                 SampleSectionUnit newSampleSectionUnit = new SampleSectionUnit();
                 if (user_id == null) {
-
                     newSampleSectionUnit.setSsuID(sampleSectionUnit.getSsuID());
                     newSampleSectionUnit.setSsuName(sampleSectionUnit.getLocation());
                     newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());

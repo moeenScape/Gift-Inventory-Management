@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserService {
+
     ResponseEntity<String> createUser(UserDTO user);
 
     ResponseEntity<String> login(UserDTO userDTO);

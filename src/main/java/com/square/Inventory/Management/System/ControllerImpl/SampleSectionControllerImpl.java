@@ -9,10 +9,13 @@ import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Service.SampleSectionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class SampleSectionControllerImpl implements SampleSectionController {
@@ -26,8 +29,11 @@ public class SampleSectionControllerImpl implements SampleSectionController {
     }
 
     @Override
-    public ResponseEntity<String> createSSu(SsuDto sampleSectionUnit) {
+    public ResponseEntity<String> createSSu(SsuDto sampleSectionUnit, BindingResult bindingResult) {
         if (jwtFilter.isAdmin()) {
+            if (bindingResult.hasErrors()) {
+                return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining()));
+            }
             return sampleSectionService.createSSU(sampleSectionUnit);
         }
         return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);

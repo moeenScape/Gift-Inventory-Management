@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface SampleSectionService {
+
     ResponseEntity<String> createSSU(SsuDto sampleSectionUnit);
 
     List<SsuDto> getAllSSU(int page, int size);

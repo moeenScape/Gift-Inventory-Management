@@ -7,6 +7,7 @@ import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
+import com.square.Inventory.Management.System.Validator.CustomValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,7 +30,6 @@ public class UserControllerImpl implements UserController {
     UserRepository userRepository;
 
     private final JWTFilter jwtFilter;
-
     public UserControllerImpl(UserService userService,
                               JWTFilter jwtFilter) {
         this.userService = userService;
@@ -45,6 +46,7 @@ public class UserControllerImpl implements UserController {
                                 .stream()
                                 .map(ObjectError::getDefaultMessage)
                                 .collect(Collectors.joining()));
+
             } else {
                 if (jwtFilter.isAdmin()) {
                     return userService.createUser(user);
