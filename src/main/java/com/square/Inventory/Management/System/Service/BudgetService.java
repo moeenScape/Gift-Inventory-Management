@@ -40,9 +40,9 @@ public interface BudgetService {
 
     ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year);
 
-    ResponseEntity<List<DEPOT>> getDepotBudgetWithUser();
+    ResponseEntity<List<DEPOT>> getDepotUserWiseBudget();
 
-    ResponseEntity<List<SSU>> getSSUWiseBudget();
+    ResponseEntity<List<SSU>> getSSUUSerWiseBudget();
     ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum();
 
     ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague();

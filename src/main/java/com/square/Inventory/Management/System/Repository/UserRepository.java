@@ -19,12 +19,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(@Param("username") String username);
 
     @Query("select new com.square.Inventory.Management.System.DTO.UserDTO(u.id,u.firstName,u.lastName," +
-            "u.contactNumber,u.email,u.role,u.status) from User u where u.status='true'")
+            "u.contactNumber,u.email,u.role,u.status) from User u")
     Page<UserDTO> getAllUser(Pageable paging);
 
     @Modifying
     @Transactional
-    @Query(value = "update user set status= 'false' where id=:userId", nativeQuery = true)
+    @Query(value = "update User set status = (case when status ='false' then 'true' else 'false' end) where id=:userId", nativeQuery = true)
     void disableUser(@Param("userId") Long userId);
 
     @Query(value = "select sum(case when status ='true' then 1 else 0 end) as activatedUser," +

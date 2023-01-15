@@ -112,7 +112,7 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
         if (jwtFilter.isDepot()) {
-            return budgetService.getDepotBudgetWithUser();
+            return budgetService.getDepotUserWiseBudget();
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
@@ -121,7 +121,7 @@ public class BudgetControllerImpl implements BudgetController {
     @Override
     public ResponseEntity<List<SSU>> getSSUUserWiseBudget() {
         if (jwtFilter.isSSU()) {
-            return budgetService.getSSUWiseBudget();
+            return budgetService.getSSUUSerWiseBudget();
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 

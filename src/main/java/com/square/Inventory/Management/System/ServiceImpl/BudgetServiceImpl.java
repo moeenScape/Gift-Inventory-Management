@@ -153,7 +153,7 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getDepotBudgetWithUser() {
+    public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
         List<DEPOT> getUserWiseBudget = budgetRepository.getBudgetForDepotByID(depotRepository.getDepotID(user.getId()),
                 TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
@@ -162,7 +162,7 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<SSU>> getSSUWiseBudget() {
+    public ResponseEntity<List<SSU>> getSSUUSerWiseBudget() {
         User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
         List<SSU> getSSUWiseBudget=budgetRepository.getBudgetForSSUByName(sampleSectionRepository.getSSUNameByUID(user.getId()),
                 TimeUtils.getCurrentMonth(),TimeUtils.getCurrentYear());

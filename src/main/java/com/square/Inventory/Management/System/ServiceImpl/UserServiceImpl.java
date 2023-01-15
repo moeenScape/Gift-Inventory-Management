@@ -4,7 +4,6 @@ import com.square.Inventory.Management.System.Constant.InventoryConstant;
 import com.square.Inventory.Management.System.DTO.UserDTO;
 import com.square.Inventory.Management.System.Entity.LogInDetails;
 import com.square.Inventory.Management.System.Entity.User;
-import com.square.Inventory.Management.System.Exception.CustomException;
 import com.square.Inventory.Management.System.IMSUtils.EmailUtils;
 import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.IMSUtils.OtpUtils;
@@ -162,7 +161,7 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(user2);
                 return new ResponseEntity<>("User Updated", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("User is not present", HttpStatus.OK);
+                return new ResponseEntity<>("User is not present", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -230,13 +229,20 @@ public class UserServiceImpl implements UserService {
         Optional<User> optional = userRepository.findById(userId);
         if (optional.isPresent() && !"admin".equals(optional.get().getRole())) {
 
+
             userRepository.disableUser(userId);
-            return new ResponseEntity<>("User Disable Successfully ", HttpStatus.OK);
+            if(Objects.equals(optional.get().getStatus(), "true"))
+            {
+                return new ResponseEntity<>("User Disable Successfully.ID:  "+userId, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User Active Successfully.ID:  "+userId, HttpStatus.OK);
+            }
+
 
         } else if (optional.isPresent() && optional.get().getRole().equals("admin")) {
-            return new ResponseEntity<>("Can not  Disable Admin ", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Can not  Disable Admin "+userId, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>("User Not Find ", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User Not Find With ID:  "+userId, HttpStatus.BAD_REQUEST);
         }
     }
 
