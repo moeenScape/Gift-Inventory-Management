@@ -2,8 +2,8 @@ package com.square.Inventory.Management.System.Controller;
 
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
-import com.square.Inventory.Management.System.DTO.DEPOT;
-import com.square.Inventory.Management.System.DTO.SSU;
+import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
+import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
@@ -26,10 +26,10 @@ public interface BudgetController {
     ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
     @GetMapping(path = "/for/ssu/{ssuName}")
-    ResponseEntity<List<SSU>> getBudgetBySSU(@PathVariable String ssuName);
+    ResponseEntity<List<SSUDtoForBudget>> getBudgetBySSU(@PathVariable String ssuName);
 
     @GetMapping(path = "/for/depot/{depotID}")
-    ResponseEntity<List<DEPOT>> getBudgetByDepotID(@PathVariable String depotID);
+    ResponseEntity<List<depotDtoForBudget>> getBudgetByDepotID(@PathVariable String depotID);
 
     @GetMapping(path = "/all")
     ResponseEntity<List<Budget>> getAllBudget();
@@ -45,19 +45,19 @@ public interface BudgetController {
     ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary();
 
     @GetMapping(path = "/previous/ssu/{ssu_id}/{month}/{year}")
-    ResponseEntity<List<SSU>> getPreviousSSUBudgetByMonthAndYear(@PathVariable String ssu_id,
-                                                                 @PathVariable String month,
-                                                                 @PathVariable int year);
+    ResponseEntity<List<SSUDtoForBudget>> getPreviousSSUBudgetByMonthAndYear(@PathVariable String ssu_id,
+                                                                             @PathVariable String month,
+                                                                             @PathVariable int year);
 
     @GetMapping(path = "/previous/depot/{depotID}/{month}/{year}")
-    ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(@PathVariable String depotID,
-                                                                     @PathVariable String month,
-                                                                     @PathVariable int year);
+    ResponseEntity<List<depotDtoForBudget>> getPreviousDepotBudgetByMonthAndYear(@PathVariable String depotID,
+                                                                                 @PathVariable String month,
+                                                                                 @PathVariable int year);
 
     @GetMapping(path = "/depot")
-    ResponseEntity<List<DEPOT>> getDepotUserWiseBudget();
+    ResponseEntity<List<depotDtoForBudget>> getDepotUserWiseBudget();
 
     @GetMapping(path = "/ssu")
-    ResponseEntity<List<SSU>> getSSUUserWiseBudget();
+    ResponseEntity<List<SSUDtoForBudget>> getSSUUserWiseBudget();
 
 }

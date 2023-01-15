@@ -36,7 +36,7 @@ public class User {
     private String password;
 
     @Column(name = "role")
-    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU")
+    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSUDtoForBudget")
     private String role;
 
     @Column(name = "status")

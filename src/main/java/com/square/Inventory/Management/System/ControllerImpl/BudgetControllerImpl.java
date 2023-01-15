@@ -3,8 +3,8 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Controller.BudgetController;
 import com.square.Inventory.Management.System.DTO.BudgetSummary;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
-import com.square.Inventory.Management.System.DTO.DEPOT;
-import com.square.Inventory.Management.System.DTO.SSU;
+import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
+import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
@@ -59,7 +59,7 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<SSU>> getBudgetBySSU(String ssuName) {
+    public ResponseEntity<List<SSUDtoForBudget>> getBudgetBySSU(String ssuName) {
 
         if (jwtFilter.isAdmin()) {
             return budgetService.getBudgetForSSUByName(ssuName);
@@ -69,7 +69,7 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getBudgetByDepotID(String depotID) {
+    public ResponseEntity<List<depotDtoForBudget>> getBudgetByDepotID(String depotID) {
 
         if (jwtFilter.isAdmin()) {
             return budgetService.getBudgetForDepotByID(depotID);
@@ -100,17 +100,17 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<SSU>> getPreviousSSUBudgetByMonthAndYear(String ssu_id, String month, int year) {
+    public ResponseEntity<List<SSUDtoForBudget>> getPreviousSSUBudgetByMonthAndYear(String ssu_id, String month, int year) {
         return budgetService.getPreviousMonthBudgetByMonthAndYear(ssu_id, month, year);
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
+    public ResponseEntity<List<depotDtoForBudget>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
         return budgetService.getPreviousDepotBudgetByMonthAndYear(depotID, month, year);
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
+    public ResponseEntity<List<depotDtoForBudget>> getDepotUserWiseBudget() {
         if (jwtFilter.isDepot()) {
             return budgetService.getDepotUserWiseBudget();
         }
@@ -119,7 +119,7 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<SSU>> getSSUUserWiseBudget() {
+    public ResponseEntity<List<SSUDtoForBudget>> getSSUUserWiseBudget() {
         if (jwtFilter.isSSU()) {
             return budgetService.getSSUUSerWiseBudget();
         }
