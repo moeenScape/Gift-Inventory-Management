@@ -8,7 +8,7 @@ public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     private String budgetID;
 
@@ -40,7 +40,7 @@ public class Budget {
     private String depotName;
 
     @Column
-    private String DepotID;
+    private String depotID;
 
     @Column
     private String category;
@@ -52,7 +52,7 @@ public class Budget {
     private int year;
 
     @Column
-    private String ssu_id;
+    private String ssuID;
 
     @Column(columnDefinition = "boolean default false")
     private boolean isDepotReceived = false;
@@ -164,13 +164,7 @@ public class Budget {
         this.year = year;
     }
 
-    public String getSsu_id() {
-        return ssu_id;
-    }
 
-    public void setSsu_id(String ssu_id) {
-        this.ssu_id = ssu_id;
-    }
 
     public boolean isDepotReceived() {
         return isDepotReceived;
@@ -188,11 +182,27 @@ public class Budget {
         isInSSU = inSSU;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getDepotID() {
-        return DepotID;
+        return depotID;
     }
 
     public void setDepotID(String depotID) {
-        DepotID = depotID;
+        this.depotID = depotID;
+    }
+
+    public String getSsuID() {
+        return ssuID;
+    }
+
+    public void setSsuID(String ssuID) {
+        this.ssuID = ssuID;
     }
 }
