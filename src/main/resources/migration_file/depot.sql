@@ -4,7 +4,7 @@ create table depot (
     location varchar(255),
     user_id bigint,
     primary key (id),
-    foreign key (user_id) references user(id)
+    foreign key (user_id) references user(id) -- discuss with me
 );
 --insert
 insert into depot (depot_name,location,user_id) values ('dpo_bar1','Barishal',1008);

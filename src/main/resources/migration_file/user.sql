@@ -4,13 +4,13 @@ create table user (
     first_name varchar(250),
     last_name varchar(250),
     email varchar(250),
-    contact_number varchar(11),
+    contact_number varchar(11), -- can we write phone number
     password varchar(250),
     role varchar(10),
     status varchar(10),
     otp varchar(64),
     otp_generation_time datetime,
-    CONSTRAINT user_pk PRIMARY KEY (id)
+    CONSTRAINT user_pk PRIMARY KEY (id) -- discuss with me
 );
 
 --insert

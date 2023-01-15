@@ -1,10 +1,10 @@
 --create Sample section Unit table
 create table sample_section_unit(
-ssuID int Not NULL,
-ssuName varchar(250),
+ssuID int Not NULL, -- use proper convention
+ssuName varchar(250), -- use proper convention
 location varchar(250),
-numberOfEmployee int,
-
+numberOfEmployee int, -- use proper convention
+-- remove this space
 CONSTRAINT sample_section_unit_pk PRIMARY KEY (ssuID)
 );
 
