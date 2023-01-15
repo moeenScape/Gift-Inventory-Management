@@ -11,6 +11,7 @@ public class Budget {
     private long id;
 
     private String budgetID;
+
     @Column
     private String sapCode;
 
@@ -25,13 +26,16 @@ public class Budget {
     @Enumerated(EnumType.STRING)
     @Column
     private SBU sbu;
+
     @Column
     private String fieldColleagueID;
 
     @Column
     private String fieldColleagueName;
+
     @Column
     private int quantity;
+
     @Column
     private String depotName;
 
@@ -43,13 +47,16 @@ public class Budget {
 
     @Column
     private String month;
+
     @Column
     private int year;
 
     @Column
     private String ssu_id;
+
     @Column(columnDefinition = "boolean default false")
     private boolean isDepotReceived = false;
+
     @Column(columnDefinition = "boolean default true")
     private boolean isInSSU = true;
 
@@ -133,14 +140,6 @@ public class Budget {
         this.depotName = depotName;
     }
 
-//    public Depot getDepot() {
-//        return depot;
-//    }
-//
-//    public void setDepot(Depot depot) {
-//        this.depot = depot;
-//    }
-
     public String getCategory() {
         return category;
     }
@@ -164,14 +163,6 @@ public class Budget {
     public void setYear(int year) {
         this.year = year;
     }
-
-//    public SSU getSsu() {
-//        return ssu;
-//    }
-//
-//    public void setSsu(SSU ssu) {
-//        this.ssu = ssu;
-//    }
 
     public String getSsu_id() {
         return ssu_id;
