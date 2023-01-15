@@ -1,6 +1,6 @@
 package com.square.Inventory.Management.System.Repository;
 
-import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.BudgetSummaryProjection;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
 import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
@@ -39,7 +39,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
                                                   @Param("year") Integer year);
     @Query(value = "SELECT budgetid,sap_code,product_name,deport_name,deportid,category," +
             "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid", nativeQuery = true)
-    List<BudgetSummary> getSummary();
+    List<BudgetSummaryProjection> getSummary();
 
     @Query(value = "select sum(case when category='PPU' then quantity else 0 end) as PPM," +
             "sum(case when category='Hiking' then quantity else 0 end) as Sample," +

@@ -1,7 +1,7 @@
 package com.square.Inventory.Management.System.Service;
 
 
-import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.BudgetSummaryProjection;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
 import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
@@ -28,7 +28,7 @@ public interface BudgetService {
 
     ResponseEntity<List<Budget>> getAllBudget();
 
-    ResponseEntity<List<BudgetSummary>> getSummary();
+    ResponseEntity<List<BudgetSummaryProjection>> getSummary();
 
     ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary();
 

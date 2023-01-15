@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 
-@RequestMapping(path = "/admin/dashboard")
+@RequestMapping(path = "/dashboard")
 public interface DashboardController {
-    @GetMapping(path = "/active_deactivate")
+    @GetMapping(path = "/user")
     ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser();
 
     @GetMapping("/monthWiseSum")

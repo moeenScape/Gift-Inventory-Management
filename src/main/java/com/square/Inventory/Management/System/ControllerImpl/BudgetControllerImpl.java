@@ -1,7 +1,7 @@
 package com.square.Inventory.Management.System.ControllerImpl;
 
 import com.square.Inventory.Management.System.Controller.BudgetController;
-import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.BudgetSummaryProjection;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
 import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
@@ -85,7 +85,7 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<BudgetSummary>> getSummary() {
+    public ResponseEntity<List<BudgetSummaryProjection>> getSummary() {
         return budgetService.getSummary();
     }
 

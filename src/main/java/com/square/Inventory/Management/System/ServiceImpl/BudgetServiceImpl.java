@@ -2,7 +2,7 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
 import com.poiji.exception.PoijiExcelType;
-import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.BudgetSummaryProjection;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
 import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
@@ -84,7 +84,7 @@ public class BudgetServiceImpl implements BudgetService {
             _budget.setCategory(_BudgetExcelDTO.getCategory());
             _budget.setMonth(_BudgetExcelDTO.getMonth());
             _budget.setYear(_BudgetExcelDTO.getYear());
-            _budget.setSsu_id(_BudgetExcelDTO.getSsu_id());
+            _budget.setSsuID(_BudgetExcelDTO.getSsu_id());
             budgetRepository.save(_budget);
             allBudget.add(_budget);
         }
@@ -115,10 +115,10 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<BudgetSummary>> getSummary() {
-        List<BudgetSummary> budgetSummaryList = budgetRepository.getSummary();
+    public ResponseEntity<List<BudgetSummaryProjection>> getSummary() {
+        List<BudgetSummaryProjection> budgetSummaryProjectionList = budgetRepository.getSummary();
 
-        return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
+        return new ResponseEntity<>(budgetSummaryProjectionList, HttpStatus.OK);
 
     }
 
