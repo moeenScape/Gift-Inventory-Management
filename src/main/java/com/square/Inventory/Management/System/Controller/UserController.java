@@ -14,14 +14,14 @@ public interface UserController {
     ResponseEntity<String> login(@RequestBody UserDTO userDTO);
 
     @PostMapping(path = "/create")
-    ResponseEntity<String> createUser(@RequestBody UserDTO user,BindingResult bindingResult);
+    ResponseEntity<?> createUser(@RequestBody UserDTO user,BindingResult bindingResult);
 
     @PutMapping(path = "/update/{userId}")
-    ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO,
+    ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO,
                                       @PathVariable Long userId);
 
     @PutMapping(path = "/disable/{userId}")
-    ResponseEntity<String> disableUser(@PathVariable Long userId);
+    ResponseEntity<?> disableUser(@PathVariable Long userId);
 
     @GetMapping(path = "/all")
     ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,
