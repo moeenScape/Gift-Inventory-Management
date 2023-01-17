@@ -19,24 +19,15 @@ public class LogInDetails {
 
     private Long userId;
 
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
     private String userEmail;
 
-    private Date logInTime;
+    private Date logInAt;
 
-    private Date logOutTime;
+    private Date logOutAt;
 
     private String logInStatus;
 
-    private String IP;
-
+    private String deviceIP;
 
 
     public Long getId() {
@@ -55,20 +46,20 @@ public class LogInDetails {
         this.userId = userId;
     }
 
-    public Date getLogInTime() {
-        return logInTime;
+    public Date getLogInAt() {
+        return logInAt;
     }
 
     public void setLogInTime(Date logInTime) {
-        this.logInTime = logInTime;
+        this.logInAt = logInAt;
     }
 
-    public Date getLogOutTime() {
-        return logOutTime;
+    public Date getLogOutAt() {
+        return logOutAt;
     }
 
-    public void setLogOutTime(Date logOutTime) {
-        this.logOutTime = logOutTime;
+    public void setLogOutAt(Date logOutAt) {
+        this.logOutAt = logOutAt;
     }
 
     public String getLogInStatus() {
@@ -79,11 +70,19 @@ public class LogInDetails {
         this.logInStatus = logInStatus;
     }
 
-    public String getIP() {
-        return IP;
+    public String getDeviceIP() {
+        return deviceIP;
     }
 
-    public void setIP(String IP) {
-        this.IP = IP;
+    public void setDeviceIP(String deviceIP) {
+        this.deviceIP = deviceIP;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

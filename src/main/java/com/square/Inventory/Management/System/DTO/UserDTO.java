@@ -25,7 +25,7 @@ public class UserDTO {
     @NotBlank(message = "Password is mandatory")
     private String password;
 
-    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU")
+    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU toForBudget")
     @NotBlank(message = "role is mandatory")
     private String role;
     @Pattern(regexp = "^(true|false)$", message = "role true or false")

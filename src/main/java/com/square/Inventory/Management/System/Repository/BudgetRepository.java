@@ -1,9 +1,9 @@
 package com.square.Inventory.Management.System.Repository;
 
-import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.BudgetSummaryProjection;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
-import com.square.Inventory.Management.System.DTO.DEPOT;
-import com.square.Inventory.Management.System.DTO.SSU;
+import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
+import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.Projection.BudgetMonthWiseSumProjection;
 import com.square.Inventory.Management.System.Projection.BudgetSSUSummaryProjection;
@@ -17,29 +17,29 @@ import java.util.List;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    @Query("select new com.square.Inventory.Management.System.DTO.SSU(b.budgetID,b.sapCode," +
+    @Query("select new com.square.Inventory.Management.System.DTO.SSUDtoForBudget(b.budgetID,b.sapCode," +
             "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
-            "b.quantity,b.DepotID,b.depotName,b.month,b.year) from Budget " +
+            "b.quantity,b.depotID,b.depotName,b.month,b.year) from Budget " +
             "b where b.ssu_id=:ssuName AND b.month=:month AND b.year=:year")
-    List<SSU> getBudgetForSSUByName(@Param("ssuName") String ssuName,
-                                    @Param("month") String month,
-                                    @Param("year") Integer year);
+    List<SSUDtoForBudget> getBudgetForSSUByName(@Param("ssuName") String ssuName,
+                                                @Param("month") String month,
+                                                @Param("year") Integer year);
 
-    @Query("select new com.square.Inventory.Management.System.DTO.DEPOT(b.budgetID,b.sapCode," +
+    @Query("select new com.square.Inventory.Management.System.DTO.depotDtoForBudget(b.budgetID,b.sapCode," +
             "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
-            "b.quantity,b.month,b.year) from Budget b where b.DepotID =:depotID AND b.month=:month AND b.year=:year")
-    List<DEPOT> getBudgetForDepotByID(@Param("depotID") String depotID,
-                                      @Param("month") String month,
-                                      @Param("year") Integer year);
-    @Query("select new com.square.Inventory.Management.System.DTO.DEPOT(b.budgetID,b.sapCode," +
+            "b.quantity,b.month,b.year) from Budget b where b.depotID =:depotID AND b.month=:month AND b.year=:year")
+    List<depotDtoForBudget> getBudgetForDepotByID(@Param("depotID") String depotID,
+                                                  @Param("month") String month,
+                                                  @Param("year") Integer year);
+    @Query("select new com.square.Inventory.Management.System.DTO.depotDtoForBudget(b.budgetID,b.sapCode," +
             "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
             "b.quantity,b.month,b.year) from Budget b where b.depotName =:depotName AND b.month=:month AND b.year=:year")
-    List<DEPOT> getBudgetForDepotUser(@Param("depotName") String depotName,
-                                      @Param("month") String month,
-                                      @Param("year") Integer year);
+    List<depotDtoForBudget> getBudgetForDepotUser(@Param("depotName") String depotName,
+                                                  @Param("month") String month,
+                                                  @Param("year") Integer year);
     @Query(value = "SELECT budgetid,sap_code,product_name,deport_name,deportid,category," +
             "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid", nativeQuery = true)
-    List<BudgetSummary> getSummary();
+    List<BudgetSummaryProjection> getSummary();
 
     @Query(value = "select sum(case when category='PPU' then quantity else 0 end) as PPM," +
             "sum(case when category='Hiking' then quantity else 0 end) as Sample," +

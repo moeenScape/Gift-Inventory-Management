@@ -76,7 +76,7 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     public boolean isSSU() {
-        return "SSU".equalsIgnoreCase((String) claims.get("role"));
+        return "SSUDtoForBudget".equalsIgnoreCase((String) claims.get("role"));
     }
 
     public String getCurrentUser() {

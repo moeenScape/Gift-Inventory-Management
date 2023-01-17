@@ -2,10 +2,10 @@ package com.square.Inventory.Management.System.ServiceImpl;
 
 import com.poiji.bind.Poiji;
 import com.poiji.exception.PoijiExcelType;
-import com.square.Inventory.Management.System.DTO.BudgetSummary;
+import com.square.Inventory.Management.System.DTO.BudgetSummaryProjection;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
-import com.square.Inventory.Management.System.DTO.DEPOT;
-import com.square.Inventory.Management.System.DTO.SSU;
+import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
+import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
@@ -84,7 +84,7 @@ public class BudgetServiceImpl implements BudgetService {
             _budget.setCategory(_BudgetExcelDTO.getCategory());
             _budget.setMonth(_BudgetExcelDTO.getMonth());
             _budget.setYear(_BudgetExcelDTO.getYear());
-            _budget.setSsu_id(_BudgetExcelDTO.getSsu_id());
+            _budget.setSsuID(_BudgetExcelDTO.getSsu_id());
             budgetRepository.save(_budget);
             allBudget.add(_budget);
         }
@@ -92,19 +92,19 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<SSU>> getBudgetForSSUByName(String ssuName) {
+    public ResponseEntity<List<SSUDtoForBudget>> getBudgetForSSUByName(String ssuName) {
 
-        List<SSU> ssuList = budgetRepository.getBudgetForSSUByName(ssuName, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
+        List<SSUDtoForBudget> SSUDtoForBudgetList = budgetRepository.getBudgetForSSUByName(ssuName, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
-        return new ResponseEntity<>(ssuList, HttpStatus.OK);
+        return new ResponseEntity<>(SSUDtoForBudgetList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getBudgetForDepotByID(String depotID) {
+    public ResponseEntity<List<depotDtoForBudget>> getBudgetForDepotByID(String depotID) {
 
-        List<DEPOT> depotList = budgetRepository.getBudgetForDepotByID(depotID, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
+        List<depotDtoForBudget> depotDtoForBudgetList = budgetRepository.getBudgetForDepotByID(depotID, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
-        return new ResponseEntity<>(depotList, HttpStatus.OK);
+        return new ResponseEntity<>(depotDtoForBudgetList, HttpStatus.OK);
     }
 
     @Override
@@ -115,10 +115,10 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<BudgetSummary>> getSummary() {
-        List<BudgetSummary> budgetSummaryList = budgetRepository.getSummary();
+    public ResponseEntity<List<BudgetSummaryProjection>> getSummary() {
+        List<BudgetSummaryProjection> budgetSummaryProjectionList = budgetRepository.getSummary();
 
-        return new ResponseEntity<>(budgetSummaryList, HttpStatus.OK);
+        return new ResponseEntity<>(budgetSummaryProjectionList, HttpStatus.OK);
 
     }
 
@@ -140,33 +140,33 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public ResponseEntity<List<SSU>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year) {
-        List<SSU> getPreviousMonthBudgetByMonthAndYearList = budgetRepository.getBudgetForSSUByName(ssu_id, month, year);
+    public ResponseEntity<List<SSUDtoForBudget>> getPreviousMonthBudgetByMonthAndYear(String ssu_id, String month, int year) {
+        List<SSUDtoForBudget> getPreviousMonthBudgetByMonthAndYearList = budgetRepository.getBudgetForSSUByName(ssu_id, month, year);
         return new ResponseEntity<>(getPreviousMonthBudgetByMonthAndYearList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
-        List<DEPOT> getPreviousDepotBudgetByMonthAndYearList = budgetRepository.getBudgetForDepotByID(depotID, month, year);
-        return new ResponseEntity<>(getPreviousDepotBudgetByMonthAndYearList, HttpStatus.OK);
+    public ResponseEntity<List<depotDtoForBudget>> getPreviousDepotBudgetByMonthAndYear(String depotID, String month, int year) {
+        List<depotDtoForBudget> getPreviousDepotDtoForBudgetBudgetByMonthAndYearList = budgetRepository.getBudgetForDepotByID(depotID, month, year);
+        return new ResponseEntity<>(getPreviousDepotDtoForBudgetBudgetByMonthAndYearList, HttpStatus.OK);
 
     }
 
     @Override
-    public ResponseEntity<List<DEPOT>> getDepotUserWiseBudget() {
+    public ResponseEntity<List<depotDtoForBudget>> getDepotUserWiseBudget() {
         User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
-        List<DEPOT> getUserWiseBudget = budgetRepository.getBudgetForDepotUser(depotRepository.getDepotID(user.getId()),
+        List<depotDtoForBudget> getUserWiseBudget = budgetRepository.getBudgetForDepotUser(depotRepository.getDepotID(user.getId()),
                 TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
 
         return new ResponseEntity<>(getUserWiseBudget, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<SSU>> getSSUUSerWiseBudget() {
+    public ResponseEntity<List<SSUDtoForBudget>> getSSUUSerWiseBudget() {
         User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
-        List<SSU> getSSUWiseBudget=budgetRepository.getBudgetForSSUByName(sampleSectionRepository.getSSUNameByUID(user.getId()),
+        List<SSUDtoForBudget> getSSUDtoForBudgetWiseBudget =budgetRepository.getBudgetForSSUByName(sampleSectionRepository.getSSUNameByUID(user.getId()),
                 TimeUtils.getCurrentMonth(),TimeUtils.getCurrentYear());
-        return new ResponseEntity<>(getSSUWiseBudget,HttpStatus.OK);
+        return new ResponseEntity<>(getSSUDtoForBudgetWiseBudget,HttpStatus.OK);
     }
 
     @Override

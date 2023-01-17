@@ -26,7 +26,8 @@ public class SampleSectionServiceImpl implements SampleSectionService {
 
     private final UserRepository userRepository;
 
-    public SampleSectionServiceImpl(SampleSectionRepository sampleSectionRepository, UserRepository userRepository) {
+    public SampleSectionServiceImpl(SampleSectionRepository sampleSectionRepository,
+                                    UserRepository userRepository) {
         this.sampleSectionRepository = sampleSectionRepository;
         this.userRepository = userRepository;
     }
@@ -40,7 +41,7 @@ public class SampleSectionServiceImpl implements SampleSectionService {
             if (sectionUnit.isPresent()) {
                 return new ResponseEntity<>("This Sample Section ID Already Exist", HttpStatus.BAD_REQUEST);
             } else if (findUserID(sampleSectionUnit.getUser_id())) {
-                return new ResponseEntity<>("This User Already Assign in a SSU", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("This User Already Assign in a SSUDtoForBudget", HttpStatus.BAD_REQUEST);
             } else {
 
                 Long user_id = sampleSectionUnit.getUser_id();
@@ -51,7 +52,7 @@ public class SampleSectionServiceImpl implements SampleSectionService {
                     newSampleSectionUnit.setLocation(sampleSectionUnit.getLocation());
                     newSampleSectionUnit.setNumberOfEmployee(sampleSectionUnit.getNumberOfEmployee());
                     sampleSectionRepository.save(newSampleSectionUnit);
-                    return new ResponseEntity<>("Add SSU without User", HttpStatus.OK);
+                    return new ResponseEntity<>("Add SSUDtoForBudget without User", HttpStatus.OK);
 
                 } else {
 
@@ -99,11 +100,12 @@ public class SampleSectionServiceImpl implements SampleSectionService {
                 sampleSectionRepository.save(newSampleSectionUnit);
                 return new ResponseEntity<>("Sample Section Unit Update", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("This SSU does not Exist", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("This SSUDtoForBudget does not Exist", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         return new ResponseEntity<>("Failed to Update", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -114,9 +116,9 @@ public class SampleSectionServiceImpl implements SampleSectionService {
 
             if (sampleSectionUnit.isPresent()) {
                 sampleSectionRepository.deleteById(ssuID);
-                return new ResponseEntity<>("Delete SSU  " + sampleSectionUnit.get().getSsuName(), HttpStatus.OK);
+                return new ResponseEntity<>("Delete SSUDtoForBudget  " + sampleSectionUnit.get().getSsuName(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("There are no SSU With " + ssuID + "ID", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("There are no SSUDtoForBudget With " + ssuID + "ID", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

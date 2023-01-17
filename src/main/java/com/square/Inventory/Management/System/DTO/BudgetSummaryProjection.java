@@ -1,6 +1,6 @@
 package com.square.Inventory.Management.System.DTO;
 
-public interface BudgetSummary {
+public interface BudgetSummaryProjection {
 
     String getBudgetId();
 

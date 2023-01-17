@@ -11,19 +11,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class SampleSectionUnit {
     @Id
-    @Column(name = "ssuID")
     @NotNull(message = "Sample Section Unit ID is mandatory")
     private Long ssuID;
 
     @NotNull(message = "SAmple Section Unit is mandatory")
-    @Column(name = "ssuName")
     private String ssuName;
 
     @NotNull(message = "Location is mandatory")
-    @Column(name = "location")
     private String location;
 
-    @Column(name = "numberOfEmployee")
     private Integer numberOfEmployee;
 
     @OneToOne

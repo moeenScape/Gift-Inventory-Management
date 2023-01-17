@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SSU {
+public class SSUDtoForBudget {
 
     private String budgetId;
 
@@ -35,10 +35,10 @@ public class SSU {
 
     private int year;
 
-    public SSU(String budgetId, String sapCode, String productName, String productionUnit,
-               String packageSize, String category,SBU sbu,String fieldColleagueID,
-               String fieldColleagues, int quantity, String depotID,
-               String depotName, String month, int year) {
+    public SSUDtoForBudget(String budgetId, String sapCode, String productName, String productionUnit,
+                           String packageSize, String category, SBU sbu, String fieldColleagueID,
+                           String fieldColleagues, int quantity, String depotID,
+                           String depotName, String month, int year) {
         this.budgetId = budgetId;
         this.sapCode = sapCode;
         this.productName = productName;

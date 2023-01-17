@@ -13,40 +13,30 @@ import java.util.Date;
 public class User {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "firstName")
     private String firstName;
 
-    @Column(name = "lastName")
     private String lastName;
 
     @Pattern(regexp = "^(?:\\+?88|0088)?01[15-9]\\d{8}$", message = "Number Must be valid Number")
-    @Column(name = "contactNumber")
     private String contactNumber;
 
     @Email
-    @Column(name = "email")
     private String email;
 
     @NotBlank
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU")
+    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSUDtoForBudget")
     private String role;
 
-    @Column(name = "status")
     @Pattern(regexp = "^(true|false)$", message = "role true or false")
     private String status;
 
-    @Column(name = "otp")
     private String otp;
 
-    @Column(name = "otp_generation_time")
     private Date setOtpGenerationTime;
 
     public Long getId() {

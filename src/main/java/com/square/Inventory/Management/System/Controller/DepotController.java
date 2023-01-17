@@ -3,6 +3,7 @@ package com.square.Inventory.Management.System.Controller;
 import com.square.Inventory.Management.System.DTO.DepotDto;
 import com.square.Inventory.Management.System.Projection.DepotProjectionInterface;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +12,10 @@ import java.util.List;
 public interface DepotController {
 
     @PostMapping("/add")
-    ResponseEntity<DepotDto> addDepot(@RequestBody DepotDto depotDto);
+    ResponseEntity<?> addDepot(@RequestBody DepotDto depotDto, BindingResult bindingResult);
 
     @PutMapping("/edit")
-    ResponseEntity<DepotDto> editDepot(@RequestBody DepotDto depotDto);
+    ResponseEntity<?> editDepot(@RequestBody DepotDto depotDto, BindingResult bindingResult);
 
     @GetMapping("/view/{id}")
     ResponseEntity<?> getDepot(@PathVariable("id") Long id);

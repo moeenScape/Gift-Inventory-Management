@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
         logInDetails.setLogInTime(new Date());
         logInDetails.setUserEmail(userDTO.getEmail());
         logInDetails.setLogInStatus("failed log in");
-        logInDetails.setIP(inetAddress.getHostAddress());
+        logInDetails.setDeviceIP(inetAddress.getHostAddress());
         return logInDetails;
     }
 
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
 
         logInDetails.setUserEmail(userDTO.getEmail());
         logInDetails.setLogInTime(new Date());
-        logInDetails.setIP(inetAddress.getHostAddress());
+        logInDetails.setDeviceIP(inetAddress.getHostAddress());
         return logInDetails;
     }
 

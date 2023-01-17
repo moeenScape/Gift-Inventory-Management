@@ -11,13 +11,13 @@ import java.util.Date;
 public class Invoices {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String depotName;
 
     private String warehouseName;
 
-    private Date createDate;
+    private Date createAt;
 
     @Column(columnDefinition = "json")
     private String productDetails;
