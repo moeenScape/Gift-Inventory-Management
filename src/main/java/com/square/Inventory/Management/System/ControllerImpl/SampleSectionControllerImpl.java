@@ -34,8 +34,10 @@ public class SampleSectionControllerImpl implements SampleSectionController {
             if (bindingResult.hasErrors()) {
                 return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining()));
             }
+
             return sampleSectionService.createSSU(sampleSectionUnit);
         }
+
         return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
     }
 
@@ -47,7 +49,6 @@ public class SampleSectionControllerImpl implements SampleSectionController {
         } else {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
         }
-
     }
 
     @Override

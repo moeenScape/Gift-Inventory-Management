@@ -26,7 +26,8 @@ public class SampleSectionServiceImpl implements SampleSectionService {
 
     private final UserRepository userRepository;
 
-    public SampleSectionServiceImpl(SampleSectionRepository sampleSectionRepository, UserRepository userRepository) {
+    public SampleSectionServiceImpl(SampleSectionRepository sampleSectionRepository,
+                                    UserRepository userRepository) {
         this.sampleSectionRepository = sampleSectionRepository;
         this.userRepository = userRepository;
     }
@@ -104,6 +105,7 @@ public class SampleSectionServiceImpl implements SampleSectionService {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         return new ResponseEntity<>("Failed to Update", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

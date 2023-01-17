@@ -5,10 +5,12 @@ import com.square.Inventory.Management.System.Repository.InvoicesRepository;
 import com.square.Inventory.Management.System.Service.InvoicesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
 
+@Service
 public class InvoicesServiceImpl implements InvoicesService {
 
     private final InvoicesRepository invoicesRepository;
@@ -25,7 +27,7 @@ public class InvoicesServiceImpl implements InvoicesService {
 
     private Invoices getFromMap(Map<String, String> requestMap) {
         Invoices invoices = new Invoices();
-        invoices.setCreateDate(new Date());
+        invoices.setCreateAt(new Date());
         invoices.setDepotName(requestMap.get("DepotName"));
         invoices.setProductDetails(requestMap.get("productDetails"));
         invoices.setWarehouseName(requestMap.get("warehouseName"));
