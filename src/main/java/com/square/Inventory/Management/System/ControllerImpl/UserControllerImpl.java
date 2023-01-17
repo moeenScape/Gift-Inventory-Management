@@ -65,7 +65,6 @@ public class UserControllerImpl implements UserController {
         return userService.login(userDTO);
     }
 
-
     @Override
     public ResponseEntity<String> updateUser(UserDTO userDTO, Long userId) {
         return userService.update(userDTO, userId);

@@ -9,10 +9,14 @@ import com.square.Inventory.Management.System.Repository.DepotRepository;
 import com.square.Inventory.Management.System.Service.DepotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class DepotControllerImpl implements DepotController {
@@ -34,22 +38,40 @@ public class DepotControllerImpl implements DepotController {
      * @return an depot Object
      */
     @Override
-    public ResponseEntity<DepotDto> addDepot(@RequestBody DepotDto depotDto) {
-        if (jwtFilter.isAdmin()) {
-            Depot depot = depotService.addDepot(depotDto);
-
-            return ResponseEntity.ok(depotDto.convertDepotDTO(depot, depot.getUser()));
+    public ResponseEntity<?> addDepot(@Valid DepotDto depotDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest()
+                    .body(bindingResult
+                            .getAllErrors()
+                            .stream()
+                            .map(ObjectError::getDefaultMessage)
+                            .collect(Collectors.joining()));
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            if (jwtFilter.isAdmin()) {
+                Depot depot = depotService.addDepot(depotDto);
+
+                return ResponseEntity.ok(depotDto.convertDepotDTO(depot, depot.getUser()));
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
         }
     }
 
     @Override
-    public ResponseEntity<DepotDto> editDepot(@RequestBody DepotDto depotDTO) {
-        if (jwtFilter.isAdmin()) {
-            return ResponseEntity.ok(depotService.editDepot(depotDTO));
+    public ResponseEntity<?> editDepot(@Valid DepotDto depotDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest()
+                    .body(bindingResult
+                            .getAllErrors()
+                            .stream()
+                            .map(ObjectError::getDefaultMessage)
+                            .collect(Collectors.joining()));
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            if (jwtFilter.isAdmin()) {
+                return ResponseEntity.ok(depotService.editDepot(depotDTO));
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
         }
     }
 

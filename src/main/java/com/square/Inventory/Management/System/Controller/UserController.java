@@ -14,7 +14,7 @@ public interface UserController {
     ResponseEntity<String> login(@RequestBody UserDTO userDTO);
 
     @PostMapping(path = "/create")
-    ResponseEntity<?> createUser(@RequestBody UserDTO user,BindingResult bindingResult);
+    ResponseEntity<?> createUser(@RequestBody UserDTO user, BindingResult bindingResult);
 
     @PutMapping(path = "/update/{userId}")
     ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO,
