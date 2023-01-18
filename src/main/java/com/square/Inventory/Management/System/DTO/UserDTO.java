@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -23,6 +24,7 @@ public class UserDTO {
     private String email;
 
     @NotBlank(message = "Password is mandatory")
+    @Min(value = 8,message = "Password length must be 8")
     private String password;
 
     @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU toForBudget")
