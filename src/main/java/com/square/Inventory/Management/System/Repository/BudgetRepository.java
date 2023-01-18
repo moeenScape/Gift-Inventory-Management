@@ -17,22 +17,22 @@ import java.util.List;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    @Query("select new com.square.Inventory.Management.System.DTO.SSUDtoForBudget(b.budgetID,b.sapCode," +
-            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
-            "b.quantity,b.depotID,b.depotName,b.month,b.year) from Budget " +
-            "b where b.ssuID=:ssuName AND b.month=:month AND b.year=:year")
+    @Query("select new com.square.Inventory.Management.System.DTO.SSUDtoForBudget(b.budgetId,b.sapCode," +
+            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueId,b.fieldColleagueName," +
+            "b.quantity,b.depotId,b.depotName,b.month,b.year) from Budget " +
+            "b where b.ssuId=:ssuName AND b.month=:month AND b.year=:year")
     List<SSUDtoForBudget> getBudgetForSSUByName(@Param("ssuName") String ssuName,
                                                 @Param("month") String month,
                                                 @Param("year") Integer year);
 
-    @Query("select new com.square.Inventory.Management.System.DTO.depotDtoForBudget(b.budgetID,b.sapCode," +
-            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
-            "b.quantity,b.month,b.year) from Budget b where b.depotID =:depotID AND b.month=:month AND b.year=:year")
-    List<depotDtoForBudget> getBudgetForDepotByID(@Param("depotID") String depotID,
+    @Query("select new com.square.Inventory.Management.System.DTO.depotDtoForBudget(b.budgetId,b.sapCode," +
+            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueId,b.fieldColleagueName," +
+            "b.quantity,b.month,b.year) from Budget b where b.depotId =:depotId AND b.month=:month AND b.year=:year")
+    List<depotDtoForBudget> getBudgetForDepotByID(@Param("depotId") String depotId,
                                                   @Param("month") String month,
                                                   @Param("year") Integer year);
-    @Query("select new com.square.Inventory.Management.System.DTO.depotDtoForBudget(b.budgetID,b.sapCode," +
-            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueID,b.fieldColleagueName," +
+    @Query("select new com.square.Inventory.Management.System.DTO.depotDtoForBudget(b.budgetId,b.sapCode," +
+            "b.productName,b.productionUnit,b.packageSize,b.category,b.sbu,b.fieldColleagueId,b.fieldColleagueName," +
             "b.quantity,b.month,b.year) from Budget b where b.depotName =:depotName AND b.month=:month AND b.year=:year")
     List<depotDtoForBudget> getBudgetForDepotUser(@Param("depotName") String depotName,
                                                   @Param("month") String month,

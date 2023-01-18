@@ -21,13 +21,14 @@ public class SSUDtoForBudget {
     private String category;
 
     private SBU sbu;
-    private String fieldColleagueID;
 
-    private String fieldColleagues;
+    private String fieldColleagueId;
+
+    private String fieldColleagueName;
 
     private int quantity;
 
-    private String depotID;
+    private String depotId;
 
     private String depotName;
 
@@ -36,8 +37,8 @@ public class SSUDtoForBudget {
     private int year;
 
     public SSUDtoForBudget(String budgetId, String sapCode, String productName, String productionUnit,
-                           String packageSize, String category, SBU sbu, String fieldColleagueID,
-                           String fieldColleagues, int quantity, String depotID,
+                           String packageSize, String category, SBU sbu, String fieldColleagueId,
+                           String fieldColleagueName, int quantity, String depotId,
                            String depotName, String month, int year) {
         this.budgetId = budgetId;
         this.sapCode = sapCode;
@@ -46,10 +47,10 @@ public class SSUDtoForBudget {
         this.packageSize = packageSize;
         this.category = category;
         this.sbu=sbu;
-        this.fieldColleagueID = fieldColleagueID;
-        this.fieldColleagues = fieldColleagues;
+        this.fieldColleagueId = fieldColleagueId;
+        this.fieldColleagueName = fieldColleagueName;
         this.quantity = quantity;
-        this.depotID = depotID;
+        this.depotId = depotId;
         this.depotName = depotName;
         this.month = month;
         this.year = year;

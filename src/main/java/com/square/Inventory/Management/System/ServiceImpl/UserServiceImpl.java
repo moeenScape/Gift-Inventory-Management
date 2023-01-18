@@ -276,7 +276,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDTO.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         user.setRole(userDTO.getRole());
-        user.setStatus(userDTO.getStatus());
+        user.setStatus("true");
         return user;
     }
 

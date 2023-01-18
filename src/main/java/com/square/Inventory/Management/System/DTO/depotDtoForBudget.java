@@ -24,9 +24,9 @@ public class depotDtoForBudget {
 
     private SBU sbu;
 
-    private String fieldColleagueID;
+    private String fieldColleagueId;
 
-    private String fieldColleagues;
+    private String fieldColleagueName;
 
     private int quantity;
 
