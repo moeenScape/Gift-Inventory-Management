@@ -30,28 +30,36 @@ public class DashboardControllerImpl implements DashboardController {
 
     @Override
     public ResponseEntity<ActivatedDeactivatedUser> getActiveDeactivateUser() {
-        if(jwtFilter.isAdmin()) {
+        if (jwtFilter.isAdmin()) {
             return userService.getActiveDeactivateUser();
-        }return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @Override
     public ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum() {
         if (jwtFilter.isAdmin()) {
             return budgetService.getMonthWiseSum();
-        }return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @Override
     public ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague() {
-        if(jwtFilter.isAdmin()) {
+        if (jwtFilter.isAdmin()) {
             return budgetService.getCurrentMonthFieldColleague();
-        }return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
     @Override
     public ResponseEntity<CategoryWiseSummary> getCategoryWiseSummary() {
-        if(jwtFilter.isAdmin()) {
+        if (jwtFilter.isAdmin()) {
             return budgetService.getCategoryWiseSummary();
-        } return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 }

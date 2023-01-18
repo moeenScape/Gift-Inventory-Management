@@ -60,27 +60,24 @@ public class BudgetControllerImpl implements BudgetController {
 
     @Override
     public ResponseEntity<List<SSUDtoForBudget>> getBudgetBySSU(String ssuName) {
-
         if (jwtFilter.isAdmin()) {
             return budgetService.getBudgetForSSUByName(ssuName);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
 
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
     }
 
     @Override
     public ResponseEntity<List<depotDtoForBudget>> getBudgetByDepotID(String depotID) {
-
         if (jwtFilter.isAdmin()) {
             return budgetService.getBudgetForDepotByID(depotID);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
 
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
     }
 
     @Override
     public ResponseEntity<List<Budget>> getAllBudget() {
-
         return budgetService.getAllBudget();
     }
 
@@ -115,7 +112,6 @@ public class BudgetControllerImpl implements BudgetController {
             return budgetService.getDepotUserWiseBudget();
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-
     }
 
     @Override
@@ -124,7 +120,6 @@ public class BudgetControllerImpl implements BudgetController {
             return budgetService.getSSUUSerWiseBudget();
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-
     }
 
 }
