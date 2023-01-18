@@ -7,6 +7,7 @@ import com.square.Inventory.Management.System.IMSUtils.InventoryUtils;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Slf4j
 @RestController
 public class UserControllerImpl implements UserController {
 
@@ -130,6 +131,8 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<?> forgetPassword(@RequestBody UserDTO userDTO) {
         String email = userDTO.getEmail();
+        log.info("Email {}",email);
+        log.info("User {}",userRepository.findByEmail(email));
         return Optional
                 .ofNullable(userRepository.findByEmail(email))
                 .map(user -> ResponseEntity.ok(userService.forgetPassword(user)))
@@ -151,10 +154,11 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<?> resetPassword(@RequestBody UserDTO userDTO) {
         String email = userDTO.getEmail();
         String newPassword = userDTO.getPassword();
+        String otp = userDTO.getOtp();
 
         return Optional
                 .ofNullable(userRepository.findByEmail(email))
-                .map(user -> ResponseEntity.ok(userService.resetPassword(user, newPassword)))
+                .map(user -> ResponseEntity.ok(userService.resetPassword(user, newPassword, otp)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

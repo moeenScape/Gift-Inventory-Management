@@ -62,29 +62,27 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public List<Budget> addBudgetFromExcel(MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
-        List<BudgetExcelDto> BudgetExcelDTO = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
+        List<BudgetExcelDto> budgetExcelDto = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
 
         List<Budget> allBudget = new ArrayList<>();
-        int len = BudgetExcelDTO.size();
 
-        for (int i = 0; i < len; i++) {
-            BudgetExcelDto _BudgetExcelDTO = BudgetExcelDTO.get(i);
+        for (BudgetExcelDto _BudgetExcelDTO : budgetExcelDto) {
             Budget _budget = new Budget();
             _budget.setSapCode(_BudgetExcelDTO.getSapCode());
-            _budget.setBudgetID(_BudgetExcelDTO.getBudgetID());
+            _budget.setBudgetId(_BudgetExcelDTO.getBudgetID());
             _budget.setProductName(_BudgetExcelDTO.getProductName());
             _budget.setProductionUnit(_BudgetExcelDTO.getProductionUnit());
             _budget.setPackageSize(_BudgetExcelDTO.getPackageSize());
             _budget.setSbu(_BudgetExcelDTO.getSbu());
-            _budget.setFieldColleagueID(_BudgetExcelDTO.getFieldColleagueID());
+            _budget.setFieldColleagueId(_BudgetExcelDTO.getFieldColleagueID());
             _budget.setFieldColleagueName(_BudgetExcelDTO.getFieldColleagueName());
             _budget.setQuantity(_BudgetExcelDTO.getQuantity());
             _budget.setDepotName(_BudgetExcelDTO.getDepotName());
-            _budget.setDepotID(_BudgetExcelDTO.getDepotID());
+            _budget.setDepotId(_BudgetExcelDTO.getDepotID());
             _budget.setCategory(_BudgetExcelDTO.getCategory());
             _budget.setMonth(_BudgetExcelDTO.getMonth());
             _budget.setYear(_BudgetExcelDTO.getYear());
-            _budget.setSsuID(_BudgetExcelDTO.getSsu_id());
+            _budget.setSsuId(_BudgetExcelDTO.getSsu_id());
             budgetRepository.save(_budget);
             allBudget.add(_budget);
         }

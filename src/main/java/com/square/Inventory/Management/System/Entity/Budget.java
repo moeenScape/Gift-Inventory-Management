@@ -1,7 +1,12 @@
 package com.square.Inventory.Management.System.Entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 public class Budget {
 
@@ -10,7 +15,7 @@ public class Budget {
     @Column(name = "id")
     private Long id;
 
-    private String budgetID;
+    private String budgetId;
 
     @Column
     private String sapCode;
@@ -28,7 +33,7 @@ public class Budget {
     private SBU sbu;
 
     @Column
-    private String fieldColleagueID;
+    private String fieldColleagueId;
 
     @Column
     private String fieldColleagueName;
@@ -40,7 +45,7 @@ public class Budget {
     private String depotName;
 
     @Column
-    private String depotID;
+    private String depotId;
 
     @Column
     private String category;
@@ -52,7 +57,7 @@ public class Budget {
     private int year;
 
     @Column
-    private String ssuID;
+    private String ssuId;
 
     @Column(columnDefinition = "boolean default false")
     private boolean isDepotReceived = false;
@@ -60,149 +65,4 @@ public class Budget {
     @Column(columnDefinition = "boolean default true")
     private boolean isInSSU = true;
 
-    public String getBudgetID() {
-        return budgetID;
-    }
-
-    public void setBudgetID(String budgetID) {
-        this.budgetID = budgetID;
-    }
-
-    public String getSapCode() {
-        return sapCode;
-    }
-
-    public void setSapCode(String sapCode) {
-        this.sapCode = sapCode;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductionUnit() {
-        return productionUnit;
-    }
-
-    public void setProductionUnit(String productionUnit) {
-        this.productionUnit = productionUnit;
-    }
-
-    public String getPackageSize() {
-        return packageSize;
-    }
-
-    public void setPackageSize(String packageSize) {
-        this.packageSize = packageSize;
-    }
-
-    public SBU getSbu() {
-        return sbu;
-    }
-
-    public void setSbu(SBU sbu) {
-        this.sbu = sbu;
-    }
-
-    public String getFieldColleagueID() {
-        return fieldColleagueID;
-    }
-
-    public void setFieldColleagueID(String fieldColleagueID) {
-        this.fieldColleagueID = fieldColleagueID;
-    }
-
-    public String getFieldColleagueName() {
-        return fieldColleagueName;
-    }
-
-    public void setFieldColleagueName(String fieldColleagueName) {
-        this.fieldColleagueName = fieldColleagueName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getDepotName() {
-        return depotName;
-    }
-
-    public void setDepotName(String depotName) {
-        this.depotName = depotName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-
-
-    public boolean isDepotReceived() {
-        return isDepotReceived;
-    }
-
-    public void setDepotReceived(boolean depotReceived) {
-        isDepotReceived = depotReceived;
-    }
-
-    public boolean isInSSU() {
-        return isInSSU;
-    }
-
-    public void setInSSU(boolean inSSU) {
-        isInSSU = inSSU;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDepotID() {
-        return depotID;
-    }
-
-    public void setDepotID(String depotID) {
-        this.depotID = depotID;
-    }
-
-    public String getSsuID() {
-        return ssuID;
-    }
-
-    public void setSsuID(String ssuID) {
-        this.ssuID = ssuID;
-    }
 }

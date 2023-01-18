@@ -30,4 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select sum(case when status ='true' then 1 else 0 end) as activatedUser," +
             "sum(case when status ='false' then 1 else 0 end) as deactivatedUser from user", nativeQuery = true)
     ActivatedDeactivatedUser getActiveDeactivateUser();
+
+    User findByOtp(String otp);
 }

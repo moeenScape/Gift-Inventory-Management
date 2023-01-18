@@ -295,13 +295,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean checkOtpStatus(User user, String givenOtp) {
+        Optional<User> _user = Optional.ofNullable(userRepository.findByOtp(givenOtp));
+
+        if (_user.isEmpty() ) return false;
         return user.getOtp().equals(givenOtp) && !otpUtils.isOtpExpired(user);
     }
 
     @Override
-    public ResponseEntity<?> resetPassword(User user, String newPassword) {
+    public ResponseEntity<?> resetPassword(User user, String newPassword, String givenOtp) {
+        Boolean checkOtpStatus = checkOtpStatus(user, givenOtp);
+        if (!checkOtpStatus) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Otp is not valid");
+        }
+
         newPassword = bCryptPasswordEncoder.encode(newPassword);
         String oldPassword = user.getPassword();
+
         if (Objects.equals(newPassword, oldPassword)) {
             return (ResponseEntity<?>) ResponseEntity.badRequest();
         } else {
