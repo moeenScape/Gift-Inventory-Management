@@ -29,7 +29,7 @@ public class DepotServiceImpl implements DepotService {
 
     @Override
     public Depot addDepot(DepotDto depotDto) {
-        Long userId = depotDto.getUser_id();
+        Long userId = depotDto.getUserId();
 
         Depot depot = new Depot();
 
@@ -58,8 +58,8 @@ public class DepotServiceImpl implements DepotService {
         depot.setDepotName(depotDto.getDepotName());
         depot.setLocation(depotDto.getLocation());
         User user = null;
-        if (depotDto.getUser_id() != null) {
-            user = userRepository.findById(depotDto.getUser_id()).orElseThrow(NoSuchElementException::new);
+        if (depotDto.getUserId() != null) {
+            user = userRepository.findById(depotDto.getUserId()).orElseThrow(NoSuchElementException::new);
             depot = depotDto.convertDepot(depotDto, user);
         }
 
