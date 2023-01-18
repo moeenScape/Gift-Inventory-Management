@@ -12,7 +12,7 @@ public class DepotDto {
     private String depotName;
     @NotNull
     private String location;
-    private Long user_id;
+    private Long userId;
 
     private String adminName;
 
@@ -36,12 +36,12 @@ public class DepotDto {
         this.location = location;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -98,7 +98,7 @@ public class DepotDto {
             return depotDto;
         }
 
-        depotDto.setUser_id(user.getId());
+        depotDto.setUserId(user.getId());
         depotDto.setAdminName(user.getFirstName() + ' ' + user.getLastName());
         depotDto.setEmail(user.getEmail());
         depotDto.setContactNumber(user.getContactNumber());
