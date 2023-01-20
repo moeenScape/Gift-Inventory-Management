@@ -69,7 +69,6 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> createUser(UserDTO user) {
         try {
             User newUser = userRepository.findByEmail(user.getEmail());
-            log.info("Inside log in {}", newUser);
             if (Objects.isNull(newUser)) {
 
                 userRepository.save(getUserFromDTO(user));
@@ -98,7 +97,7 @@ public class UserServiceImpl implements UserService {
             if (Objects.nonNull(user)) {
                 Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
                 if (auth.isAuthenticated()) {
-                    if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
+                    if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("active")) {
                         logInHistoryRepository.save(getLogInDetails(userDTO));
                         return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(), customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
@@ -134,7 +133,7 @@ public class UserServiceImpl implements UserService {
         InetAddress inetAddress = InetAddress.getLocalHost();
         User user = userRepository.findByEmail(userDTO.getEmail());
 
-        if (Objects.nonNull(user) && user.getStatus().equals("true")) {
+        if (Objects.nonNull(user) && user.getStatus().equals("active")) {
             logInDetails.setUserId(user.getId());
             logInDetails.setLogInStatus("success");
         } else if (Objects.isNull(user)) {
@@ -231,7 +230,7 @@ public class UserServiceImpl implements UserService {
 
 
             userRepository.disableUser(userId);
-            if(Objects.equals(optional.get().getStatus(), "true"))
+            if(Objects.equals(optional.get().getStatus(), "active"))
             {
                 return new ResponseEntity<>("User Disable Successfully.ID:  "+userId, HttpStatus.OK);
             } else {
@@ -276,7 +275,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDTO.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         user.setRole(userDTO.getRole());
-        user.setStatus("true");
+        user.setStatus("active");
         return user;
     }
 

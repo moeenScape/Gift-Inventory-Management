@@ -30,7 +30,7 @@ public class UserDTO {
     @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU toForBudget")
     @NotBlank(message = "role is mandatory")
     private String role;
-
+    @Pattern(regexp = "^(active|deactivate)$", message = "role must be active or deactivate")
     private String status;
 
     private String otp;

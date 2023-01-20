@@ -24,11 +24,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update User set status = (case when status ='false' then 'true' else 'false' end) where id=:userId", nativeQuery = true)
+    @Query(value = "update User set status = (case when status ='deactivate' then 'active' else 'deactivate' end) where id=:userId", nativeQuery = true)
     void disableUser(@Param("userId") Long userId);
 
-    @Query(value = "select sum(case when status ='true' then 1 else 0 end) as activatedUser," +
-            "sum(case when status ='false' then 1 else 0 end) as deactivatedUser from user", nativeQuery = true)
+    @Query(value = "select sum(case when status ='active' then 1 else 0 end) as activatedUser," +
+            "sum(case when status ='deactivate' then 1 else 0 end) as deactivatedUser from user", nativeQuery = true)
     ActivatedDeactivatedUser getActiveDeactivateUser();
 
     User findByOtp(String otp);
