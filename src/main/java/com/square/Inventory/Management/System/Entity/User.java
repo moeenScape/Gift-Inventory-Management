@@ -39,7 +39,7 @@ public class User {
     @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSUDtoForBudget")
     private String role;
 
-    @Pattern(regexp = "^(active|deactivate)$", message = "role must be active or deactivate")
+        @Pattern(regexp = "^(active|deactivate)$", message = "role must be active or deactivate")
     private String status;
 
     private String otp;

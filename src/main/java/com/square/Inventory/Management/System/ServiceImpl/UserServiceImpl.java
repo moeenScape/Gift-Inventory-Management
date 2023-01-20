@@ -95,9 +95,11 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepository.findByEmail(userDTO.getEmail());
             if (Objects.nonNull(user)) {
-                Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+                Authentication auth = authenticationManager
+                        .authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
                 if (auth.isAuthenticated()) {
-                    if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("active")) {
+                    if (customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("active")||
+                    customUserServiceDetails.getUserDetails().getStatus().equalsIgnoreCase("true")) {
                         logInHistoryRepository.save(getLogInDetails(userDTO));
                         return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(), customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
@@ -246,15 +248,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUserByPagination(int page, int size) {
-        Pageable paging = PageRequest.of(page, size);
-        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
-        if (pageResult.hasContent()) {
-            return pageResult.getContent();
-        } else {
-            return new ArrayList<>();
-        }
+    public List<UserDTO> getAllUsers() {
+        List<UserDTO> getAllUser=userRepository.getAllUsers();
+        return getAllUser;
     }
+
+//    @Override
+//    public List<UserDTO> getAllUserByPagination(int page, int size) {
+//        Pageable paging = PageRequest.of(page, size);
+//        Page<UserDTO> pageResult = userRepository.getAllUser(paging);
+//        if (pageResult.hasContent()) {
+//            return pageResult.getContent();
+//        } else {
+//            return new ArrayList<>();
+//        }
+//    }
 
     @Override
     public List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy) {

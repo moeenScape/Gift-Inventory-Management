@@ -15,7 +15,8 @@ public interface UserService {
 
     ResponseEntity<String> disableUser(Long userId);
 
-    List<UserDTO> getAllUserByPagination(int page, int size);
+    //List<UserDTO> getAllUserByPagination(int page, int size);
+    List<UserDTO> getAllUsers();
 
     List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy);
 

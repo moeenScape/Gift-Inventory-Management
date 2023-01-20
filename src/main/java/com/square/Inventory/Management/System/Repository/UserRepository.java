@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -21,6 +22,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new com.square.Inventory.Management.System.DTO.UserDTO(u.id,u.firstName,u.lastName," +
             "u.contactNumber,u.email,u.role,u.status) from User u")
     Page<UserDTO> getAllUser(Pageable paging);
+
+    @Query("select new com.square.Inventory.Management.System.DTO.UserDTO(u.id,u.firstName,u.lastName," +
+            "u.contactNumber,u.email,u.role,u.status) from User u")
+    List<UserDTO> getAllUsers();
 
     @Modifying
     @Transactional

@@ -23,9 +23,11 @@ public interface UserController {
     @PutMapping(path = "/disable/{userId}")
     ResponseEntity<?> disableUser(@PathVariable Long userId);
 
+//    @GetMapping(path = "/all")
+//    ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,
+//                                  @RequestParam(defaultValue = "10") int size);
     @GetMapping(path = "/all")
-    ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size);
+    ResponseEntity<?> getAllUsers();
 
     @GetMapping(path = "/page")
     ResponseEntity<?> getAllByPaginationBySorting(@RequestParam(defaultValue = "0") int page,

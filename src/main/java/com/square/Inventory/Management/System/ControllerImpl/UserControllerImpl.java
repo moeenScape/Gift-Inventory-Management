@@ -81,9 +81,10 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<UserDTO>> getAllUsers(int page, int size) {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+//        int page, int size
         if (jwtFilter.isAdmin()) {
-            List<UserDTO> userList = userService.getAllUserByPagination(page, size);
+            List<UserDTO> userList = userService.getAllUsers();
             return new ResponseEntity<>(userList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
