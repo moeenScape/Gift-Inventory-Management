@@ -1,5 +1,5 @@
 # Inventory-Management-System
 #BPMN
-![image alt text]()
+![image alt text](https://github.com/moeen775/Inventory-Management-System/blob/main/Inventory.png)
 # ERD
 ![image alt text](https://github.com/moeen775/Inventory-Management-System/blob/main/inventory.drawio.png)
