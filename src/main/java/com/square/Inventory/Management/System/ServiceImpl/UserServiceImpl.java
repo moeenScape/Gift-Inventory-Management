@@ -14,6 +14,7 @@ import com.square.Inventory.Management.System.Projection.ActivatedDeactivatedUse
 import com.square.Inventory.Management.System.Repository.LogInHistoryRepository;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
+import com.square.Inventory.Management.System.Validator.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -227,23 +228,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> disableUser(Long userId) {
 
-        Optional<User> optional = userRepository.findById(userId);
-        if (optional.isPresent() && !"admin".equals(optional.get().getRole())) {
+        Optional<User> user = Optional.ofNullable(userRepository.findById(userId))
+                .orElseThrow(() -> new NotFoundException("User " + userId + "is not present"));
 
+        if (!"admin".equals(user.get().getRole())) {
 
             userRepository.disableUser(userId);
-            if(Objects.equals(optional.get().getStatus(), "active"))
-            {
-                return new ResponseEntity<>("User Disable Successfully.ID:  "+userId, HttpStatus.OK);
+            if (Objects.equals(user.get().getStatus(), "active")) {
+                return new ResponseEntity<>("User Disable Successfully.ID:  " + userId, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("User Active Successfully.ID:  "+userId, HttpStatus.OK);
+                return new ResponseEntity<>("User Active Successfully.ID:  " + userId, HttpStatus.OK);
             }
 
-
-        } else if (optional.isPresent() && optional.get().getRole().equals("admin")) {
-            return new ResponseEntity<>("Can not  Disable Admin "+userId, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>("User Not Find With ID:  "+userId, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Can not  Disable Admin " + userId, HttpStatus.BAD_REQUEST);
         }
     }
 

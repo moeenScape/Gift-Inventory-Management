@@ -41,8 +41,8 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
             "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid", nativeQuery = true)
     List<BudgetSummaryProjection> getSummary();
 
-    @Query(value = "select sum(case when category='PPU' then quantity else 0 end) as PPM," +
-            "sum(case when category='Hiking' then quantity else 0 end) as Sample," +
+    @Query(value = "select sum(case when category='PPM' then quantity else 0 end) as PPM," +
+            "sum(case when category='sample' then quantity else 0 end) as Sample," +
             "sum(case when category='gift' then quantity else 0 end) as Gift from budget;", nativeQuery = true)
     CategoryWiseSummary getCategoryWiseSummary();
 
@@ -55,6 +55,6 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
     @Query(value = "select month, sum(quantity) as sum from budget group by month", nativeQuery = true)
     List<BudgetMonthWiseSumProjection> getMonthWiseSum();
 
-    @Query(value = "select count(distinct(field_colleagueid)) as total from budget where month=:month",nativeQuery = true)
+    @Query(value = "select count(distinct(field_colleague_id)) as total from budget where month=:month",nativeQuery = true)
     FieldColleagueProjection getCurrentMonthFieldColleague(@Param("month") String month);
 }

@@ -2,7 +2,6 @@ package com.square.Inventory.Management.System.JWT;
 
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,10 +15,13 @@ import java.util.Objects;
 @Service
 public class CustomUserServiceDetails implements UserDetailsService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public com.square.Inventory.Management.System.Entity.User userDetails;
+
+    public CustomUserServiceDetails(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @Override

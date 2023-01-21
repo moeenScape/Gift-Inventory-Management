@@ -26,9 +26,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -136,7 +140,6 @@ public class BudgetServiceImpl implements BudgetService {
         List<BudgetSummaryProjection> budgetSummaryProjectionList = budgetRepository.getSummary();
 
         return new ResponseEntity<>(budgetSummaryProjectionList, HttpStatus.OK);
-
     }
 
     @Override
@@ -153,6 +156,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<List<BudgetSSUSummaryProjection>> getSSUSummary() {
+
         return new ResponseEntity<>(budgetRepository.getSSUSummary(), HttpStatus.OK);
     }
 
