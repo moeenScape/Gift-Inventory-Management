@@ -27,7 +27,7 @@ public class UserDTO {
     @Min(value = 8,message = "Password length must be 8")
     private String password;
 
-    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSU toForBudget")
+    @Pattern(regexp = "^(admin|depot|ssu)$", message = "role will be admin or depot or ssu toForBudget")
     @NotBlank(message = "role is mandatory")
     private String role;
     @Pattern(regexp = "^(active|deactivate)$", message = "role must be active or deactivate")

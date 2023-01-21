@@ -36,7 +36,7 @@ public class User {
     @NotBlank
     private String password;
 
-    @Pattern(regexp = "^(admin|depot|SSU)$", message = "role will be admin or depot or SSUDtoForBudget")
+    @Pattern(regexp = "^(admin|depot|ssu)$", message = "role must be admin or depot or ssu ")
     private String role;
 
         @Pattern(regexp = "^(active|deactivate)$", message = "role must be active or deactivate")
