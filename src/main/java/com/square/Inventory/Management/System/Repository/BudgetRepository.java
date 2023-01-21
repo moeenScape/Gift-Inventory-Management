@@ -41,7 +41,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
             "warehouse_name,month,year,sum(quantity) as sum FROM budget group by deportid", nativeQuery = true)
     List<BudgetSummaryProjection> getSummary();
 
-    @Query(value = "select sum(case when category='PPU' then quantity else 0 end) as PPM," +
+    @Query(value = "select sum(case when category='PPM' then quantity else 0 end) as PPM," +
             "sum(case when category='sample' then quantity else 0 end) as Sample," +
             "sum(case when category='gift' then quantity else 0 end) as Gift from budget;", nativeQuery = true)
     CategoryWiseSummary getCategoryWiseSummary();
