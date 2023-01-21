@@ -7,6 +7,7 @@ import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
 import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
 import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
 import com.square.Inventory.Management.System.Entity.Budget;
+import com.square.Inventory.Management.System.Entity.SBU;
 import com.square.Inventory.Management.System.Entity.User;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.IMSUtils.TimeUtils;
@@ -63,26 +64,44 @@ public class BudgetServiceImpl implements BudgetService {
     public List<Budget> addBudgetFromExcel(MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
         List<BudgetExcelDto> budgetExcelDto = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
-
+        List<BudgetExcelDto> copyBudgetExcelDto = new ArrayList<>(budgetExcelDto);
         List<Budget> allBudget = new ArrayList<>();
 
-        for (BudgetExcelDto _BudgetExcelDTO : budgetExcelDto) {
+        budgetExcelDto.removeIf(budgetDto -> !budgetDto.getCategory().toLowerCase().matches("^(sample|ppm|gift)$")
+                        || (!budgetDto.getSsu_id().toLowerCase().matches("^(dpg|dso|du)$"))
+                        || (!(budgetDto.getYear() == TimeUtils.getCurrentYear()))
+                        || (!(
+                        budgetDto.getSbu() == SBU.A
+                                || budgetDto.getSbu() == SBU.B
+                                || budgetDto.getSbu() == SBU.C
+                                || budgetDto.getSbu() == SBU.D
+                                || budgetDto.getSbu() == SBU.E
+                                || budgetDto.getSbu() == SBU.N
+                ))
+        );
+        copyBudgetExcelDto.removeAll(budgetExcelDto);
+        log.info("total {} rows are not included!", copyBudgetExcelDto.size());
+//        if (copyBudgetExcelDto.size() != budgetExcelDto.size()) {
+//            return new ArrayList<>();
+//        }
+
+        for (BudgetExcelDto _budgetExcelDto : budgetExcelDto) {
             Budget _budget = new Budget();
-            _budget.setSapCode(_BudgetExcelDTO.getSapCode());
-            _budget.setBudgetId(_BudgetExcelDTO.getBudgetID());
-            _budget.setProductName(_BudgetExcelDTO.getProductName());
-            _budget.setProductionUnit(_BudgetExcelDTO.getProductionUnit());
-            _budget.setPackageSize(_BudgetExcelDTO.getPackageSize());
-            _budget.setSbu(_BudgetExcelDTO.getSbu());
-            _budget.setFieldColleagueId(_BudgetExcelDTO.getFieldColleagueID());
-            _budget.setFieldColleagueName(_BudgetExcelDTO.getFieldColleagueName());
-            _budget.setQuantity(_BudgetExcelDTO.getQuantity());
-            _budget.setDepotName(_BudgetExcelDTO.getDepotName());
-            _budget.setDepotId(_BudgetExcelDTO.getDepotID());
-            _budget.setCategory(_BudgetExcelDTO.getCategory());
-            _budget.setMonth(_BudgetExcelDTO.getMonth());
-            _budget.setYear(_BudgetExcelDTO.getYear());
-            _budget.setSsuId(_BudgetExcelDTO.getSsu_id());
+            _budget.setSapCode(_budgetExcelDto.getSapCode());
+            _budget.setBudgetId(_budgetExcelDto.getBudgetID());
+            _budget.setProductName(_budgetExcelDto.getProductName());
+            _budget.setProductionUnit(_budgetExcelDto.getProductionUnit());
+            _budget.setPackageSize(_budgetExcelDto.getPackageSize());
+            _budget.setSbu(_budgetExcelDto.getSbu());
+            _budget.setFieldColleagueId(_budgetExcelDto.getFieldColleagueID());
+            _budget.setFieldColleagueName(_budgetExcelDto.getFieldColleagueName());
+            _budget.setQuantity(Math.round(_budgetExcelDto.getQuantity()));
+            _budget.setDepotName(_budgetExcelDto.getDepotName());
+            _budget.setDepotId(_budgetExcelDto.getDepotID());
+            _budget.setCategory(_budgetExcelDto.getCategory());
+            _budget.setMonth(_budgetExcelDto.getMonth());
+            _budget.setYear(_budgetExcelDto.getYear());
+            _budget.setSsuId(_budgetExcelDto.getSsu_id());
             budgetRepository.save(_budget);
             allBudget.add(_budget);
         }
@@ -161,20 +180,20 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<List<SSUDtoForBudget>> getSSUUSerWiseBudget() {
-        User user=userRepository.findByEmail(jwtFilter.getCurrentUser());
-        List<SSUDtoForBudget> getSSUDtoForBudgetWiseBudget =budgetRepository.getBudgetForSSUByName(sampleSectionRepository.getSSUNameByUID(user.getId()),
-                TimeUtils.getCurrentMonth(),TimeUtils.getCurrentYear());
-        return new ResponseEntity<>(getSSUDtoForBudgetWiseBudget,HttpStatus.OK);
+        User user = userRepository.findByEmail(jwtFilter.getCurrentUser());
+        List<SSUDtoForBudget> getSSUDtoForBudgetWiseBudget = budgetRepository.getBudgetForSSUByName(sampleSectionRepository.getSSUNameByUID(user.getId()),
+                TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear());
+        return new ResponseEntity<>(getSSUDtoForBudgetWiseBudget, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<BudgetMonthWiseSumProjection>> getMonthWiseSum() {
-        return ResponseEntity.ok(budgetRepository.getMonthWiseSum() );
+        return ResponseEntity.ok(budgetRepository.getMonthWiseSum());
     }
 
     @Override
     public ResponseEntity<FieldColleagueProjection> getCurrentMonthFieldColleague() {
         String month = TimeUtils.getCurrentMonth();
-        return ResponseEntity.ok(budgetRepository.getCurrentMonthFieldColleague(month) );
+        return ResponseEntity.ok(budgetRepository.getCurrentMonthFieldColleague(month));
     }
 }
