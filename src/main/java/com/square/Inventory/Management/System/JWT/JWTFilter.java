@@ -2,7 +2,6 @@ package com.square.Inventory.Management.System.JWT;
 
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,15 +19,18 @@ import java.io.IOException;
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
-    @Autowired
-    JWTUtils jwtUtils;
+    private final JWTUtils jwtUtils;
 
-    @Autowired
-    CustomUserServiceDetails customUserServiceDetails;
+    private final CustomUserServiceDetails customUserServiceDetails;
 
     Claims claims = null;
 
     private String userName = null;
+
+    public JWTFilter(JWTUtils jwtUtils, CustomUserServiceDetails customUserServiceDetails) {
+        this.jwtUtils = jwtUtils;
+        this.customUserServiceDetails = customUserServiceDetails;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,

@@ -62,15 +62,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
-    @Bean
-    CorsConfiguration corsConfiguration()
-    {
-        CorsConfiguration corsConfiguration=new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
-        UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",corsConfiguration);
-        return corsConfiguration;
-    }
+//    @Bean
+//    CorsConfiguration corsConfiguration()
+//    {
+//        CorsConfiguration corsConfiguration=new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+//        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+//        UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**",corsConfiguration);
+//        return corsConfiguration;
+//    }
 
 }
