@@ -106,8 +106,8 @@ public class BudgetServiceImpl implements BudgetService {
             _budget.setYear(_budgetExcelDto.getYear());
             _budget.setSsuId(_budgetExcelDto.getSsu_id());
             budgetRepository.save(_budget);
-        }
-        return new ResponseEntity<>(copyBudgetExcelDto, HttpStatus.CREATED);
+        }   
+        return ResponseEntity.ok().header("message","The " + copyBudgetExcelDto.size()+ " rows are not included").body(copyBudgetExcelDto);
     }
 
     @Override
