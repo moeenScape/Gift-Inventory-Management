@@ -36,10 +36,10 @@ public class User {
     @NotBlank
     private String password;
 
-    @Pattern(regexp = "^(admin|depot|ssu)$", message = "role must be admin or depot or ssu ")
+//    @Pattern(regexp = "^(admin|depot|ssu)$", message = "role must be admin or depot or ssu ")
     private String role;
 
-        @Pattern(regexp = "^(active|deactivate)$", message = "role must be active or deactivate")
+//    @Pattern(regexp = "^(active|deactivate)$", message = "role must be active or deactivate")
     private String status;
 
     private String otp;
