@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserController {
 
     @PostMapping(path = "/login")
-    ResponseEntity<String> login(@RequestBody UserDTO userDTO);
+    ResponseEntity<?> login(@RequestBody UserDTO userDTO);
 
     @PostMapping(path = "/create")
     ResponseEntity<?> createUser(@RequestBody UserDTO user, BindingResult bindingResult);

@@ -36,31 +36,31 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> createUser(@Valid UserDTO user, BindingResult bindingResult) {
-            if (bindingResult.hasErrors()) {
-                return ResponseEntity.badRequest()
-                        .body(bindingResult
-                                .getAllErrors()
-                                .stream()
-                                .map(ObjectError::getDefaultMessage)
-                                .collect(Collectors.joining()));
+    public ResponseEntity<?> createUser(@Valid UserDTO user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest()
+                    .body(bindingResult
+                            .getAllErrors()
+                            .stream()
+                            .map(ObjectError::getDefaultMessage)
+                            .collect(Collectors.joining()));
 
-            } else {
-                if (jwtFilter.isAdmin()) {
+        } else {
+            if (jwtFilter.isAdmin()) {
                     return userService.createUser(user);
                 } else {
-                    return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-                }
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+        }
     }
 
     @Override
-    public ResponseEntity<String> login(UserDTO userDTO) {
+    public ResponseEntity<?> login(UserDTO userDTO) {
         return userService.login(userDTO);
     }
 
     @Override
-    public ResponseEntity<String> updateUser(UserDTO userDTO, Long userId) {
+    public ResponseEntity<?> updateUser(UserDTO userDTO, Long userId) {
         return userService.update(userDTO, userId);
     }
 
