@@ -8,7 +8,6 @@ import com.square.Inventory.Management.System.JWT.JWTFilter;
 import com.square.Inventory.Management.System.Repository.UserRepository;
 import com.square.Inventory.Management.System.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -25,20 +24,19 @@ import java.util.stream.Collectors;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final JWTFilter jwtFilter;
 
     public UserControllerImpl(UserService userService,
-                              JWTFilter jwtFilter) {
+                              UserRepository userRepository, JWTFilter jwtFilter) {
         this.userService = userService;
+        this.userRepository = userRepository;
         this.jwtFilter = jwtFilter;
     }
 
     @Override
     public ResponseEntity<String> createUser(@Valid UserDTO user, BindingResult bindingResult) {
-        try {
             if (bindingResult.hasErrors()) {
                 return ResponseEntity.badRequest()
                         .body(bindingResult
@@ -54,11 +52,6 @@ public class UserControllerImpl implements UserController {
                     return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
                 }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -82,7 +75,6 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-//        int page, int size
         if (jwtFilter.isAdmin()) {
             List<UserDTO> userList = userService.getAllUsers();
             return new ResponseEntity<>(userList, HttpStatus.OK);

@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +31,15 @@ public class SampleSectionControllerImpl implements SampleSectionController {
     public ResponseEntity<String> createSSu(SsuDto sampleSectionUnit, BindingResult bindingResult) {
         if (jwtFilter.isAdmin()) {
             if (bindingResult.hasErrors()) {
-                return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining()));
+                return ResponseEntity.badRequest().body(
+                        bindingResult
+                                .getAllErrors()
+                                .stream()
+                                .map(ObjectError::getDefaultMessage)
+                                .collect(Collectors.joining()));
             }
-
             return sampleSectionService.createSSU(sampleSectionUnit);
+
         }
 
         return InventoryUtils.getResponse(InventoryConstant.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
@@ -47,7 +51,7 @@ public class SampleSectionControllerImpl implements SampleSectionController {
             List<SsuDto> getAll = sampleSectionService.getAllSSU(page, size);
             return new ResponseEntity<>(getAll, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
