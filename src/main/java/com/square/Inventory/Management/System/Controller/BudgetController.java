@@ -20,10 +20,8 @@ public interface BudgetController {
     @PostMapping("/showExcel")
     ResponseEntity<List<BudgetExcelDto>> getAllEmployeesFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
-    ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file);
-
     @PostMapping("/addBudgetFromExcel")
-    ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
+    ResponseEntity<?> addBudgetExcelDTOFromExcel(@RequestParam("file") MultipartFile file) throws IOException;
 
     @GetMapping(path = "/ssu/{ssuName}")
     ResponseEntity<List<SSUDtoForBudget>> getBudgetBySSU(@PathVariable String ssuName);
