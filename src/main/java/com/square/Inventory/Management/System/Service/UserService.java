@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface UserService {
 
-    ResponseEntity<String> createUser(UserDTO user);
+    ResponseEntity<?> createUser(UserDTO user);
 
-    ResponseEntity<String> login(UserDTO userDTO);
+    ResponseEntity<?> login(UserDTO userDTO);
 
     ResponseEntity<String> disableUser(Long userId);
 
@@ -20,7 +20,7 @@ public interface UserService {
 
     List<UserDTO> getAllUserByPaginationBySort(int page, int size, String sortBy);
 
-    ResponseEntity<String> update(UserDTO userDTO, Long userId);
+    ResponseEntity<?> update(UserDTO userDTO, Long userId);
 
     ResponseEntity<?> updateUserRole(String role,Long userID);
 

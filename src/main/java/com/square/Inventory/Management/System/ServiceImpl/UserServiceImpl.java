@@ -67,22 +67,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> createUser(UserDTO user) {
+    public ResponseEntity<?> createUser(UserDTO user) {
         try {
             User newUser = userRepository.findByEmail(user.getEmail());
             if (Objects.isNull(newUser)) {
 
                 userRepository.save(getUserFromDTO(user));
                 emailUtils.sendMail(user.getEmail(), "Account Approved By" + " " + getCurrentUserName(), "Email: " + user.getEmail() + "\n" + "Password " + user.getPassword() + "\n" + "Please Change Your Password As Soon As possible http//:localhost:8080/inventory/user/changePassword" + "\n" + "Thank You!!!" + "\n" + "\n" + "This mail Send from IMS by Square");
-                return InventoryUtils.getResponse("User Register Successful", HttpStatus.CREATED);
+                return new ResponseEntity<>(HttpStatus.CREATED);
 
             } else {
-                return InventoryUtils.getResponse("Email or UserID Already Exist", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.FOUND);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getCurrentUserName() {
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> login(UserDTO userDTO) {
+    public ResponseEntity<?> login(UserDTO userDTO) {
         try {
             User user = userRepository.findByEmail(userDTO.getEmail());
             if (Objects.nonNull(user)) {
@@ -105,18 +105,18 @@ public class UserServiceImpl implements UserService {
                         return new ResponseEntity<>("{\"token\":\"" + jwtUtils.generateToken(customUserServiceDetails.getUserDetails().getEmail(), customUserServiceDetails.getUserDetails().getRole()) + "\"}", HttpStatus.OK);
                     } else {
                         logInHistoryRepository.save(getLogInDetails(userDTO));
-                        return InventoryUtils.getResponse("Wait for Approve", HttpStatus.NOT_ACCEPTABLE);
+                        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
                     }
                 }
             } else {
                 logInHistoryRepository.save(getLogInDetails(userDTO));
-                return InventoryUtils.getResponse("No user found by this Email", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>( HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         logInHistoryRepository.save(getFailureLogIn(userDTO));
-        return InventoryUtils.getResponse(InventoryConstant.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private LogInDetails getFailureLogIn(UserDTO userDTO) {
@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> update(UserDTO user, Long userId) {
+    public ResponseEntity<?> update(UserDTO user, Long userId) {
         try {
             Optional<User> user1 = userRepository.findById(userId);
             if (user1.isPresent()) {
@@ -161,14 +161,14 @@ public class UserServiceImpl implements UserService {
                 user2.setLastName(user.getLastName());
                 user2.setContactNumber(user.getContactNumber());
                 userRepository.save(user2);
-                return new ResponseEntity<>("User Updated", HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("User is not present", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>("Fail to update", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -179,12 +179,14 @@ public class UserServiceImpl implements UserService {
                 User user2 = user1.get();
                 user2.setRole(role);
                 userRepository.save(user2);
-                return new ResponseEntity<>(user2.getFirstName() + " " + user2.getLastName() + "New Role : " + role, HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>("Fail to upload", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -195,12 +197,14 @@ public class UserServiceImpl implements UserService {
                 User newUser = user.get();
                 newUser.setStatus(status);
                 userRepository.save(newUser);
-                return new ResponseEntity<>(newUser.getFirstName() + " " + newUser.getLastName() + "New Role : " + status, HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>("Fail to upDate Status", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -241,14 +245,13 @@ public class UserServiceImpl implements UserService {
             }
 
         } else {
-            return new ResponseEntity<>("Can not  Disable Admin " + userId, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>( HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<UserDTO> getAllUser=userRepository.getAllUsers();
-        return getAllUser;
+        return userRepository.getAllUsers();
     }
 
 //    @Override
