@@ -7,7 +7,7 @@ create table budget (
     field_colleague_id varchar(255),
     field_colleague_name varchar(255),
     is_depot_received boolean default false,
-    is_in_ssu boolean default true,
+    is_inssu boolean default true,
     month varchar(255),
     package_size varchar(255),
     product_name varchar(255),

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -47,6 +48,7 @@ public class Budget {
     @Column
     private String depotId;
 
+    @Pattern(regexp = "^(ppm|sample|gift|PPM|SAMPLE|GIFT|Ppm|Sample|Gift)$", message = "unknown category inserted")
     @Column
     private String category;
 
