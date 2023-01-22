@@ -3,8 +3,8 @@ package com.square.Inventory.Management.System.ControllerImpl;
 import com.square.Inventory.Management.System.Controller.BudgetController;
 import com.square.Inventory.Management.System.DTO.BudgetSummaryProjection;
 import com.square.Inventory.Management.System.DTO.CategoryWiseSummary;
-import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
 import com.square.Inventory.Management.System.DTO.SSUDtoForBudget;
+import com.square.Inventory.Management.System.DTO.depotDtoForBudget;
 import com.square.Inventory.Management.System.Entity.Budget;
 import com.square.Inventory.Management.System.ExcelHepler.BudgetExcelDto;
 import com.square.Inventory.Management.System.JWT.JWTFilter;
@@ -54,7 +54,7 @@ public class BudgetControllerImpl implements BudgetController {
             return budgetService.getBudgetForSSUByName(ssuName);
         }
 
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BudgetControllerImpl implements BudgetController {
             return budgetService.getBudgetForDepotByID(depotID);
         }
 
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class BudgetControllerImpl implements BudgetController {
         if (jwtFilter.isDepot()) {
             return budgetService.getDepotUserWiseBudget();
         }
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class BudgetControllerImpl implements BudgetController {
         if (jwtFilter.isSSU()) {
             return budgetService.getSSUUSerWiseBudget();
         }
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 }
