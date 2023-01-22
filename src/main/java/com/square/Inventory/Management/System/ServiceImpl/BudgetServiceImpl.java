@@ -65,11 +65,10 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<Budget> addBudgetFromExcel(MultipartFile file) throws IOException {
+    public ResponseEntity<?> addBudgetFromExcel(MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
         List<BudgetExcelDto> budgetExcelDto = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, BudgetExcelDto.class);
         List<BudgetExcelDto> copyBudgetExcelDto = new ArrayList<>(budgetExcelDto);
-        List<Budget> allBudget = new ArrayList<>();
 
         budgetExcelDto.removeIf(budgetDto -> !budgetDto.getCategory().toLowerCase().matches("^(sample|ppm|gift)$")
                         || (!budgetDto.getSsu_id().toLowerCase().matches("^(dpg|dso|du)$"))
@@ -81,7 +80,7 @@ public class BudgetServiceImpl implements BudgetService {
                                 || budgetDto.getSbu() == SBU.D
                                 || budgetDto.getSbu() == SBU.E
                                 || budgetDto.getSbu() == SBU.N
-                ))
+                        ))
         );
         copyBudgetExcelDto.removeAll(budgetExcelDto);
         log.info("total {} rows are not included!", copyBudgetExcelDto.size());
@@ -107,9 +106,8 @@ public class BudgetServiceImpl implements BudgetService {
             _budget.setYear(_budgetExcelDto.getYear());
             _budget.setSsuId(_budgetExcelDto.getSsu_id());
             budgetRepository.save(_budget);
-            allBudget.add(_budget);
         }
-        return allBudget;
+        return new ResponseEntity<>(copyBudgetExcelDto, HttpStatus.CREATED);
     }
 
     @Override

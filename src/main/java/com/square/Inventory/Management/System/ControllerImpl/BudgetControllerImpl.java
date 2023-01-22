@@ -40,22 +40,12 @@ public class BudgetControllerImpl implements BudgetController {
     }
 
     @Override
-    public ResponseEntity<List<Budget>> addBudgetDTOFromExcel(MultipartFile file) {
-        try {
-            if (jwtFilter.isAdmin()) {
-                return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public ResponseEntity<?> addBudgetExcelDTOFromExcel(MultipartFile file) throws IOException {
+        if (jwtFilter.isAdmin()) {
+            return budgetService.addBudgetFromExcel(file);
+        } else {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @Override
-    public ResponseEntity<List<Budget>> addBudgetExcelDTOFromExcel(MultipartFile file) throws IOException {
-        return new ResponseEntity<>(budgetService.addBudgetFromExcel(file), HttpStatus.CREATED);
     }
 
     @Override
